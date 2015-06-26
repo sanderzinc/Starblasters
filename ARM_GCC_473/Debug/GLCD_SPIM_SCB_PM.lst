@@ -1,0 +1,771 @@
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"GLCD_SPIM_SCB_PM.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	GLCD_SPIM_SCB_backup
+  18              		.bss
+  19              		.align	2
+  20              		.type	GLCD_SPIM_SCB_backup, %object
+  21              		.size	GLCD_SPIM_SCB_backup, 1
+  22              	GLCD_SPIM_SCB_backup:
+  23 0000 00       		.space	1
+  24 0001 000000   		.section	.text.GLCD_SPIM_SCB_Sleep,"ax",%progbits
+  25              		.align	2
+  26              		.global	GLCD_SPIM_SCB_Sleep
+  27              		.code	16
+  28              		.thumb_func
+  29              		.type	GLCD_SPIM_SCB_Sleep, %function
+  30              	GLCD_SPIM_SCB_Sleep:
+  31              	.LFB0:
+  32              		.file 1 ".\\Generated_Source\\PSoC4\\GLCD_SPIM_SCB_PM.c"
+   1:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * File Name: GLCD_SPIM_SCB_PM.c
+   3:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Version 1.0
+   4:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+   5:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Description:
+   6:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  This file provides the source code to the Power Management support for
+   7:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  the SCB Component.
+   8:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+   9:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Note:
+  10:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+  11:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** ********************************************************************************
+  12:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+  13:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * You may use this file only in accordance with the license, terms, conditions,
+  14:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  15:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * the software package with which this file was provided.
+  16:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *******************************************************************************/
+  17:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  18:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** #include "GLCD_SPIM_SCB.h"
+  19:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  20:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** #if(GLCD_SPIM_SCB_SCB_MODE_I2C_INC)
+  21:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #include "GLCD_SPIM_SCB_I2C_PVT.h"
+  22:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** #endif /* (GLCD_SPIM_SCB_SCB_MODE_I2C_INC) */
+  23:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  24:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** #if(GLCD_SPIM_SCB_SCB_MODE_SPI_INC || GLCD_SPIM_SCB_SCB_MODE_UART_INC)
+  25:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #include "GLCD_SPIM_SCB_SPI_UART_PVT.h"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 2
+
+
+  26:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** #endif /* (GLCD_SPIM_SCB_SCB_MODE_SPI_INC || GLCD_SPIM_SCB_SCB_MODE_UART_INC) */
+  27:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  28:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  29:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** /***************************************
+  30:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *   Backup Structure declaration
+  31:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** ***************************************/
+  32:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  33:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** GLCD_SPIM_SCB_BACKUP_STRUCT GLCD_SPIM_SCB_backup =
+  34:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** {
+  35:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     0u, /* enableState */
+  36:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** };
+  37:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  38:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  39:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** /*******************************************************************************
+  40:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Function Name: GLCD_SPIM_SCB_Sleep
+  41:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** ********************************************************************************
+  42:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+  43:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Summary:
+  44:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  Calls SaveConfig function fucntion for selected mode.
+  45:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+  46:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Parameters:
+  47:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  None
+  48:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+  49:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Return:
+  50:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  None
+  51:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+  52:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *******************************************************************************/
+  53:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** void GLCD_SPIM_SCB_Sleep(void)
+  54:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** {
+  33              		.loc 1 54 0
+  34              		.cfi_startproc
+  35 0000 80B5     		push	{r7, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 7, -8
+  39              		.cfi_offset 14, -4
+  40 0002 00AF     		add	r7, sp, #0
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_register 7
+  55:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     GLCD_SPIM_SCB_backup.enableState = (uint8) GLCD_SPIM_SCB_GET_CTRL_ENABLED;
+  43              		.loc 1 55 0
+  44 0004 084B     		ldr	r3, .L3
+  45 0006 1B68     		ldr	r3, [r3]
+  46 0008 DB0F     		lsr	r3, r3, #31
+  47 000a DBB2     		uxtb	r3, r3
+  48 000c 1A1C     		mov	r2, r3
+  49 000e 074B     		ldr	r3, .L3+4
+  50 0010 1A70     		strb	r2, [r3]
+  56:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  57:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #if(GLCD_SPIM_SCB_SCB_MODE_UNCONFIG_CONST_CFG)
+  58:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  59:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         if(GLCD_SPIM_SCB_SCB_MODE_I2C_RUNTM_CFG)
+  60:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+  61:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_I2CSaveConfig();
+  62:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+  63:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else if(GLCD_SPIM_SCB_SCB_MODE_SPI_RUNTM_CFG)
+  64:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 3
+
+
+  65:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_SpiSaveConfig();
+  66:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+  67:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else if(GLCD_SPIM_SCB_SCB_MODE_UART_RUNTM_CFG)
+  68:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+  69:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_UartSaveConfig();
+  70:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+  71:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else
+  72:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+  73:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             /* Unknown mode: do nothing */
+  74:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+  75:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  76:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_I2C_CONST_CFG)
+  77:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_I2CSaveConfig();
+  78:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  79:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_SPI_CONST_CFG)
+  80:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_SpiSaveConfig();
+  51              		.loc 1 80 0
+  52 0012 FFF7FEFF 		bl	GLCD_SPIM_SCB_SpiSaveConfig
+  81:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  82:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_UART_CONST_CFG)
+  83:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_UartSaveConfig();
+  84:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  85:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #else
+  86:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         /* Do nothing */
+  87:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  88:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #endif /* (GLCD_SPIM_SCB_SCB_MODE_UNCONFIG_CONST_CFG) */
+  89:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  90:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     if(0u != GLCD_SPIM_SCB_backup.enableState)
+  53              		.loc 1 90 0
+  54 0016 054B     		ldr	r3, .L3+4
+  55 0018 1B78     		ldrb	r3, [r3]
+  56 001a 002B     		cmp	r3, #0
+  57 001c 01D0     		beq	.L1
+  91:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     {
+  92:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_Stop();
+  58              		.loc 1 92 0
+  59 001e FFF7FEFF 		bl	GLCD_SPIM_SCB_Stop
+  60              	.L1:
+  93:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     }
+  94:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** }
+  61              		.loc 1 94 0
+  62 0022 BD46     		mov	sp, r7
+  63              		@ sp needed for prologue
+  64 0024 80BD     		pop	{r7, pc}
+  65              	.L4:
+  66 0026 C046     		.align	2
+  67              	.L3:
+  68 0028 00000740 		.word	1074200576
+  69 002c 00000000 		.word	GLCD_SPIM_SCB_backup
+  70              		.cfi_endproc
+  71              	.LFE0:
+  72              		.size	GLCD_SPIM_SCB_Sleep, .-GLCD_SPIM_SCB_Sleep
+  73              		.section	.text.GLCD_SPIM_SCB_Wakeup,"ax",%progbits
+  74              		.align	2
+  75              		.global	GLCD_SPIM_SCB_Wakeup
+  76              		.code	16
+  77              		.thumb_func
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 4
+
+
+  78              		.type	GLCD_SPIM_SCB_Wakeup, %function
+  79              	GLCD_SPIM_SCB_Wakeup:
+  80              	.LFB1:
+  95:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  96:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+  97:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** /*******************************************************************************
+  98:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Function Name: GLCD_SPIM_SCB_Wakeup
+  99:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** ********************************************************************************
+ 100:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+ 101:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Summary:
+ 102:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  Calls RestoreConfig function fucntion for selected mode.
+ 103:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+ 104:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Parameters:
+ 105:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  None
+ 106:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+ 107:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** * Return:
+ 108:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *  None
+ 109:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *
+ 110:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** *******************************************************************************/
+ 111:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** void GLCD_SPIM_SCB_Wakeup(void)
+ 112:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** {
+  81              		.loc 1 112 0
+  82              		.cfi_startproc
+  83 0000 80B5     		push	{r7, lr}
+  84              	.LCFI2:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 7, -8
+  87              		.cfi_offset 14, -4
+  88 0002 00AF     		add	r7, sp, #0
+  89              	.LCFI3:
+  90              		.cfi_def_cfa_register 7
+ 113:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #if(GLCD_SPIM_SCB_SCB_MODE_UNCONFIG_CONST_CFG)
+ 114:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 115:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         if(GLCD_SPIM_SCB_SCB_MODE_I2C_RUNTM_CFG)
+ 116:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+ 117:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_I2CRestoreConfig();
+ 118:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+ 119:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else if(GLCD_SPIM_SCB_SCB_MODE_SPI_RUNTM_CFG)
+ 120:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+ 121:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_SpiRestoreConfig();
+ 122:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+ 123:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else if(GLCD_SPIM_SCB_SCB_MODE_UART_RUNTM_CFG)
+ 124:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+ 125:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             GLCD_SPIM_SCB_UartRestoreConfig();
+ 126:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+ 127:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         else
+ 128:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         {
+ 129:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****             /* Unknown mode: do nothing */
+ 130:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         }
+ 131:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 132:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_I2C_CONST_CFG)
+ 133:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_I2CRestoreConfig();
+ 134:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 135:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_SPI_CONST_CFG)
+ 136:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_SpiRestoreConfig();
+  91              		.loc 1 136 0
+  92 0004 FFF7FEFF 		bl	GLCD_SPIM_SCB_SpiRestoreConfig
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 5
+
+
+ 137:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 138:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #elif(GLCD_SPIM_SCB_SCB_MODE_UART_CONST_CFG)
+ 139:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_UartRestoreConfig();
+ 140:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 141:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #else
+ 142:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         /* Do nothing */
+ 143:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 144:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     #endif /* (GLCD_SPIM_SCB_SCB_MODE_UNCONFIG_CONST_CFG) */
+ 145:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** 
+ 146:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     if(0u != GLCD_SPIM_SCB_backup.enableState)
+  93              		.loc 1 146 0
+  94 0008 034B     		ldr	r3, .L7
+  95 000a 1B78     		ldrb	r3, [r3]
+  96 000c 002B     		cmp	r3, #0
+  97 000e 01D0     		beq	.L5
+ 147:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     {
+ 148:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****         GLCD_SPIM_SCB_Enable();
+  98              		.loc 1 148 0
+  99 0010 FFF7FEFF 		bl	GLCD_SPIM_SCB_Enable
+ 100              	.L5:
+ 149:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c ****     }
+ 150:.\Generated_Source\PSoC4/GLCD_SPIM_SCB_PM.c **** }
+ 101              		.loc 1 150 0
+ 102 0014 BD46     		mov	sp, r7
+ 103              		@ sp needed for prologue
+ 104 0016 80BD     		pop	{r7, pc}
+ 105              	.L8:
+ 106              		.align	2
+ 107              	.L7:
+ 108 0018 00000000 		.word	GLCD_SPIM_SCB_backup
+ 109              		.cfi_endproc
+ 110              	.LFE1:
+ 111              		.size	GLCD_SPIM_SCB_Wakeup, .-GLCD_SPIM_SCB_Wakeup
+ 112              		.text
+ 113              	.Letext0:
+ 114              		.file 2 ".\\Generated_Source\\PSoC4\\cytypes.h"
+ 115              		.file 3 ".\\Generated_Source\\PSoC4\\GLCD_SPIM_SCB.h"
+ 116              		.section	.debug_info,"",%progbits
+ 117              	.Ldebug_info0:
+ 118 0000 0E010000 		.4byte	0x10e
+ 119 0004 0200     		.2byte	0x2
+ 120 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 121 000a 04       		.byte	0x4
+ 122 000b 01       		.uleb128 0x1
+ 123 000c 43000000 		.4byte	.LASF19
+ 124 0010 01       		.byte	0x1
+ 125 0011 E3000000 		.4byte	.LASF20
+ 126 0015 2C010000 		.4byte	.LASF21
+ 127 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 128 001d 00000000 		.4byte	0
+ 129 0021 00000000 		.4byte	0
+ 130 0025 00000000 		.4byte	.Ldebug_line0
+ 131 0029 02       		.uleb128 0x2
+ 132 002a 01       		.byte	0x1
+ 133 002b 06       		.byte	0x6
+ 134 002c BC010000 		.4byte	.LASF0
+ 135 0030 02       		.uleb128 0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 6
+
+
+ 136 0031 01       		.byte	0x1
+ 137 0032 08       		.byte	0x8
+ 138 0033 D5000000 		.4byte	.LASF1
+ 139 0037 02       		.uleb128 0x2
+ 140 0038 02       		.byte	0x2
+ 141 0039 05       		.byte	0x5
+ 142 003a EA010000 		.4byte	.LASF2
+ 143 003e 02       		.uleb128 0x2
+ 144 003f 02       		.byte	0x2
+ 145 0040 07       		.byte	0x7
+ 146 0041 A9010000 		.4byte	.LASF3
+ 147 0045 02       		.uleb128 0x2
+ 148 0046 04       		.byte	0x4
+ 149 0047 05       		.byte	0x5
+ 150 0048 23010000 		.4byte	.LASF4
+ 151 004c 02       		.uleb128 0x2
+ 152 004d 04       		.byte	0x4
+ 153 004e 07       		.byte	0x7
+ 154 004f 92000000 		.4byte	.LASF5
+ 155 0053 02       		.uleb128 0x2
+ 156 0054 08       		.byte	0x8
+ 157 0055 05       		.byte	0x5
+ 158 0056 00000000 		.4byte	.LASF6
+ 159 005a 02       		.uleb128 0x2
+ 160 005b 08       		.byte	0x8
+ 161 005c 07       		.byte	0x7
+ 162 005d A4000000 		.4byte	.LASF7
+ 163 0061 03       		.uleb128 0x3
+ 164 0062 04       		.byte	0x4
+ 165 0063 05       		.byte	0x5
+ 166 0064 696E7400 		.ascii	"int\000"
+ 167 0068 02       		.uleb128 0x2
+ 168 0069 04       		.byte	0x4
+ 169 006a 07       		.byte	0x7
+ 170 006b 21000000 		.4byte	.LASF8
+ 171 006f 04       		.uleb128 0x4
+ 172 0070 8C000000 		.4byte	.LASF9
+ 173 0074 02       		.byte	0x2
+ 174 0075 5B       		.byte	0x5b
+ 175 0076 30000000 		.4byte	0x30
+ 176 007a 04       		.uleb128 0x4
+ 177 007b 0E000000 		.4byte	.LASF10
+ 178 007f 02       		.byte	0x2
+ 179 0080 5D       		.byte	0x5d
+ 180 0081 4C000000 		.4byte	0x4c
+ 181 0085 02       		.uleb128 0x2
+ 182 0086 04       		.byte	0x4
+ 183 0087 04       		.byte	0x4
+ 184 0088 E4010000 		.4byte	.LASF11
+ 185 008c 02       		.uleb128 0x2
+ 186 008d 08       		.byte	0x8
+ 187 008e 04       		.byte	0x4
+ 188 008f 9C010000 		.4byte	.LASF12
+ 189 0093 02       		.uleb128 0x2
+ 190 0094 01       		.byte	0x1
+ 191 0095 08       		.byte	0x8
+ 192 0096 BB000000 		.4byte	.LASF13
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 7
+
+
+ 193 009a 04       		.uleb128 0x4
+ 194 009b A3010000 		.4byte	.LASF14
+ 195 009f 02       		.byte	0x2
+ 196 00a0 F2       		.byte	0xf2
+ 197 00a1 A5000000 		.4byte	0xa5
+ 198 00a5 05       		.uleb128 0x5
+ 199 00a6 7A000000 		.4byte	0x7a
+ 200 00aa 02       		.uleb128 0x2
+ 201 00ab 04       		.byte	0x4
+ 202 00ac 07       		.byte	0x7
+ 203 00ad F4010000 		.4byte	.LASF15
+ 204 00b1 06       		.uleb128 0x6
+ 205 00b2 01       		.byte	0x1
+ 206 00b3 03       		.byte	0x3
+ 207 00b4 5B       		.byte	0x5b
+ 208 00b5 C8000000 		.4byte	0xc8
+ 209 00b9 07       		.uleb128 0x7
+ 210 00ba 15000000 		.4byte	.LASF22
+ 211 00be 03       		.byte	0x3
+ 212 00bf 5D       		.byte	0x5d
+ 213 00c0 6F000000 		.4byte	0x6f
+ 214 00c4 02       		.byte	0x2
+ 215 00c5 23       		.byte	0x23
+ 216 00c6 00       		.uleb128 0
+ 217 00c7 00       		.byte	0
+ 218 00c8 04       		.uleb128 0x4
+ 219 00c9 C8010000 		.4byte	.LASF16
+ 220 00cd 03       		.byte	0x3
+ 221 00ce 5E       		.byte	0x5e
+ 222 00cf B1000000 		.4byte	0xb1
+ 223 00d3 08       		.uleb128 0x8
+ 224 00d4 01       		.byte	0x1
+ 225 00d5 0F010000 		.4byte	.LASF17
+ 226 00d9 01       		.byte	0x1
+ 227 00da 35       		.byte	0x35
+ 228 00db 01       		.byte	0x1
+ 229 00dc 00000000 		.4byte	.LFB0
+ 230 00e0 30000000 		.4byte	.LFE0
+ 231 00e4 00000000 		.4byte	.LLST0
+ 232 00e8 01       		.byte	0x1
+ 233 00e9 08       		.uleb128 0x8
+ 234 00ea 01       		.byte	0x1
+ 235 00eb C0000000 		.4byte	.LASF18
+ 236 00ef 01       		.byte	0x1
+ 237 00f0 6F       		.byte	0x6f
+ 238 00f1 01       		.byte	0x1
+ 239 00f2 00000000 		.4byte	.LFB1
+ 240 00f6 1C000000 		.4byte	.LFE1
+ 241 00fa 2C000000 		.4byte	.LLST1
+ 242 00fe 01       		.byte	0x1
+ 243 00ff 09       		.uleb128 0x9
+ 244 0100 2E000000 		.4byte	.LASF23
+ 245 0104 01       		.byte	0x1
+ 246 0105 21       		.byte	0x21
+ 247 0106 C8000000 		.4byte	0xc8
+ 248 010a 01       		.byte	0x1
+ 249 010b 05       		.byte	0x5
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 8
+
+
+ 250 010c 03       		.byte	0x3
+ 251 010d 00000000 		.4byte	GLCD_SPIM_SCB_backup
+ 252 0111 00       		.byte	0
+ 253              		.section	.debug_abbrev,"",%progbits
+ 254              	.Ldebug_abbrev0:
+ 255 0000 01       		.uleb128 0x1
+ 256 0001 11       		.uleb128 0x11
+ 257 0002 01       		.byte	0x1
+ 258 0003 25       		.uleb128 0x25
+ 259 0004 0E       		.uleb128 0xe
+ 260 0005 13       		.uleb128 0x13
+ 261 0006 0B       		.uleb128 0xb
+ 262 0007 03       		.uleb128 0x3
+ 263 0008 0E       		.uleb128 0xe
+ 264 0009 1B       		.uleb128 0x1b
+ 265 000a 0E       		.uleb128 0xe
+ 266 000b 55       		.uleb128 0x55
+ 267 000c 06       		.uleb128 0x6
+ 268 000d 11       		.uleb128 0x11
+ 269 000e 01       		.uleb128 0x1
+ 270 000f 52       		.uleb128 0x52
+ 271 0010 01       		.uleb128 0x1
+ 272 0011 10       		.uleb128 0x10
+ 273 0012 06       		.uleb128 0x6
+ 274 0013 00       		.byte	0
+ 275 0014 00       		.byte	0
+ 276 0015 02       		.uleb128 0x2
+ 277 0016 24       		.uleb128 0x24
+ 278 0017 00       		.byte	0
+ 279 0018 0B       		.uleb128 0xb
+ 280 0019 0B       		.uleb128 0xb
+ 281 001a 3E       		.uleb128 0x3e
+ 282 001b 0B       		.uleb128 0xb
+ 283 001c 03       		.uleb128 0x3
+ 284 001d 0E       		.uleb128 0xe
+ 285 001e 00       		.byte	0
+ 286 001f 00       		.byte	0
+ 287 0020 03       		.uleb128 0x3
+ 288 0021 24       		.uleb128 0x24
+ 289 0022 00       		.byte	0
+ 290 0023 0B       		.uleb128 0xb
+ 291 0024 0B       		.uleb128 0xb
+ 292 0025 3E       		.uleb128 0x3e
+ 293 0026 0B       		.uleb128 0xb
+ 294 0027 03       		.uleb128 0x3
+ 295 0028 08       		.uleb128 0x8
+ 296 0029 00       		.byte	0
+ 297 002a 00       		.byte	0
+ 298 002b 04       		.uleb128 0x4
+ 299 002c 16       		.uleb128 0x16
+ 300 002d 00       		.byte	0
+ 301 002e 03       		.uleb128 0x3
+ 302 002f 0E       		.uleb128 0xe
+ 303 0030 3A       		.uleb128 0x3a
+ 304 0031 0B       		.uleb128 0xb
+ 305 0032 3B       		.uleb128 0x3b
+ 306 0033 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 9
+
+
+ 307 0034 49       		.uleb128 0x49
+ 308 0035 13       		.uleb128 0x13
+ 309 0036 00       		.byte	0
+ 310 0037 00       		.byte	0
+ 311 0038 05       		.uleb128 0x5
+ 312 0039 35       		.uleb128 0x35
+ 313 003a 00       		.byte	0
+ 314 003b 49       		.uleb128 0x49
+ 315 003c 13       		.uleb128 0x13
+ 316 003d 00       		.byte	0
+ 317 003e 00       		.byte	0
+ 318 003f 06       		.uleb128 0x6
+ 319 0040 13       		.uleb128 0x13
+ 320 0041 01       		.byte	0x1
+ 321 0042 0B       		.uleb128 0xb
+ 322 0043 0B       		.uleb128 0xb
+ 323 0044 3A       		.uleb128 0x3a
+ 324 0045 0B       		.uleb128 0xb
+ 325 0046 3B       		.uleb128 0x3b
+ 326 0047 0B       		.uleb128 0xb
+ 327 0048 01       		.uleb128 0x1
+ 328 0049 13       		.uleb128 0x13
+ 329 004a 00       		.byte	0
+ 330 004b 00       		.byte	0
+ 331 004c 07       		.uleb128 0x7
+ 332 004d 0D       		.uleb128 0xd
+ 333 004e 00       		.byte	0
+ 334 004f 03       		.uleb128 0x3
+ 335 0050 0E       		.uleb128 0xe
+ 336 0051 3A       		.uleb128 0x3a
+ 337 0052 0B       		.uleb128 0xb
+ 338 0053 3B       		.uleb128 0x3b
+ 339 0054 0B       		.uleb128 0xb
+ 340 0055 49       		.uleb128 0x49
+ 341 0056 13       		.uleb128 0x13
+ 342 0057 38       		.uleb128 0x38
+ 343 0058 0A       		.uleb128 0xa
+ 344 0059 00       		.byte	0
+ 345 005a 00       		.byte	0
+ 346 005b 08       		.uleb128 0x8
+ 347 005c 2E       		.uleb128 0x2e
+ 348 005d 00       		.byte	0
+ 349 005e 3F       		.uleb128 0x3f
+ 350 005f 0C       		.uleb128 0xc
+ 351 0060 03       		.uleb128 0x3
+ 352 0061 0E       		.uleb128 0xe
+ 353 0062 3A       		.uleb128 0x3a
+ 354 0063 0B       		.uleb128 0xb
+ 355 0064 3B       		.uleb128 0x3b
+ 356 0065 0B       		.uleb128 0xb
+ 357 0066 27       		.uleb128 0x27
+ 358 0067 0C       		.uleb128 0xc
+ 359 0068 11       		.uleb128 0x11
+ 360 0069 01       		.uleb128 0x1
+ 361 006a 12       		.uleb128 0x12
+ 362 006b 01       		.uleb128 0x1
+ 363 006c 40       		.uleb128 0x40
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 10
+
+
+ 364 006d 06       		.uleb128 0x6
+ 365 006e 9642     		.uleb128 0x2116
+ 366 0070 0C       		.uleb128 0xc
+ 367 0071 00       		.byte	0
+ 368 0072 00       		.byte	0
+ 369 0073 09       		.uleb128 0x9
+ 370 0074 34       		.uleb128 0x34
+ 371 0075 00       		.byte	0
+ 372 0076 03       		.uleb128 0x3
+ 373 0077 0E       		.uleb128 0xe
+ 374 0078 3A       		.uleb128 0x3a
+ 375 0079 0B       		.uleb128 0xb
+ 376 007a 3B       		.uleb128 0x3b
+ 377 007b 0B       		.uleb128 0xb
+ 378 007c 49       		.uleb128 0x49
+ 379 007d 13       		.uleb128 0x13
+ 380 007e 3F       		.uleb128 0x3f
+ 381 007f 0C       		.uleb128 0xc
+ 382 0080 02       		.uleb128 0x2
+ 383 0081 0A       		.uleb128 0xa
+ 384 0082 00       		.byte	0
+ 385 0083 00       		.byte	0
+ 386 0084 00       		.byte	0
+ 387              		.section	.debug_loc,"",%progbits
+ 388              	.Ldebug_loc0:
+ 389              	.LLST0:
+ 390 0000 00000000 		.4byte	.LFB0
+ 391 0004 02000000 		.4byte	.LCFI0
+ 392 0008 0200     		.2byte	0x2
+ 393 000a 7D       		.byte	0x7d
+ 394 000b 00       		.sleb128 0
+ 395 000c 02000000 		.4byte	.LCFI0
+ 396 0010 04000000 		.4byte	.LCFI1
+ 397 0014 0200     		.2byte	0x2
+ 398 0016 7D       		.byte	0x7d
+ 399 0017 08       		.sleb128 8
+ 400 0018 04000000 		.4byte	.LCFI1
+ 401 001c 30000000 		.4byte	.LFE0
+ 402 0020 0200     		.2byte	0x2
+ 403 0022 77       		.byte	0x77
+ 404 0023 08       		.sleb128 8
+ 405 0024 00000000 		.4byte	0
+ 406 0028 00000000 		.4byte	0
+ 407              	.LLST1:
+ 408 002c 00000000 		.4byte	.LFB1
+ 409 0030 02000000 		.4byte	.LCFI2
+ 410 0034 0200     		.2byte	0x2
+ 411 0036 7D       		.byte	0x7d
+ 412 0037 00       		.sleb128 0
+ 413 0038 02000000 		.4byte	.LCFI2
+ 414 003c 04000000 		.4byte	.LCFI3
+ 415 0040 0200     		.2byte	0x2
+ 416 0042 7D       		.byte	0x7d
+ 417 0043 08       		.sleb128 8
+ 418 0044 04000000 		.4byte	.LCFI3
+ 419 0048 1C000000 		.4byte	.LFE1
+ 420 004c 0200     		.2byte	0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 11
+
+
+ 421 004e 77       		.byte	0x77
+ 422 004f 08       		.sleb128 8
+ 423 0050 00000000 		.4byte	0
+ 424 0054 00000000 		.4byte	0
+ 425              		.section	.debug_aranges,"",%progbits
+ 426 0000 24000000 		.4byte	0x24
+ 427 0004 0200     		.2byte	0x2
+ 428 0006 00000000 		.4byte	.Ldebug_info0
+ 429 000a 04       		.byte	0x4
+ 430 000b 00       		.byte	0
+ 431 000c 0000     		.2byte	0
+ 432 000e 0000     		.2byte	0
+ 433 0010 00000000 		.4byte	.LFB0
+ 434 0014 30000000 		.4byte	.LFE0-.LFB0
+ 435 0018 00000000 		.4byte	.LFB1
+ 436 001c 1C000000 		.4byte	.LFE1-.LFB1
+ 437 0020 00000000 		.4byte	0
+ 438 0024 00000000 		.4byte	0
+ 439              		.section	.debug_ranges,"",%progbits
+ 440              	.Ldebug_ranges0:
+ 441 0000 00000000 		.4byte	.LFB0
+ 442 0004 30000000 		.4byte	.LFE0
+ 443 0008 00000000 		.4byte	.LFB1
+ 444 000c 1C000000 		.4byte	.LFE1
+ 445 0010 00000000 		.4byte	0
+ 446 0014 00000000 		.4byte	0
+ 447              		.section	.debug_line,"",%progbits
+ 448              	.Ldebug_line0:
+ 449 0000 98000000 		.section	.debug_str,"MS",%progbits,1
+ 449      02006200 
+ 449      00000201 
+ 449      FB0E0D00 
+ 449      01010101 
+ 450              	.LASF6:
+ 451 0000 6C6F6E67 		.ascii	"long long int\000"
+ 451      206C6F6E 
+ 451      6720696E 
+ 451      7400
+ 452              	.LASF10:
+ 453 000e 75696E74 		.ascii	"uint32\000"
+ 453      333200
+ 454              	.LASF22:
+ 455 0015 656E6162 		.ascii	"enableState\000"
+ 455      6C655374 
+ 455      61746500 
+ 456              	.LASF8:
+ 457 0021 756E7369 		.ascii	"unsigned int\000"
+ 457      676E6564 
+ 457      20696E74 
+ 457      00
+ 458              	.LASF23:
+ 459 002e 474C4344 		.ascii	"GLCD_SPIM_SCB_backup\000"
+ 459      5F535049 
+ 459      4D5F5343 
+ 459      425F6261 
+ 459      636B7570 
+ 460              	.LASF19:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 12
+
+
+ 461 0043 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 461      4320342E 
+ 461      372E3320 
+ 461      32303133 
+ 461      30333132 
+ 462 0076 616E6368 		.ascii	"anch revision 196615]\000"
+ 462      20726576 
+ 462      6973696F 
+ 462      6E203139 
+ 462      36363135 
+ 463              	.LASF9:
+ 464 008c 75696E74 		.ascii	"uint8\000"
+ 464      3800
+ 465              	.LASF5:
+ 466 0092 6C6F6E67 		.ascii	"long unsigned int\000"
+ 466      20756E73 
+ 466      69676E65 
+ 466      6420696E 
+ 466      7400
+ 467              	.LASF7:
+ 468 00a4 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 468      206C6F6E 
+ 468      6720756E 
+ 468      7369676E 
+ 468      65642069 
+ 469              	.LASF13:
+ 470 00bb 63686172 		.ascii	"char\000"
+ 470      00
+ 471              	.LASF18:
+ 472 00c0 474C4344 		.ascii	"GLCD_SPIM_SCB_Wakeup\000"
+ 472      5F535049 
+ 472      4D5F5343 
+ 472      425F5761 
+ 472      6B657570 
+ 473              	.LASF1:
+ 474 00d5 756E7369 		.ascii	"unsigned char\000"
+ 474      676E6564 
+ 474      20636861 
+ 474      7200
+ 475              	.LASF20:
+ 476 00e3 2E5C4765 		.ascii	".\\Generated_Source\\PSoC4\\GLCD_SPIM_SCB_PM.c\000"
+ 476      6E657261 
+ 476      7465645F 
+ 476      536F7572 
+ 476      63655C50 
+ 477              	.LASF17:
+ 478 010f 474C4344 		.ascii	"GLCD_SPIM_SCB_Sleep\000"
+ 478      5F535049 
+ 478      4D5F5343 
+ 478      425F536C 
+ 478      65657000 
+ 479              	.LASF4:
+ 480 0123 6C6F6E67 		.ascii	"long int\000"
+ 480      20696E74 
+ 480      00
+ 481              	.LASF21:
+ 482 012c 433A5C55 		.ascii	"C:\\Users\\Trenton\\Desktop\\School Stuff\\Junior Y"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\cc8U23mj.s 			page 13
+
+
+ 482      73657273 
+ 482      5C547265 
+ 482      6E746F6E 
+ 482      5C446573 
+ 483 015a 65617220 		.ascii	"ear (2013-2014)\\Spring 2014\\Microcontrollers\\Dua"
+ 483      28323031 
+ 483      332D3230 
+ 483      3134295C 
+ 483      53707269 
+ 484 018a 6C5F5374 		.ascii	"l_Starblast.cydsn\000"
+ 484      6172626C 
+ 484      6173742E 
+ 484      63796473 
+ 484      6E00
+ 485              	.LASF12:
+ 486 019c 646F7562 		.ascii	"double\000"
+ 486      6C6500
+ 487              	.LASF14:
+ 488 01a3 72656733 		.ascii	"reg32\000"
+ 488      3200
+ 489              	.LASF3:
+ 490 01a9 73686F72 		.ascii	"short unsigned int\000"
+ 490      7420756E 
+ 490      7369676E 
+ 490      65642069 
+ 490      6E7400
+ 491              	.LASF0:
+ 492 01bc 7369676E 		.ascii	"signed char\000"
+ 492      65642063 
+ 492      68617200 
+ 493              	.LASF16:
+ 494 01c8 474C4344 		.ascii	"GLCD_SPIM_SCB_BACKUP_STRUCT\000"
+ 494      5F535049 
+ 494      4D5F5343 
+ 494      425F4241 
+ 494      434B5550 
+ 495              	.LASF11:
+ 496 01e4 666C6F61 		.ascii	"float\000"
+ 496      7400
+ 497              	.LASF2:
+ 498 01ea 73686F72 		.ascii	"short int\000"
+ 498      7420696E 
+ 498      7400
+ 499              	.LASF15:
+ 500 01f4 73697A65 		.ascii	"sizetype\000"
+ 500      74797065 
+ 500      00
+ 501              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br

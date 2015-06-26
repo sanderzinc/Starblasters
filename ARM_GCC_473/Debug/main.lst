@@ -1,0 +1,3033 @@
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.comm	GLCD_FONT8x16,1552,4
+  18              		.global	coordx
+  19              		.bss
+  20              		.align	2
+  21              		.type	coordx, %object
+  22              		.size	coordx, 800
+  23              	coordx:
+  24 0000 00000000 		.space	800
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  25              		.global	coordy
+  26              		.align	2
+  27              		.type	coordy, %object
+  28              		.size	coordy, 800
+  29              	coordy:
+  30 0320 00000000 		.space	800
+  30      00000000 
+  30      00000000 
+  30      00000000 
+  30      00000000 
+  31              		.global	score1
+  32              		.align	2
+  33              		.type	score1, %object
+  34              		.size	score1, 4
+  35              	score1:
+  36 0640 00000000 		.space	4
+  37              		.global	score2
+  38              		.align	2
+  39              		.type	score2, %object
+  40              		.size	score2, 4
+  41              	score2:
+  42 0644 00000000 		.space	4
+  43              		.global	__aeabi_idivmod
+  44              		.section	.text.main,"ax",%progbits
+  45              		.align	2
+  46              		.global	main
+  47              		.code	16
+  48              		.thumb_func
+  49              		.type	main, %function
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 2
+
+
+  50              	main:
+  51              	.LFB33:
+  52              		.file 1 ".\\main.c"
+   1:.\main.c      **** //Colin Wilkins and Trenton Sanders
+   2:.\main.c      **** //April 16, 2014
+   3:.\main.c      **** //EE 3280, Dr. Bolding
+   4:.\main.c      **** //HW 2 - The Little Doctor
+   5:.\main.c      **** 
+   6:.\main.c      **** #include <device.h>
+   7:.\main.c      **** #include <stdlib.h>
+   8:.\main.c      **** #include <stdio.h>
+   9:.\main.c      **** 
+  10:.\main.c      **** void crosshair(int, int, int);  //Draws the crosshair
+  11:.\main.c      **** void blast(int, int, int, int); //Draws blast explosion, destroys stars
+  12:.\main.c      **** void color(int);    //Determines blast charge light
+  13:.\main.c      **** int distance(int, int, int, int); //Returns distancce b/w two points
+  14:.\main.c      **** void cornerScreen1(int);   //Player 1's score display
+  15:.\main.c      **** void cornerScreen2(int);   //Player 2's score display
+  16:.\main.c      **** 
+  17:.\main.c      **** //Global variabkes so functions change values
+  18:.\main.c      **** int coordx [200]={0};           //star x coordinate
+  19:.\main.c      **** int coordy [200]={0};           //star y coordinate
+  20:.\main.c      **** int score1=0;   //Score for p1
+  21:.\main.c      **** int score2=0;   //Score for p2
+  22:.\main.c      **** 
+  23:.\main.c      **** int main()
+  24:.\main.c      **** {
+  53              		.loc 1 24 0
+  54              		.cfi_startproc
+  55 0000 90B5     		push	{r4, r7, lr}
+  56              	.LCFI0:
+  57              		.cfi_def_cfa_offset 12
+  58              		.cfi_offset 4, -12
+  59              		.cfi_offset 7, -8
+  60              		.cfi_offset 14, -4
+  61 0002 91B0     		sub	sp, sp, #68
+  62              	.LCFI1:
+  63              		.cfi_def_cfa_offset 80
+  64 0004 00AF     		add	r7, sp, #0
+  65              	.LCFI2:
+  66              		.cfi_def_cfa_register 7
+  25:.\main.c      ****     //Variables to be sent
+  26:.\main.c      ****     int xcenter = 66;           //Starting x coord for crosshair
+  67              		.loc 1 26 0
+  68 0006 4223     		mov	r3, #66
+  69 0008 FB63     		str	r3, [r7, #60]
+  27:.\main.c      ****     int ycenter = 66;           //Starting y coord for crosshair
+  70              		.loc 1 27 0
+  71 000a 4223     		mov	r3, #66
+  72 000c BB63     		str	r3, [r7, #56]
+  28:.\main.c      ****     int blast_status = 0;       //Blast status to be sent
+  73              		.loc 1 28 0
+  74 000e 0023     		mov	r3, #0
+  75 0010 7B63     		str	r3, [r7, #52]
+  29:.\main.c      ****     uint16 send;                //A combination of the above
+  30:.\main.c      ****     
+  31:.\main.c      ****     //Variables to be retrieved
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 3
+
+
+  32:.\main.c      ****     int other_blast_status =0;  //p2 blast status
+  76              		.loc 1 32 0
+  77 0012 0023     		mov	r3, #0
+  78 0014 3B63     		str	r3, [r7, #48]
+  33:.\main.c      ****     int other_xCenter = 66;     //p2 x coord
+  79              		.loc 1 33 0
+  80 0016 4223     		mov	r3, #66
+  81 0018 FB62     		str	r3, [r7, #44]
+  34:.\main.c      ****     int other_yCenter =66;      //p2 y coord
+  82              		.loc 1 34 0
+  83 001a 4223     		mov	r3, #66
+  84 001c BB62     		str	r3, [r7, #40]
+  35:.\main.c      ****     uint16 receive;             //A combination of the above
+  36:.\main.c      **** 
+  37:.\main.c      ****     
+  38:.\main.c      ****     //Other
+  39:.\main.c      ****     int other_old_xCenter = 0;  //Previous p2 cursor locations that allow drawing "movement"
+  85              		.loc 1 39 0
+  86 001e 0023     		mov	r3, #0
+  87 0020 7B62     		str	r3, [r7, #36]
+  40:.\main.c      ****     int other_old_yCenter = 0;  
+  88              		.loc 1 40 0
+  89 0022 0023     		mov	r3, #0
+  90 0024 3B62     		str	r3, [r7, #32]
+  41:.\main.c      ****     uint32 slowtwinkle = 0;     //Used for twinkling
+  91              		.loc 1 41 0
+  92 0026 0023     		mov	r3, #0
+  93 0028 FB61     		str	r3, [r7, #28]
+  42:.\main.c      ****     int randstar = 0;
+  94              		.loc 1 42 0
+  95 002a 0023     		mov	r3, #0
+  96 002c BB61     		str	r3, [r7, #24]
+  43:.\main.c      ****     int timer = 0;              //Used for counting loop cycles
+  97              		.loc 1 43 0
+  98 002e 0023     		mov	r3, #0
+  99 0030 7B61     		str	r3, [r7, #20]
+  44:.\main.c      ****     int power = 1;              //Blast size
+ 100              		.loc 1 44 0
+ 101 0032 0123     		mov	r3, #1
+ 102 0034 3B61     		str	r3, [r7, #16]
+  45:.\main.c      ****     
+  46:.\main.c      **** 
+  47:.\main.c      ****     
+  48:.\main.c      ****     // Initialize LCD
+  49:.\main.c      ****     GLCD_Start();  
+ 103              		.loc 1 49 0
+ 104 0036 FFF7FEFF 		bl	GLCD_Start
+  50:.\main.c      ****     Com_Block_Start();          //Starts the slave module
+ 105              		.loc 1 50 0
+ 106 003a FFF7FEFF 		bl	Com_Block_Start
+  51:.\main.c      **** 
+  52:.\main.c      ****     // clear LCD to black color
+  53:.\main.c      ****     GLCD_Clear(GLCD_BLACK);
+ 107              		.loc 1 53 0
+ 108 003e 0020     		mov	r0, #0
+ 109 0040 FFF7FEFF 		bl	GLCD_Clear
+  54:.\main.c      **** 
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 4
+
+
+  55:.\main.c      ****     int i;
+  56:.\main.c      ****     for (i = 0;i<200;i++)
+ 110              		.loc 1 56 0
+ 111 0044 0023     		mov	r3, #0
+ 112 0046 FB60     		str	r3, [r7, #12]
+ 113 0048 20E0     		b	.L2
+ 114              	.L3:
+ 115              	.LBB2:
+  57:.\main.c      ****     {
+  58:.\main.c      ****         int x = (rand()%124)+4;
+ 116              		.loc 1 58 0 discriminator 2
+ 117 004a FFF7FEFF 		bl	rand
+ 118 004e 031C     		mov	r3, r0
+ 119 0050 181C     		mov	r0, r3
+ 120 0052 7C21     		mov	r1, #124
+ 121 0054 FFF7FEFF 		bl	__aeabi_idivmod
+ 122 0058 0B1C     		mov	r3, r1
+ 123 005a 0433     		add	r3, r3, #4
+ 124 005c BB60     		str	r3, [r7, #8]
+  59:.\main.c      ****         int y = (rand()%124)+4;
+ 125              		.loc 1 59 0 discriminator 2
+ 126 005e FFF7FEFF 		bl	rand
+ 127 0062 031C     		mov	r3, r0
+ 128 0064 181C     		mov	r0, r3
+ 129 0066 7C21     		mov	r1, #124
+ 130 0068 FFF7FEFF 		bl	__aeabi_idivmod
+ 131 006c 0B1C     		mov	r3, r1
+ 132 006e 0433     		add	r3, r3, #4
+ 133 0070 7B60     		str	r3, [r7, #4]
+  60:.\main.c      ****         
+  61:.\main.c      ****         coordx[i] = x;
+ 134              		.loc 1 61 0 discriminator 2
+ 135 0072 144B     		ldr	r3, .L32
+ 136 0074 FA68     		ldr	r2, [r7, #12]
+ 137 0076 9200     		lsl	r2, r2, #2
+ 138 0078 B968     		ldr	r1, [r7, #8]
+ 139 007a D150     		str	r1, [r2, r3]
+  62:.\main.c      ****         coordy[i] = y;
+ 140              		.loc 1 62 0 discriminator 2
+ 141 007c 124B     		ldr	r3, .L32+4
+ 142 007e FA68     		ldr	r2, [r7, #12]
+ 143 0080 9200     		lsl	r2, r2, #2
+ 144 0082 7968     		ldr	r1, [r7, #4]
+ 145 0084 D150     		str	r1, [r2, r3]
+ 146              	.LBE2:
+  56:.\main.c      ****     for (i = 0;i<200;i++)
+ 147              		.loc 1 56 0 discriminator 2
+ 148 0086 FB68     		ldr	r3, [r7, #12]
+ 149 0088 0133     		add	r3, r3, #1
+ 150 008a FB60     		str	r3, [r7, #12]
+ 151              	.L2:
+  56:.\main.c      ****     for (i = 0;i<200;i++)
+ 152              		.loc 1 56 0 is_stmt 0 discriminator 1
+ 153 008c FB68     		ldr	r3, [r7, #12]
+ 154 008e C72B     		cmp	r3, #199
+ 155 0090 DBDD     		ble	.L3
+  63:.\main.c      ****     }
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 5
+
+
+  64:.\main.c      **** 
+  65:.\main.c      ****     //start w/ red light
+  66:.\main.c      ****     Blast_Red_Write(0);
+ 156              		.loc 1 66 0 is_stmt 1
+ 157 0092 0020     		mov	r0, #0
+ 158 0094 FFF7FEFF 		bl	Blast_Red_Write
+ 159 0098 00E0     		b	.L30
+ 160              	.L31:
+  67:.\main.c      ****     
+  68:.\main.c      **** while(1){   //Inf loop
+  69:.\main.c      **** 
+  70:.\main.c      ****     if(slowtwinkle%4==0) //every ten loops
+  71:.\main.c      ****         randstar = rand()%200; //Assign new star to twinkle
+  72:.\main.c      ****     slowtwinkle++;//Increment every loop
+  73:.\main.c      ****    
+  74:.\main.c      ****     //Draw stars    
+  75:.\main.c      ****     for(i=0;i<200;i++){  
+  76:.\main.c      ****         if(i%5 == 0)
+  77:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);
+  78:.\main.c      ****         if(i%5 == 1)
+  79:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_ORANGE);
+  80:.\main.c      ****         if(i%5 == 2)
+  81:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);
+  82:.\main.c      ****         if(i%5 == 3)
+  83:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_GOLD);
+  84:.\main.c      ****         if(i%5 == 4)
+  85:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);        
+  86:.\main.c      ****         
+  87:.\main.c      ****         //Make stars twinkle
+  88:.\main.c      ****         if((i < randstar)&&(randstar < i+20)) {
+  89:.\main.c      ****             GLCD_Pixel(coordx[randstar], coordy[randstar], GLCD_BLACK);
+  90:.\main.c      ****         }
+  91:.\main.c      ****     }
+  92:.\main.c      ****     
+  93:.\main.c      ****     if(Com_Block_GetRxBufferSize() >= 1)    //If there is data, then it will execute
+  94:.\main.c      ****     {
+  95:.\main.c      ****         receive = Com_Block_ReadRxData();
+  96:.\main.c      ****         other_xCenter = receive & 127;                  //get first 7 bits - xcoord
+  97:.\main.c      ****         other_yCenter = receive & 16256;                //get next 7 bits - ycoord
+  98:.\main.c      ****         other_yCenter = other_yCenter >> 7;             //shift to get ycoord bits
+  99:.\main.c      ****         other_blast_status = receive & 49152;           //get last 2 bits - blast status
+ 100:.\main.c      ****         other_blast_status = other_blast_status >> 14;  //shift to get blast status bits
+ 101:.\main.c      ****     }
+ 102:.\main.c      **** 
+ 103:.\main.c      ****    
+ 104:.\main.c      ****     //Draw other player, redraw old crosshair black if moved
+ 105:.\main.c      ****     if((other_old_xCenter != other_xCenter) || (other_old_yCenter != other_yCenter)){
+ 106:.\main.c      ****         crosshair(other_old_xCenter,other_old_yCenter, GLCD_BLACK);
+ 107:.\main.c      ****     }
+ 108:.\main.c      ****         crosshair(other_xCenter, other_yCenter, GLCD_BLUE);
+ 109:.\main.c      ****         other_old_xCenter = other_xCenter;
+ 110:.\main.c      ****         other_old_yCenter = other_yCenter;
+ 111:.\main.c      ****     
+ 112:.\main.c      ****     //Draw yourself
+ 113:.\main.c      ****     crosshair(xcenter, ycenter, GLCD_ORANGE);
+ 114:.\main.c      ****     
+ 115:.\main.c      ****     blast_status = 0;   //Default blast status to no blast
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 6
+
+
+ 116:.\main.c      ****         
+ 117:.\main.c      ****     //Move cursor
+ 118:.\main.c      ****     //Crosshair doesn't move past points 112 and 20 (collide with screen edge)
+ 119:.\main.c      ****     //Right
+ 120:.\main.c      ****     if(!Move_Right_Read()){
+ 121:.\main.c      ****         if(ycenter < 112){  //Edge collision
+ 122:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);  //Delete old cursor
+ 123:.\main.c      ****             ycenter++;  //Move
+ 124:.\main.c      ****         }
+ 125:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE); //Draw new location
+ 126:.\main.c      ****     }
+ 127:.\main.c      **** 
+ 128:.\main.c      ****     //Left
+ 129:.\main.c      ****     if(!Move_Left_Read()){
+ 130:.\main.c      ****         if(ycenter > 20){
+ 131:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 132:.\main.c      ****             ycenter--;
+ 133:.\main.c      ****         }
+ 134:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);
+ 135:.\main.c      ****     }
+ 136:.\main.c      ****     
+ 137:.\main.c      ****     //Up
+ 138:.\main.c      ****     if(!Move_Up_Read()){
+ 139:.\main.c      ****         if(xcenter > 20){
+ 140:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 141:.\main.c      ****             xcenter--;
+ 142:.\main.c      ****         }
+ 143:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);        
+ 144:.\main.c      ****     }
+ 145:.\main.c      ****     
+ 146:.\main.c      ****     //Down
+ 147:.\main.c      ****     if(!Move_Down_Read()){
+ 148:.\main.c      ****         if(xcenter < 112){
+ 149:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 150:.\main.c      ****             xcenter++;
+ 151:.\main.c      ****         }
+ 152:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);       
+ 153:.\main.c      ****     }
+ 154:.\main.c      ****    
+ 155:.\main.c      ****     //Fire explosions
+ 156:.\main.c      ****     //My explosion
+ 157:.\main.c      ****     if(!Blast_Read()){
+ 158:.\main.c      ****         blast_status = power;       //Sets status to proper explosion size
+ 159:.\main.c      ****         blast(xcenter,ycenter,power,0);
+ 160:.\main.c      ****         power = 0;  //Just fired
+ 161:.\main.c      ****         color(power); //Update LED light
+ 162:.\main.c      ****     }
+ 163:.\main.c      ****     
+ 164:.\main.c      ****     //P2 explosion
+ 165:.\main.c      ****     if(other_blast_status)
+ 166:.\main.c      ****     {
+ 167:.\main.c      ****         blast(other_xCenter, other_yCenter, other_blast_status,1); //What a mouthful
+ 168:.\main.c      ****     }
+ 169:.\main.c      ****     
+ 170:.\main.c      ****     //Blast charge-up
+ 171:.\main.c      ****     if((timer%100 == 0) && (power < 2)){ //Increment every 100 cycles, not past 2
+ 172:.\main.c      ****         power++; 
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 7
+
+
+ 173:.\main.c      ****         color(power); //Update LED
+ 174:.\main.c      ****         }
+ 175:.\main.c      ****     timer++;
+ 176:.\main.c      ****     
+ 177:.\main.c      ****     //Send data
+ 178:.\main.c      ****     if(Com_Block_ReadTxStatus() & Com_Block_STS_TX_FIFO_NOT_FULL)
+ 179:.\main.c      ****     {
+ 180:.\main.c      ****         send = blast_status;
+ 181:.\main.c      ****         send = send << 7;
+ 182:.\main.c      ****         send += ycenter;
+ 183:.\main.c      ****         send = send << 7;
+ 184:.\main.c      ****         send += xcenter;
+ 185:.\main.c      ****         Com_Block_WriteTxData(send);
+ 186:.\main.c      ****     }
+ 187:.\main.c      ****     
+ 188:.\main.c      ****     //Win condition
+ 189:.\main.c      ****     if((score1+score2)>199) {   //When all stars destroyed
+ 190:.\main.c      ****         cornerScreen1(score1);  //P1's score
+ 191:.\main.c      ****         cornerScreen2(score2);  //P2's score
+ 192:.\main.c      ****         while(1);   //End game
+ 193:.\main.c      ****     }
+ 194:.\main.c      ****   }
+ 161              		.loc 1 194 0
+ 162 009a C046     		mov	r8, r8
+ 163              	.L30:
+  70:.\main.c      ****     if(slowtwinkle%4==0) //every ten loops
+ 164              		.loc 1 70 0
+ 165 009c FA69     		ldr	r2, [r7, #28]
+ 166 009e 0323     		mov	r3, #3
+ 167 00a0 1340     		and	r3, r2
+ 168 00a2 08D1     		bne	.L4
+  71:.\main.c      ****         randstar = rand()%200; //Assign new star to twinkle
+ 169              		.loc 1 71 0
+ 170 00a4 FFF7FEFF 		bl	rand
+ 171 00a8 031C     		mov	r3, r0
+ 172 00aa 181C     		mov	r0, r3
+ 173 00ac C821     		mov	r1, #200
+ 174 00ae FFF7FEFF 		bl	__aeabi_idivmod
+ 175 00b2 0B1C     		mov	r3, r1
+ 176 00b4 BB61     		str	r3, [r7, #24]
+ 177              	.L4:
+  72:.\main.c      ****     slowtwinkle++;//Increment every loop
+ 178              		.loc 1 72 0
+ 179 00b6 FB69     		ldr	r3, [r7, #28]
+ 180 00b8 0133     		add	r3, r3, #1
+ 181 00ba FB61     		str	r3, [r7, #28]
+  75:.\main.c      ****     for(i=0;i<200;i++){  
+ 182              		.loc 1 75 0
+ 183 00bc 0023     		mov	r3, #0
+ 184 00be FB60     		str	r3, [r7, #12]
+ 185 00c0 8EE0     		b	.L5
+ 186              	.L33:
+ 187 00c2 C046     		.align	2
+ 188              	.L32:
+ 189 00c4 00000000 		.word	coordx
+ 190 00c8 00000000 		.word	coordy
+ 191              	.L12:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 8
+
+
+  76:.\main.c      ****         if(i%5 == 0)
+ 192              		.loc 1 76 0
+ 193 00cc FB68     		ldr	r3, [r7, #12]
+ 194 00ce 181C     		mov	r0, r3
+ 195 00d0 0521     		mov	r1, #5
+ 196 00d2 FFF7FEFF 		bl	__aeabi_idivmod
+ 197 00d6 0B1C     		mov	r3, r1
+ 198 00d8 002B     		cmp	r3, #0
+ 199 00da 0DD1     		bne	.L6
+  77:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);
+ 200              		.loc 1 77 0
+ 201 00dc D44B     		ldr	r3, .L34
+ 202 00de FA68     		ldr	r2, [r7, #12]
+ 203 00e0 9200     		lsl	r2, r2, #2
+ 204 00e2 D158     		ldr	r1, [r2, r3]
+ 205 00e4 D34B     		ldr	r3, .L34+4
+ 206 00e6 FA68     		ldr	r2, [r7, #12]
+ 207 00e8 9200     		lsl	r2, r2, #2
+ 208 00ea D258     		ldr	r2, [r2, r3]
+ 209 00ec D24B     		ldr	r3, .L34+8
+ 210 00ee 081C     		mov	r0, r1
+ 211 00f0 111C     		mov	r1, r2
+ 212 00f2 1A1C     		mov	r2, r3
+ 213 00f4 FFF7FEFF 		bl	GLCD_Pixel
+ 214              	.L6:
+  78:.\main.c      ****         if(i%5 == 1)
+ 215              		.loc 1 78 0
+ 216 00f8 FB68     		ldr	r3, [r7, #12]
+ 217 00fa 181C     		mov	r0, r3
+ 218 00fc 0521     		mov	r1, #5
+ 219 00fe FFF7FEFF 		bl	__aeabi_idivmod
+ 220 0102 0B1C     		mov	r3, r1
+ 221 0104 012B     		cmp	r3, #1
+ 222 0106 0ED1     		bne	.L7
+  79:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_ORANGE);
+ 223              		.loc 1 79 0
+ 224 0108 C94B     		ldr	r3, .L34
+ 225 010a FA68     		ldr	r2, [r7, #12]
+ 226 010c 9200     		lsl	r2, r2, #2
+ 227 010e D158     		ldr	r1, [r2, r3]
+ 228 0110 C84B     		ldr	r3, .L34+4
+ 229 0112 FA68     		ldr	r2, [r7, #12]
+ 230 0114 9200     		lsl	r2, r2, #2
+ 231 0116 D258     		ldr	r2, [r2, r3]
+ 232 0118 F423     		mov	r3, #244
+ 233 011a 1B01     		lsl	r3, r3, #4
+ 234 011c 081C     		mov	r0, r1
+ 235 011e 111C     		mov	r1, r2
+ 236 0120 1A1C     		mov	r2, r3
+ 237 0122 FFF7FEFF 		bl	GLCD_Pixel
+ 238              	.L7:
+  80:.\main.c      ****         if(i%5 == 2)
+ 239              		.loc 1 80 0
+ 240 0126 FB68     		ldr	r3, [r7, #12]
+ 241 0128 181C     		mov	r0, r3
+ 242 012a 0521     		mov	r1, #5
+ 243 012c FFF7FEFF 		bl	__aeabi_idivmod
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 9
+
+
+ 244 0130 0B1C     		mov	r3, r1
+ 245 0132 022B     		cmp	r3, #2
+ 246 0134 0DD1     		bne	.L8
+  81:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);
+ 247              		.loc 1 81 0
+ 248 0136 BE4B     		ldr	r3, .L34
+ 249 0138 FA68     		ldr	r2, [r7, #12]
+ 250 013a 9200     		lsl	r2, r2, #2
+ 251 013c D158     		ldr	r1, [r2, r3]
+ 252 013e BD4B     		ldr	r3, .L34+4
+ 253 0140 FA68     		ldr	r2, [r7, #12]
+ 254 0142 9200     		lsl	r2, r2, #2
+ 255 0144 D258     		ldr	r2, [r2, r3]
+ 256 0146 BC4B     		ldr	r3, .L34+8
+ 257 0148 081C     		mov	r0, r1
+ 258 014a 111C     		mov	r1, r2
+ 259 014c 1A1C     		mov	r2, r3
+ 260 014e FFF7FEFF 		bl	GLCD_Pixel
+ 261              	.L8:
+  82:.\main.c      ****         if(i%5 == 3)
+ 262              		.loc 1 82 0
+ 263 0152 FB68     		ldr	r3, [r7, #12]
+ 264 0154 181C     		mov	r0, r3
+ 265 0156 0521     		mov	r1, #5
+ 266 0158 FFF7FEFF 		bl	__aeabi_idivmod
+ 267 015c 0B1C     		mov	r3, r1
+ 268 015e 032B     		cmp	r3, #3
+ 269 0160 0ED1     		bne	.L9
+  83:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_GOLD);
+ 270              		.loc 1 83 0
+ 271 0162 B34B     		ldr	r3, .L34
+ 272 0164 FA68     		ldr	r2, [r7, #12]
+ 273 0166 9200     		lsl	r2, r2, #2
+ 274 0168 D158     		ldr	r1, [r2, r3]
+ 275 016a B24B     		ldr	r3, .L34+4
+ 276 016c FA68     		ldr	r2, [r7, #12]
+ 277 016e 9200     		lsl	r2, r2, #2
+ 278 0170 D258     		ldr	r2, [r2, r3]
+ 279 0172 FD23     		mov	r3, #253
+ 280 0174 1B01     		lsl	r3, r3, #4
+ 281 0176 081C     		mov	r0, r1
+ 282 0178 111C     		mov	r1, r2
+ 283 017a 1A1C     		mov	r2, r3
+ 284 017c FFF7FEFF 		bl	GLCD_Pixel
+ 285              	.L9:
+  84:.\main.c      ****         if(i%5 == 4)
+ 286              		.loc 1 84 0
+ 287 0180 FB68     		ldr	r3, [r7, #12]
+ 288 0182 181C     		mov	r0, r3
+ 289 0184 0521     		mov	r1, #5
+ 290 0186 FFF7FEFF 		bl	__aeabi_idivmod
+ 291 018a 0B1C     		mov	r3, r1
+ 292 018c 042B     		cmp	r3, #4
+ 293 018e 0DD1     		bne	.L10
+  85:.\main.c      ****             GLCD_Pixel(coordx[i], coordy[i], GLCD_WHITE);        
+ 294              		.loc 1 85 0
+ 295 0190 A74B     		ldr	r3, .L34
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 10
+
+
+ 296 0192 FA68     		ldr	r2, [r7, #12]
+ 297 0194 9200     		lsl	r2, r2, #2
+ 298 0196 D158     		ldr	r1, [r2, r3]
+ 299 0198 A64B     		ldr	r3, .L34+4
+ 300 019a FA68     		ldr	r2, [r7, #12]
+ 301 019c 9200     		lsl	r2, r2, #2
+ 302 019e D258     		ldr	r2, [r2, r3]
+ 303 01a0 A54B     		ldr	r3, .L34+8
+ 304 01a2 081C     		mov	r0, r1
+ 305 01a4 111C     		mov	r1, r2
+ 306 01a6 1A1C     		mov	r2, r3
+ 307 01a8 FFF7FEFF 		bl	GLCD_Pixel
+ 308              	.L10:
+  88:.\main.c      ****         if((i < randstar)&&(randstar < i+20)) {
+ 309              		.loc 1 88 0
+ 310 01ac FA68     		ldr	r2, [r7, #12]
+ 311 01ae BB69     		ldr	r3, [r7, #24]
+ 312 01b0 9A42     		cmp	r2, r3
+ 313 01b2 12DA     		bge	.L11
+  88:.\main.c      ****         if((i < randstar)&&(randstar < i+20)) {
+ 314              		.loc 1 88 0 is_stmt 0 discriminator 1
+ 315 01b4 FB68     		ldr	r3, [r7, #12]
+ 316 01b6 1A1C     		mov	r2, r3
+ 317 01b8 1432     		add	r2, r2, #20
+ 318 01ba BB69     		ldr	r3, [r7, #24]
+ 319 01bc 9A42     		cmp	r2, r3
+ 320 01be 0CDD     		ble	.L11
+  89:.\main.c      ****             GLCD_Pixel(coordx[randstar], coordy[randstar], GLCD_BLACK);
+ 321              		.loc 1 89 0 is_stmt 1
+ 322 01c0 9B4B     		ldr	r3, .L34
+ 323 01c2 BA69     		ldr	r2, [r7, #24]
+ 324 01c4 9200     		lsl	r2, r2, #2
+ 325 01c6 D258     		ldr	r2, [r2, r3]
+ 326 01c8 9A4B     		ldr	r3, .L34+4
+ 327 01ca B969     		ldr	r1, [r7, #24]
+ 328 01cc 8900     		lsl	r1, r1, #2
+ 329 01ce CB58     		ldr	r3, [r1, r3]
+ 330 01d0 101C     		mov	r0, r2
+ 331 01d2 191C     		mov	r1, r3
+ 332 01d4 0022     		mov	r2, #0
+ 333 01d6 FFF7FEFF 		bl	GLCD_Pixel
+ 334              	.L11:
+  75:.\main.c      ****     for(i=0;i<200;i++){  
+ 335              		.loc 1 75 0
+ 336 01da FB68     		ldr	r3, [r7, #12]
+ 337 01dc 0133     		add	r3, r3, #1
+ 338 01de FB60     		str	r3, [r7, #12]
+ 339              	.L5:
+  75:.\main.c      ****     for(i=0;i<200;i++){  
+ 340              		.loc 1 75 0 is_stmt 0 discriminator 1
+ 341 01e0 FB68     		ldr	r3, [r7, #12]
+ 342 01e2 C72B     		cmp	r3, #199
+ 343 01e4 00DC     		bgt	.LCB268
+ 344 01e6 71E7     		b	.L12	@long jump
+ 345              	.LCB268:
+  93:.\main.c      ****     if(Com_Block_GetRxBufferSize() >= 1)    //If there is data, then it will execute
+ 346              		.loc 1 93 0 is_stmt 1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 11
+
+
+ 347 01e8 FFF7FEFF 		bl	Com_Block_GetRxBufferSize
+ 348 01ec 031C     		mov	r3, r0
+ 349 01ee 002B     		cmp	r3, #0
+ 350 01f0 1BD0     		beq	.L13
+  95:.\main.c      ****         receive = Com_Block_ReadRxData();
+ 351              		.loc 1 95 0
+ 352 01f2 BC1C     		add	r4, r7, #2
+ 353 01f4 FFF7FEFF 		bl	Com_Block_ReadRxData
+ 354 01f8 031C     		mov	r3, r0
+ 355 01fa 2380     		strh	r3, [r4]
+  96:.\main.c      ****         other_xCenter = receive & 127;                  //get first 7 bits - xcoord
+ 356              		.loc 1 96 0
+ 357 01fc BB1C     		add	r3, r7, #2
+ 358 01fe 1A88     		ldrh	r2, [r3]
+ 359 0200 7F23     		mov	r3, #127
+ 360 0202 1340     		and	r3, r2
+ 361 0204 FB62     		str	r3, [r7, #44]
+  97:.\main.c      ****         other_yCenter = receive & 16256;                //get next 7 bits - ycoord
+ 362              		.loc 1 97 0
+ 363 0206 BB1C     		add	r3, r7, #2
+ 364 0208 1A88     		ldrh	r2, [r3]
+ 365 020a FE23     		mov	r3, #254
+ 366 020c 9B01     		lsl	r3, r3, #6
+ 367 020e 1340     		and	r3, r2
+ 368 0210 BB62     		str	r3, [r7, #40]
+  98:.\main.c      ****         other_yCenter = other_yCenter >> 7;             //shift to get ycoord bits
+ 369              		.loc 1 98 0
+ 370 0212 BB6A     		ldr	r3, [r7, #40]
+ 371 0214 DB11     		asr	r3, r3, #7
+ 372 0216 BB62     		str	r3, [r7, #40]
+  99:.\main.c      ****         other_blast_status = receive & 49152;           //get last 2 bits - blast status
+ 373              		.loc 1 99 0
+ 374 0218 BB1C     		add	r3, r7, #2
+ 375 021a 1A88     		ldrh	r2, [r3]
+ 376 021c C023     		mov	r3, #192
+ 377 021e 1B02     		lsl	r3, r3, #8
+ 378 0220 1340     		and	r3, r2
+ 379 0222 3B63     		str	r3, [r7, #48]
+ 100:.\main.c      ****         other_blast_status = other_blast_status >> 14;  //shift to get blast status bits
+ 380              		.loc 1 100 0
+ 381 0224 3B6B     		ldr	r3, [r7, #48]
+ 382 0226 9B13     		asr	r3, r3, #14
+ 383 0228 3B63     		str	r3, [r7, #48]
+ 384              	.L13:
+ 105:.\main.c      ****     if((other_old_xCenter != other_xCenter) || (other_old_yCenter != other_yCenter)){
+ 385              		.loc 1 105 0
+ 386 022a 7A6A     		ldr	r2, [r7, #36]
+ 387 022c FB6A     		ldr	r3, [r7, #44]
+ 388 022e 9A42     		cmp	r2, r3
+ 389 0230 03D1     		bne	.L14
+ 105:.\main.c      ****     if((other_old_xCenter != other_xCenter) || (other_old_yCenter != other_yCenter)){
+ 390              		.loc 1 105 0 is_stmt 0 discriminator 1
+ 391 0232 3A6A     		ldr	r2, [r7, #32]
+ 392 0234 BB6A     		ldr	r3, [r7, #40]
+ 393 0236 9A42     		cmp	r2, r3
+ 394 0238 06D0     		beq	.L15
+ 395              	.L14:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 12
+
+
+ 106:.\main.c      ****         crosshair(other_old_xCenter,other_old_yCenter, GLCD_BLACK);
+ 396              		.loc 1 106 0 is_stmt 1
+ 397 023a 7A6A     		ldr	r2, [r7, #36]
+ 398 023c 3B6A     		ldr	r3, [r7, #32]
+ 399 023e 101C     		mov	r0, r2
+ 400 0240 191C     		mov	r1, r3
+ 401 0242 0022     		mov	r2, #0
+ 402 0244 FFF7FEFF 		bl	crosshair
+ 403              	.L15:
+ 108:.\main.c      ****         crosshair(other_xCenter, other_yCenter, GLCD_BLUE);
+ 404              		.loc 1 108 0
+ 405 0248 FA6A     		ldr	r2, [r7, #44]
+ 406 024a BB6A     		ldr	r3, [r7, #40]
+ 407 024c 101C     		mov	r0, r2
+ 408 024e 191C     		mov	r1, r3
+ 409 0250 0F22     		mov	r2, #15
+ 410 0252 FFF7FEFF 		bl	crosshair
+ 109:.\main.c      ****         other_old_xCenter = other_xCenter;
+ 411              		.loc 1 109 0
+ 412 0256 FB6A     		ldr	r3, [r7, #44]
+ 413 0258 7B62     		str	r3, [r7, #36]
+ 110:.\main.c      ****         other_old_yCenter = other_yCenter;
+ 414              		.loc 1 110 0
+ 415 025a BB6A     		ldr	r3, [r7, #40]
+ 416 025c 3B62     		str	r3, [r7, #32]
+ 113:.\main.c      ****     crosshair(xcenter, ycenter, GLCD_ORANGE);
+ 417              		.loc 1 113 0
+ 418 025e F96B     		ldr	r1, [r7, #60]
+ 419 0260 BA6B     		ldr	r2, [r7, #56]
+ 420 0262 F423     		mov	r3, #244
+ 421 0264 1B01     		lsl	r3, r3, #4
+ 422 0266 081C     		mov	r0, r1
+ 423 0268 111C     		mov	r1, r2
+ 424 026a 1A1C     		mov	r2, r3
+ 425 026c FFF7FEFF 		bl	crosshair
+ 115:.\main.c      ****     blast_status = 0;   //Default blast status to no blast
+ 426              		.loc 1 115 0
+ 427 0270 0023     		mov	r3, #0
+ 428 0272 7B63     		str	r3, [r7, #52]
+ 120:.\main.c      ****     if(!Move_Right_Read()){
+ 429              		.loc 1 120 0
+ 430 0274 FFF7FEFF 		bl	Move_Right_Read
+ 431 0278 031C     		mov	r3, r0
+ 432 027a 002B     		cmp	r3, #0
+ 433 027c 15D1     		bne	.L16
+ 121:.\main.c      ****         if(ycenter < 112){  //Edge collision
+ 434              		.loc 1 121 0
+ 435 027e BB6B     		ldr	r3, [r7, #56]
+ 436 0280 6F2B     		cmp	r3, #111
+ 437 0282 09DC     		bgt	.L17
+ 122:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);  //Delete old cursor
+ 438              		.loc 1 122 0
+ 439 0284 FA6B     		ldr	r2, [r7, #60]
+ 440 0286 BB6B     		ldr	r3, [r7, #56]
+ 441 0288 101C     		mov	r0, r2
+ 442 028a 191C     		mov	r1, r3
+ 443 028c 0022     		mov	r2, #0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 13
+
+
+ 444 028e FFF7FEFF 		bl	crosshair
+ 123:.\main.c      ****             ycenter++;  //Move
+ 445              		.loc 1 123 0
+ 446 0292 BB6B     		ldr	r3, [r7, #56]
+ 447 0294 0133     		add	r3, r3, #1
+ 448 0296 BB63     		str	r3, [r7, #56]
+ 449              	.L17:
+ 125:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE); //Draw new location
+ 450              		.loc 1 125 0
+ 451 0298 F96B     		ldr	r1, [r7, #60]
+ 452 029a BA6B     		ldr	r2, [r7, #56]
+ 453 029c F423     		mov	r3, #244
+ 454 029e 1B01     		lsl	r3, r3, #4
+ 455 02a0 081C     		mov	r0, r1
+ 456 02a2 111C     		mov	r1, r2
+ 457 02a4 1A1C     		mov	r2, r3
+ 458 02a6 FFF7FEFF 		bl	crosshair
+ 459              	.L16:
+ 129:.\main.c      ****     if(!Move_Left_Read()){
+ 460              		.loc 1 129 0
+ 461 02aa FFF7FEFF 		bl	Move_Left_Read
+ 462 02ae 031C     		mov	r3, r0
+ 463 02b0 002B     		cmp	r3, #0
+ 464 02b2 15D1     		bne	.L18
+ 130:.\main.c      ****         if(ycenter > 20){
+ 465              		.loc 1 130 0
+ 466 02b4 BB6B     		ldr	r3, [r7, #56]
+ 467 02b6 142B     		cmp	r3, #20
+ 468 02b8 09DD     		ble	.L19
+ 131:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 469              		.loc 1 131 0
+ 470 02ba FA6B     		ldr	r2, [r7, #60]
+ 471 02bc BB6B     		ldr	r3, [r7, #56]
+ 472 02be 101C     		mov	r0, r2
+ 473 02c0 191C     		mov	r1, r3
+ 474 02c2 0022     		mov	r2, #0
+ 475 02c4 FFF7FEFF 		bl	crosshair
+ 132:.\main.c      ****             ycenter--;
+ 476              		.loc 1 132 0
+ 477 02c8 BB6B     		ldr	r3, [r7, #56]
+ 478 02ca 013B     		sub	r3, r3, #1
+ 479 02cc BB63     		str	r3, [r7, #56]
+ 480              	.L19:
+ 134:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);
+ 481              		.loc 1 134 0
+ 482 02ce F96B     		ldr	r1, [r7, #60]
+ 483 02d0 BA6B     		ldr	r2, [r7, #56]
+ 484 02d2 F423     		mov	r3, #244
+ 485 02d4 1B01     		lsl	r3, r3, #4
+ 486 02d6 081C     		mov	r0, r1
+ 487 02d8 111C     		mov	r1, r2
+ 488 02da 1A1C     		mov	r2, r3
+ 489 02dc FFF7FEFF 		bl	crosshair
+ 490              	.L18:
+ 138:.\main.c      ****     if(!Move_Up_Read()){
+ 491              		.loc 1 138 0
+ 492 02e0 FFF7FEFF 		bl	Move_Up_Read
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 14
+
+
+ 493 02e4 031C     		mov	r3, r0
+ 494 02e6 002B     		cmp	r3, #0
+ 495 02e8 15D1     		bne	.L20
+ 139:.\main.c      ****         if(xcenter > 20){
+ 496              		.loc 1 139 0
+ 497 02ea FB6B     		ldr	r3, [r7, #60]
+ 498 02ec 142B     		cmp	r3, #20
+ 499 02ee 09DD     		ble	.L21
+ 140:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 500              		.loc 1 140 0
+ 501 02f0 FA6B     		ldr	r2, [r7, #60]
+ 502 02f2 BB6B     		ldr	r3, [r7, #56]
+ 503 02f4 101C     		mov	r0, r2
+ 504 02f6 191C     		mov	r1, r3
+ 505 02f8 0022     		mov	r2, #0
+ 506 02fa FFF7FEFF 		bl	crosshair
+ 141:.\main.c      ****             xcenter--;
+ 507              		.loc 1 141 0
+ 508 02fe FB6B     		ldr	r3, [r7, #60]
+ 509 0300 013B     		sub	r3, r3, #1
+ 510 0302 FB63     		str	r3, [r7, #60]
+ 511              	.L21:
+ 143:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);        
+ 512              		.loc 1 143 0
+ 513 0304 F96B     		ldr	r1, [r7, #60]
+ 514 0306 BA6B     		ldr	r2, [r7, #56]
+ 515 0308 F423     		mov	r3, #244
+ 516 030a 1B01     		lsl	r3, r3, #4
+ 517 030c 081C     		mov	r0, r1
+ 518 030e 111C     		mov	r1, r2
+ 519 0310 1A1C     		mov	r2, r3
+ 520 0312 FFF7FEFF 		bl	crosshair
+ 521              	.L20:
+ 147:.\main.c      ****     if(!Move_Down_Read()){
+ 522              		.loc 1 147 0
+ 523 0316 FFF7FEFF 		bl	Move_Down_Read
+ 524 031a 031C     		mov	r3, r0
+ 525 031c 002B     		cmp	r3, #0
+ 526 031e 15D1     		bne	.L22
+ 148:.\main.c      ****         if(xcenter < 112){
+ 527              		.loc 1 148 0
+ 528 0320 FB6B     		ldr	r3, [r7, #60]
+ 529 0322 6F2B     		cmp	r3, #111
+ 530 0324 09DC     		bgt	.L23
+ 149:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_BLACK);
+ 531              		.loc 1 149 0
+ 532 0326 FA6B     		ldr	r2, [r7, #60]
+ 533 0328 BB6B     		ldr	r3, [r7, #56]
+ 534 032a 101C     		mov	r0, r2
+ 535 032c 191C     		mov	r1, r3
+ 536 032e 0022     		mov	r2, #0
+ 537 0330 FFF7FEFF 		bl	crosshair
+ 150:.\main.c      ****             xcenter++;
+ 538              		.loc 1 150 0
+ 539 0334 FB6B     		ldr	r3, [r7, #60]
+ 540 0336 0133     		add	r3, r3, #1
+ 541 0338 FB63     		str	r3, [r7, #60]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 15
+
+
+ 542              	.L23:
+ 152:.\main.c      ****             crosshair(xcenter,ycenter,GLCD_ORANGE);       
+ 543              		.loc 1 152 0
+ 544 033a F96B     		ldr	r1, [r7, #60]
+ 545 033c BA6B     		ldr	r2, [r7, #56]
+ 546 033e F423     		mov	r3, #244
+ 547 0340 1B01     		lsl	r3, r3, #4
+ 548 0342 081C     		mov	r0, r1
+ 549 0344 111C     		mov	r1, r2
+ 550 0346 1A1C     		mov	r2, r3
+ 551 0348 FFF7FEFF 		bl	crosshair
+ 552              	.L22:
+ 157:.\main.c      ****     if(!Blast_Read()){
+ 553              		.loc 1 157 0
+ 554 034c FFF7FEFF 		bl	Blast_Read
+ 555 0350 031C     		mov	r3, r0
+ 556 0352 002B     		cmp	r3, #0
+ 557 0354 10D1     		bne	.L24
+ 158:.\main.c      ****         blast_status = power;       //Sets status to proper explosion size
+ 558              		.loc 1 158 0
+ 559 0356 3B69     		ldr	r3, [r7, #16]
+ 560 0358 7B63     		str	r3, [r7, #52]
+ 159:.\main.c      ****         blast(xcenter,ycenter,power,0);
+ 561              		.loc 1 159 0
+ 562 035a F96B     		ldr	r1, [r7, #60]
+ 563 035c BA6B     		ldr	r2, [r7, #56]
+ 564 035e 3B69     		ldr	r3, [r7, #16]
+ 565 0360 081C     		mov	r0, r1
+ 566 0362 111C     		mov	r1, r2
+ 567 0364 1A1C     		mov	r2, r3
+ 568 0366 0023     		mov	r3, #0
+ 569 0368 FFF7FEFF 		bl	blast
+ 160:.\main.c      ****         power = 0;  //Just fired
+ 570              		.loc 1 160 0
+ 571 036c 0023     		mov	r3, #0
+ 572 036e 3B61     		str	r3, [r7, #16]
+ 161:.\main.c      ****         color(power); //Update LED light
+ 573              		.loc 1 161 0
+ 574 0370 3B69     		ldr	r3, [r7, #16]
+ 575 0372 181C     		mov	r0, r3
+ 576 0374 FFF7FEFF 		bl	color
+ 577              	.L24:
+ 165:.\main.c      ****     if(other_blast_status)
+ 578              		.loc 1 165 0
+ 579 0378 3B6B     		ldr	r3, [r7, #48]
+ 580 037a 002B     		cmp	r3, #0
+ 581 037c 08D0     		beq	.L25
+ 167:.\main.c      ****         blast(other_xCenter, other_yCenter, other_blast_status,1); //What a mouthful
+ 582              		.loc 1 167 0
+ 583 037e F96A     		ldr	r1, [r7, #44]
+ 584 0380 BA6A     		ldr	r2, [r7, #40]
+ 585 0382 3B6B     		ldr	r3, [r7, #48]
+ 586 0384 081C     		mov	r0, r1
+ 587 0386 111C     		mov	r1, r2
+ 588 0388 1A1C     		mov	r2, r3
+ 589 038a 0123     		mov	r3, #1
+ 590 038c FFF7FEFF 		bl	blast
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 16
+
+
+ 591              	.L25:
+ 171:.\main.c      ****     if((timer%100 == 0) && (power < 2)){ //Increment every 100 cycles, not past 2
+ 592              		.loc 1 171 0
+ 593 0390 7B69     		ldr	r3, [r7, #20]
+ 594 0392 181C     		mov	r0, r3
+ 595 0394 6421     		mov	r1, #100
+ 596 0396 FFF7FEFF 		bl	__aeabi_idivmod
+ 597 039a 0B1C     		mov	r3, r1
+ 598 039c 002B     		cmp	r3, #0
+ 599 039e 09D1     		bne	.L26
+ 171:.\main.c      ****     if((timer%100 == 0) && (power < 2)){ //Increment every 100 cycles, not past 2
+ 600              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 601 03a0 3B69     		ldr	r3, [r7, #16]
+ 602 03a2 012B     		cmp	r3, #1
+ 603 03a4 06DC     		bgt	.L26
+ 172:.\main.c      ****         power++; 
+ 604              		.loc 1 172 0 is_stmt 1
+ 605 03a6 3B69     		ldr	r3, [r7, #16]
+ 606 03a8 0133     		add	r3, r3, #1
+ 607 03aa 3B61     		str	r3, [r7, #16]
+ 173:.\main.c      ****         color(power); //Update LED
+ 608              		.loc 1 173 0
+ 609 03ac 3B69     		ldr	r3, [r7, #16]
+ 610 03ae 181C     		mov	r0, r3
+ 611 03b0 FFF7FEFF 		bl	color
+ 612              	.L26:
+ 175:.\main.c      ****     timer++;
+ 613              		.loc 1 175 0
+ 614 03b4 7B69     		ldr	r3, [r7, #20]
+ 615 03b6 0133     		add	r3, r3, #1
+ 616 03b8 7B61     		str	r3, [r7, #20]
+ 178:.\main.c      ****     if(Com_Block_ReadTxStatus() & Com_Block_STS_TX_FIFO_NOT_FULL)
+ 617              		.loc 1 178 0
+ 618 03ba FFF7FEFF 		bl	Com_Block_ReadTxStatus
+ 619 03be 031C     		mov	r3, r0
+ 620 03c0 1A1C     		mov	r2, r3
+ 621 03c2 0223     		mov	r3, #2
+ 622 03c4 1340     		and	r3, r2
+ 623 03c6 1FD0     		beq	.L27
+ 180:.\main.c      ****         send = blast_status;
+ 624              		.loc 1 180 0
+ 625 03c8 3B1C     		mov	r3, r7
+ 626 03ca 7A6B     		ldr	r2, [r7, #52]
+ 627 03cc 1A80     		strh	r2, [r3]
+ 181:.\main.c      ****         send = send << 7;
+ 628              		.loc 1 181 0
+ 629 03ce 3B1C     		mov	r3, r7
+ 630 03d0 3A1C     		mov	r2, r7
+ 631 03d2 1288     		ldrh	r2, [r2]
+ 632 03d4 D201     		lsl	r2, r2, #7
+ 633 03d6 1A80     		strh	r2, [r3]
+ 182:.\main.c      ****         send += ycenter;
+ 634              		.loc 1 182 0
+ 635 03d8 BB6B     		ldr	r3, [r7, #56]
+ 636 03da 99B2     		uxth	r1, r3
+ 637 03dc 3B1C     		mov	r3, r7
+ 638 03de 3A1C     		mov	r2, r7
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 17
+
+
+ 639 03e0 1288     		ldrh	r2, [r2]
+ 640 03e2 8A18     		add	r2, r1, r2
+ 641 03e4 1A80     		strh	r2, [r3]
+ 183:.\main.c      ****         send = send << 7;
+ 642              		.loc 1 183 0
+ 643 03e6 3B1C     		mov	r3, r7
+ 644 03e8 3A1C     		mov	r2, r7
+ 645 03ea 1288     		ldrh	r2, [r2]
+ 646 03ec D201     		lsl	r2, r2, #7
+ 647 03ee 1A80     		strh	r2, [r3]
+ 184:.\main.c      ****         send += xcenter;
+ 648              		.loc 1 184 0
+ 649 03f0 FB6B     		ldr	r3, [r7, #60]
+ 650 03f2 99B2     		uxth	r1, r3
+ 651 03f4 3B1C     		mov	r3, r7
+ 652 03f6 3A1C     		mov	r2, r7
+ 653 03f8 1288     		ldrh	r2, [r2]
+ 654 03fa 8A18     		add	r2, r1, r2
+ 655 03fc 1A80     		strh	r2, [r3]
+ 185:.\main.c      ****         Com_Block_WriteTxData(send);
+ 656              		.loc 1 185 0
+ 657 03fe 3B1C     		mov	r3, r7
+ 658 0400 1B88     		ldrh	r3, [r3]
+ 659 0402 181C     		mov	r0, r3
+ 660 0404 FFF7FEFF 		bl	Com_Block_WriteTxData
+ 661              	.L27:
+ 189:.\main.c      ****     if((score1+score2)>199) {   //When all stars destroyed
+ 662              		.loc 1 189 0
+ 663 0408 0C4B     		ldr	r3, .L34+12
+ 664 040a 1A68     		ldr	r2, [r3]
+ 665 040c 0C4B     		ldr	r3, .L34+16
+ 666 040e 1B68     		ldr	r3, [r3]
+ 667 0410 D318     		add	r3, r2, r3
+ 668 0412 C72B     		cmp	r3, #199
+ 669 0414 00DC     		bgt	.LCB552
+ 670 0416 40E6     		b	.L31	@long jump
+ 671              	.LCB552:
+ 190:.\main.c      ****         cornerScreen1(score1);  //P1's score
+ 672              		.loc 1 190 0
+ 673 0418 084B     		ldr	r3, .L34+12
+ 674 041a 1B68     		ldr	r3, [r3]
+ 675 041c 181C     		mov	r0, r3
+ 676 041e FFF7FEFF 		bl	cornerScreen1
+ 191:.\main.c      ****         cornerScreen2(score2);  //P2's score
+ 677              		.loc 1 191 0
+ 678 0422 074B     		ldr	r3, .L34+16
+ 679 0424 1B68     		ldr	r3, [r3]
+ 680 0426 181C     		mov	r0, r3
+ 681 0428 FFF7FEFF 		bl	cornerScreen2
+ 682              	.L29:
+ 192:.\main.c      ****         while(1);   //End game
+ 683              		.loc 1 192 0 discriminator 1
+ 684 042c FEE7     		b	.L29
+ 685              	.L35:
+ 686 042e C046     		.align	2
+ 687              	.L34:
+ 688 0430 00000000 		.word	coordx
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 18
+
+
+ 689 0434 00000000 		.word	coordy
+ 690 0438 FF0F0000 		.word	4095
+ 691 043c 00000000 		.word	score1
+ 692 0440 00000000 		.word	score2
+ 693              		.cfi_endproc
+ 694              	.LFE33:
+ 695              		.size	main, .-main
+ 696              		.section	.text.crosshair,"ax",%progbits
+ 697              		.align	2
+ 698              		.global	crosshair
+ 699              		.code	16
+ 700              		.thumb_func
+ 701              		.type	crosshair, %function
+ 702              	crosshair:
+ 703              	.LFB34:
+ 195:.\main.c      **** }
+ 196:.\main.c      **** 
+ 197:.\main.c      **** void crosshair(int xcoord, int ycoord, int color){
+ 704              		.loc 1 197 0
+ 705              		.cfi_startproc
+ 706 0000 90B5     		push	{r4, r7, lr}
+ 707              	.LCFI3:
+ 708              		.cfi_def_cfa_offset 12
+ 709              		.cfi_offset 4, -12
+ 710              		.cfi_offset 7, -8
+ 711              		.cfi_offset 14, -4
+ 712 0002 87B0     		sub	sp, sp, #28
+ 713              	.LCFI4:
+ 714              		.cfi_def_cfa_offset 40
+ 715 0004 02AF     		add	r7, sp, #8
+ 716              	.LCFI5:
+ 717              		.cfi_def_cfa 7, 32
+ 718 0006 F860     		str	r0, [r7, #12]
+ 719 0008 B960     		str	r1, [r7, #8]
+ 720 000a 7A60     		str	r2, [r7, #4]
+ 198:.\main.c      ****     //Two lines, intersect at coordinates
+ 199:.\main.c      ****     GLCD_DrawLine(xcoord,ycoord-15,xcoord,ycoord+15,color);
+ 721              		.loc 1 199 0
+ 722 000c BB68     		ldr	r3, [r7, #8]
+ 723 000e 191C     		mov	r1, r3
+ 724 0010 0F39     		sub	r1, r1, #15
+ 725 0012 BB68     		ldr	r3, [r7, #8]
+ 726 0014 0F33     		add	r3, r3, #15
+ 727 0016 F868     		ldr	r0, [r7, #12]
+ 728 0018 FA68     		ldr	r2, [r7, #12]
+ 729 001a 7C68     		ldr	r4, [r7, #4]
+ 730 001c 0094     		str	r4, [sp]
+ 731 001e FFF7FEFF 		bl	GLCD_DrawLine
+ 200:.\main.c      ****     GLCD_DrawLine(xcoord-15,ycoord,xcoord+15,ycoord,color);
+ 732              		.loc 1 200 0
+ 733 0022 FB68     		ldr	r3, [r7, #12]
+ 734 0024 181C     		mov	r0, r3
+ 735 0026 0F38     		sub	r0, r0, #15
+ 736 0028 FB68     		ldr	r3, [r7, #12]
+ 737 002a 1A1C     		mov	r2, r3
+ 738 002c 0F32     		add	r2, r2, #15
+ 739 002e B968     		ldr	r1, [r7, #8]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 19
+
+
+ 740 0030 BB68     		ldr	r3, [r7, #8]
+ 741 0032 7C68     		ldr	r4, [r7, #4]
+ 742 0034 0094     		str	r4, [sp]
+ 743 0036 FFF7FEFF 		bl	GLCD_DrawLine
+ 201:.\main.c      ****     //Two circles
+ 202:.\main.c      ****     GLCD_DrawCircle(xcoord,ycoord,10,color);
+ 744              		.loc 1 202 0
+ 745 003a F968     		ldr	r1, [r7, #12]
+ 746 003c BA68     		ldr	r2, [r7, #8]
+ 747 003e 7B68     		ldr	r3, [r7, #4]
+ 748 0040 081C     		mov	r0, r1
+ 749 0042 111C     		mov	r1, r2
+ 750 0044 0A22     		mov	r2, #10
+ 751 0046 FFF7FEFF 		bl	GLCD_DrawCircle
+ 203:.\main.c      ****     GLCD_DrawCircle(xcoord,ycoord,5,color);
+ 752              		.loc 1 203 0
+ 753 004a F968     		ldr	r1, [r7, #12]
+ 754 004c BA68     		ldr	r2, [r7, #8]
+ 755 004e 7B68     		ldr	r3, [r7, #4]
+ 756 0050 081C     		mov	r0, r1
+ 757 0052 111C     		mov	r1, r2
+ 758 0054 0522     		mov	r2, #5
+ 759 0056 FFF7FEFF 		bl	GLCD_DrawCircle
+ 204:.\main.c      **** }
+ 760              		.loc 1 204 0
+ 761 005a BD46     		mov	sp, r7
+ 762 005c 05B0     		add	sp, sp, #20
+ 763              		@ sp needed for prologue
+ 764 005e 90BD     		pop	{r4, r7, pc}
+ 765              		.cfi_endproc
+ 766              	.LFE34:
+ 767              		.size	crosshair, .-crosshair
+ 768              		.section	.text.blast,"ax",%progbits
+ 769              		.align	2
+ 770              		.global	blast
+ 771              		.code	16
+ 772              		.thumb_func
+ 773              		.type	blast, %function
+ 774              	blast:
+ 775              	.LFB35:
+ 205:.\main.c      **** 
+ 206:.\main.c      **** void blast(int xmiddle, int ymiddle, int power, int player){
+ 776              		.loc 1 206 0
+ 777              		.cfi_startproc
+ 778 0000 80B5     		push	{r7, lr}
+ 779              	.LCFI6:
+ 780              		.cfi_def_cfa_offset 8
+ 781              		.cfi_offset 7, -8
+ 782              		.cfi_offset 14, -4
+ 783 0002 86B0     		sub	sp, sp, #24
+ 784              	.LCFI7:
+ 785              		.cfi_def_cfa_offset 32
+ 786 0004 00AF     		add	r7, sp, #0
+ 787              	.LCFI8:
+ 788              		.cfi_def_cfa_register 7
+ 789 0006 F860     		str	r0, [r7, #12]
+ 790 0008 B960     		str	r1, [r7, #8]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 20
+
+
+ 791 000a 7A60     		str	r2, [r7, #4]
+ 792 000c 3B60     		str	r3, [r7]
+ 207:.\main.c      ****     if(power){ //Don't fire if power == 0
+ 793              		.loc 1 207 0
+ 794 000e 7B68     		ldr	r3, [r7, #4]
+ 795 0010 002B     		cmp	r3, #0
+ 796 0012 00D1     		bne	.LCB661
+ 797 0014 8FE0     		b	.L37	@long jump
+ 798              	.LCB661:
+ 799              	.LBB3:
+ 208:.\main.c      ****         int j;
+ 209:.\main.c      ****         for(j = 0; j<(power*20); j++){//Explosion alternates between green and orange
+ 800              		.loc 1 209 0
+ 801 0016 0023     		mov	r3, #0
+ 802 0018 7B61     		str	r3, [r7, #20]
+ 803 001a 15E0     		b	.L39
+ 804              	.L40:
+ 210:.\main.c      ****             GLCD_DrawCircle(xmiddle, ymiddle, j, GLCD_GREEN);
+ 805              		.loc 1 210 0 discriminator 2
+ 806 001c F968     		ldr	r1, [r7, #12]
+ 807 001e BA68     		ldr	r2, [r7, #8]
+ 808 0020 7B69     		ldr	r3, [r7, #20]
+ 809 0022 081C     		mov	r0, r1
+ 810 0024 111C     		mov	r1, r2
+ 811 0026 1A1C     		mov	r2, r3
+ 812 0028 F023     		mov	r3, #240
+ 813 002a FFF7FEFF 		bl	GLCD_DrawCircle
+ 211:.\main.c      ****             j++;
+ 814              		.loc 1 211 0 discriminator 2
+ 815 002e 7B69     		ldr	r3, [r7, #20]
+ 816 0030 0133     		add	r3, r3, #1
+ 817 0032 7B61     		str	r3, [r7, #20]
+ 212:.\main.c      ****             GLCD_DrawCircle(xmiddle, ymiddle, j, GLCD_ORANGE);
+ 818              		.loc 1 212 0 discriminator 2
+ 819 0034 F868     		ldr	r0, [r7, #12]
+ 820 0036 B968     		ldr	r1, [r7, #8]
+ 821 0038 7A69     		ldr	r2, [r7, #20]
+ 822 003a F423     		mov	r3, #244
+ 823 003c 1B01     		lsl	r3, r3, #4
+ 824 003e FFF7FEFF 		bl	GLCD_DrawCircle
+ 209:.\main.c      ****         for(j = 0; j<(power*20); j++){//Explosion alternates between green and orange
+ 825              		.loc 1 209 0 discriminator 2
+ 826 0042 7B69     		ldr	r3, [r7, #20]
+ 827 0044 0133     		add	r3, r3, #1
+ 828 0046 7B61     		str	r3, [r7, #20]
+ 829              	.L39:
+ 209:.\main.c      ****         for(j = 0; j<(power*20); j++){//Explosion alternates between green and orange
+ 830              		.loc 1 209 0 is_stmt 0 discriminator 1
+ 831 0048 7A68     		ldr	r2, [r7, #4]
+ 832 004a 131C     		mov	r3, r2
+ 833 004c 9B00     		lsl	r3, r3, #2
+ 834 004e 9B18     		add	r3, r3, r2
+ 835 0050 9B00     		lsl	r3, r3, #2
+ 836 0052 1A1C     		mov	r2, r3
+ 837 0054 7B69     		ldr	r3, [r7, #20]
+ 838 0056 9A42     		cmp	r2, r3
+ 839 0058 E0DC     		bgt	.L40
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 21
+
+
+ 213:.\main.c      ****         }
+ 214:.\main.c      ****         for(j = 0; j<(power*20)+1; j++){//Delete explosion
+ 840              		.loc 1 214 0 is_stmt 1
+ 841 005a 0023     		mov	r3, #0
+ 842 005c 7B61     		str	r3, [r7, #20]
+ 843 005e 0BE0     		b	.L41
+ 844              	.L42:
+ 215:.\main.c      ****             GLCD_DrawCircle(xmiddle, ymiddle, j, GLCD_BLACK);
+ 845              		.loc 1 215 0 discriminator 2
+ 846 0060 F968     		ldr	r1, [r7, #12]
+ 847 0062 BA68     		ldr	r2, [r7, #8]
+ 848 0064 7B69     		ldr	r3, [r7, #20]
+ 849 0066 081C     		mov	r0, r1
+ 850 0068 111C     		mov	r1, r2
+ 851 006a 1A1C     		mov	r2, r3
+ 852 006c 0023     		mov	r3, #0
+ 853 006e FFF7FEFF 		bl	GLCD_DrawCircle
+ 214:.\main.c      ****         for(j = 0; j<(power*20)+1; j++){//Delete explosion
+ 854              		.loc 1 214 0 discriminator 2
+ 855 0072 7B69     		ldr	r3, [r7, #20]
+ 856 0074 0133     		add	r3, r3, #1
+ 857 0076 7B61     		str	r3, [r7, #20]
+ 858              	.L41:
+ 214:.\main.c      ****         for(j = 0; j<(power*20)+1; j++){//Delete explosion
+ 859              		.loc 1 214 0 is_stmt 0 discriminator 1
+ 860 0078 7A68     		ldr	r2, [r7, #4]
+ 861 007a 131C     		mov	r3, r2
+ 862 007c 9B00     		lsl	r3, r3, #2
+ 863 007e 9B18     		add	r3, r3, r2
+ 864 0080 9B00     		lsl	r3, r3, #2
+ 865 0082 5A1C     		add	r2, r3, #1
+ 866 0084 7B69     		ldr	r3, [r7, #20]
+ 867 0086 9A42     		cmp	r2, r3
+ 868 0088 EADC     		bgt	.L42
+ 216:.\main.c      ****         }
+ 217:.\main.c      ****         //Delete hit stars
+ 218:.\main.c      ****         for(j=0;j<200;++j){
+ 869              		.loc 1 218 0 is_stmt 1
+ 870 008a 0023     		mov	r3, #0
+ 871 008c 7B61     		str	r3, [r7, #20]
+ 872 008e 4FE0     		b	.L43
+ 873              	.L46:
+ 219:.\main.c      ****             if( //Check coordinates of all stars
+ 220:.\main.c      ****                 ((distance(coordx[j],xmiddle,coordy[j],ymiddle))<(((power*20)+1)*((power*20)+1)))  
+ 874              		.loc 1 220 0
+ 875 0090 2A4B     		ldr	r3, .L47
+ 876 0092 7A69     		ldr	r2, [r7, #20]
+ 877 0094 9200     		lsl	r2, r2, #2
+ 878 0096 D058     		ldr	r0, [r2, r3]
+ 879 0098 294B     		ldr	r3, .L47+4
+ 880 009a 7A69     		ldr	r2, [r7, #20]
+ 881 009c 9200     		lsl	r2, r2, #2
+ 882 009e D258     		ldr	r2, [r2, r3]
+ 883 00a0 F968     		ldr	r1, [r7, #12]
+ 884 00a2 BB68     		ldr	r3, [r7, #8]
+ 885 00a4 FFF7FEFF 		bl	distance
+ 886 00a8 011C     		mov	r1, r0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 22
+
+
+ 887 00aa 7A68     		ldr	r2, [r7, #4]
+ 888 00ac 131C     		mov	r3, r2
+ 889 00ae 9B00     		lsl	r3, r3, #2
+ 890 00b0 9B18     		add	r3, r3, r2
+ 891 00b2 9B00     		lsl	r3, r3, #2
+ 892 00b4 581C     		add	r0, r3, #1
+ 893 00b6 7A68     		ldr	r2, [r7, #4]
+ 894 00b8 131C     		mov	r3, r2
+ 895 00ba 9B00     		lsl	r3, r3, #2
+ 896 00bc 9B18     		add	r3, r3, r2
+ 897 00be 9B00     		lsl	r3, r3, #2
+ 898 00c0 0133     		add	r3, r3, #1
+ 899 00c2 4343     		mul	r3, r0
+ 219:.\main.c      ****             if( //Check coordinates of all stars
+ 900              		.loc 1 219 0
+ 901 00c4 9942     		cmp	r1, r3
+ 902 00c6 30DA     		bge	.L44
+ 221:.\main.c      ****                 && ((coordx[j]!=0)&&(coordy[j]!=0)))   //Stars at (0,0) already destroyed
+ 903              		.loc 1 221 0
+ 904 00c8 1C4B     		ldr	r3, .L47
+ 905 00ca 7A69     		ldr	r2, [r7, #20]
+ 906 00cc 9200     		lsl	r2, r2, #2
+ 907 00ce D358     		ldr	r3, [r2, r3]
+ 908 00d0 002B     		cmp	r3, #0
+ 909 00d2 2AD0     		beq	.L44
+ 910              		.loc 1 221 0 is_stmt 0 discriminator 1
+ 911 00d4 1A4B     		ldr	r3, .L47+4
+ 912 00d6 7A69     		ldr	r2, [r7, #20]
+ 913 00d8 9200     		lsl	r2, r2, #2
+ 914 00da D358     		ldr	r3, [r2, r3]
+ 915 00dc 002B     		cmp	r3, #0
+ 916 00de 24D0     		beq	.L44
+ 222:.\main.c      ****                 {
+ 223:.\main.c      ****                     GLCD_Pixel(coordx[j],coordy[j],GLCD_BLACK); //Catches stars explosion doesn't d
+ 917              		.loc 1 223 0 is_stmt 1
+ 918 00e0 164B     		ldr	r3, .L47
+ 919 00e2 7A69     		ldr	r2, [r7, #20]
+ 920 00e4 9200     		lsl	r2, r2, #2
+ 921 00e6 D258     		ldr	r2, [r2, r3]
+ 922 00e8 154B     		ldr	r3, .L47+4
+ 923 00ea 7969     		ldr	r1, [r7, #20]
+ 924 00ec 8900     		lsl	r1, r1, #2
+ 925 00ee CB58     		ldr	r3, [r1, r3]
+ 926 00f0 101C     		mov	r0, r2
+ 927 00f2 191C     		mov	r1, r3
+ 928 00f4 0022     		mov	r2, #0
+ 929 00f6 FFF7FEFF 		bl	GLCD_Pixel
+ 224:.\main.c      ****                     coordx[j]=0;
+ 930              		.loc 1 224 0
+ 931 00fa 104B     		ldr	r3, .L47
+ 932 00fc 7A69     		ldr	r2, [r7, #20]
+ 933 00fe 9200     		lsl	r2, r2, #2
+ 934 0100 0021     		mov	r1, #0
+ 935 0102 D150     		str	r1, [r2, r3]
+ 225:.\main.c      ****                     coordy[j]=0;
+ 936              		.loc 1 225 0
+ 937 0104 0E4B     		ldr	r3, .L47+4
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 23
+
+
+ 938 0106 7A69     		ldr	r2, [r7, #20]
+ 939 0108 9200     		lsl	r2, r2, #2
+ 940 010a 0021     		mov	r1, #0
+ 941 010c D150     		str	r1, [r2, r3]
+ 226:.\main.c      ****                     if(player)  //Player=1 for p2, 0 for p1
+ 942              		.loc 1 226 0
+ 943 010e 3B68     		ldr	r3, [r7]
+ 944 0110 002B     		cmp	r3, #0
+ 945 0112 05D0     		beq	.L45
+ 227:.\main.c      ****                         ++score2;
+ 946              		.loc 1 227 0
+ 947 0114 0B4B     		ldr	r3, .L47+8
+ 948 0116 1B68     		ldr	r3, [r3]
+ 949 0118 5A1C     		add	r2, r3, #1
+ 950 011a 0A4B     		ldr	r3, .L47+8
+ 951 011c 1A60     		str	r2, [r3]
+ 952 011e 04E0     		b	.L44
+ 953              	.L45:
+ 228:.\main.c      ****                     else ++score1;
+ 954              		.loc 1 228 0
+ 955 0120 094B     		ldr	r3, .L47+12
+ 956 0122 1B68     		ldr	r3, [r3]
+ 957 0124 5A1C     		add	r2, r3, #1
+ 958 0126 084B     		ldr	r3, .L47+12
+ 959 0128 1A60     		str	r2, [r3]
+ 960              	.L44:
+ 218:.\main.c      ****         for(j=0;j<200;++j){
+ 961              		.loc 1 218 0
+ 962 012a 7B69     		ldr	r3, [r7, #20]
+ 963 012c 0133     		add	r3, r3, #1
+ 964 012e 7B61     		str	r3, [r7, #20]
+ 965              	.L43:
+ 218:.\main.c      ****         for(j=0;j<200;++j){
+ 966              		.loc 1 218 0 is_stmt 0 discriminator 1
+ 967 0130 7B69     		ldr	r3, [r7, #20]
+ 968 0132 C72B     		cmp	r3, #199
+ 969 0134 ACDD     		ble	.L46
+ 970              	.L37:
+ 971              	.LBE3:
+ 229:.\main.c      ****                 }
+ 230:.\main.c      ****         }
+ 231:.\main.c      ****     }
+ 232:.\main.c      **** }
+ 972              		.loc 1 232 0 is_stmt 1
+ 973 0136 BD46     		mov	sp, r7
+ 974 0138 06B0     		add	sp, sp, #24
+ 975              		@ sp needed for prologue
+ 976 013a 80BD     		pop	{r7, pc}
+ 977              	.L48:
+ 978              		.align	2
+ 979              	.L47:
+ 980 013c 00000000 		.word	coordx
+ 981 0140 00000000 		.word	coordy
+ 982 0144 00000000 		.word	score2
+ 983 0148 00000000 		.word	score1
+ 984              		.cfi_endproc
+ 985              	.LFE35:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 24
+
+
+ 986              		.size	blast, .-blast
+ 987              		.section	.text.color,"ax",%progbits
+ 988              		.align	2
+ 989              		.global	color
+ 990              		.code	16
+ 991              		.thumb_func
+ 992              		.type	color, %function
+ 993              	color:
+ 994              	.LFB36:
+ 233:.\main.c      **** 
+ 234:.\main.c      **** void color(int level)
+ 235:.\main.c      **** {
+ 995              		.loc 1 235 0
+ 996              		.cfi_startproc
+ 997 0000 80B5     		push	{r7, lr}
+ 998              	.LCFI9:
+ 999              		.cfi_def_cfa_offset 8
+ 1000              		.cfi_offset 7, -8
+ 1001              		.cfi_offset 14, -4
+ 1002 0002 82B0     		sub	sp, sp, #8
+ 1003              	.LCFI10:
+ 1004              		.cfi_def_cfa_offset 16
+ 1005 0004 00AF     		add	r7, sp, #0
+ 1006              	.LCFI11:
+ 1007              		.cfi_def_cfa_register 7
+ 1008 0006 7860     		str	r0, [r7, #4]
+ 236:.\main.c      ****     if(level == 0){ //Red on
+ 1009              		.loc 1 236 0
+ 1010 0008 7B68     		ldr	r3, [r7, #4]
+ 1011 000a 002B     		cmp	r3, #0
+ 1012 000c 08D1     		bne	.L50
+ 237:.\main.c      ****         Blast_Red_Write(0);
+ 1013              		.loc 1 237 0
+ 1014 000e 0020     		mov	r0, #0
+ 1015 0010 FFF7FEFF 		bl	Blast_Red_Write
+ 238:.\main.c      ****         Blast_Blue_Write(1);
+ 1016              		.loc 1 238 0
+ 1017 0014 0120     		mov	r0, #1
+ 1018 0016 FFF7FEFF 		bl	Blast_Blue_Write
+ 239:.\main.c      ****         Blast_Green_Write(1);
+ 1019              		.loc 1 239 0
+ 1020 001a 0120     		mov	r0, #1
+ 1021 001c FFF7FEFF 		bl	Blast_Green_Write
+ 1022              	.L50:
+ 240:.\main.c      ****     }
+ 241:.\main.c      ****     if(level == 1){ //Blue on
+ 1023              		.loc 1 241 0
+ 1024 0020 7B68     		ldr	r3, [r7, #4]
+ 1025 0022 012B     		cmp	r3, #1
+ 1026 0024 08D1     		bne	.L51
+ 242:.\main.c      ****         Blast_Red_Write(1);
+ 1027              		.loc 1 242 0
+ 1028 0026 0120     		mov	r0, #1
+ 1029 0028 FFF7FEFF 		bl	Blast_Red_Write
+ 243:.\main.c      ****         Blast_Blue_Write(0);
+ 1030              		.loc 1 243 0
+ 1031 002c 0020     		mov	r0, #0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 25
+
+
+ 1032 002e FFF7FEFF 		bl	Blast_Blue_Write
+ 244:.\main.c      ****         Blast_Green_Write(1);
+ 1033              		.loc 1 244 0
+ 1034 0032 0120     		mov	r0, #1
+ 1035 0034 FFF7FEFF 		bl	Blast_Green_Write
+ 1036              	.L51:
+ 245:.\main.c      ****     }
+ 246:.\main.c      ****     if(level == 2){ //Green on
+ 1037              		.loc 1 246 0
+ 1038 0038 7B68     		ldr	r3, [r7, #4]
+ 1039 003a 022B     		cmp	r3, #2
+ 1040 003c 08D1     		bne	.L49
+ 247:.\main.c      ****         Blast_Red_Write(1);
+ 1041              		.loc 1 247 0
+ 1042 003e 0120     		mov	r0, #1
+ 1043 0040 FFF7FEFF 		bl	Blast_Red_Write
+ 248:.\main.c      ****         Blast_Blue_Write(1);
+ 1044              		.loc 1 248 0
+ 1045 0044 0120     		mov	r0, #1
+ 1046 0046 FFF7FEFF 		bl	Blast_Blue_Write
+ 249:.\main.c      ****         Blast_Green_Write(0);
+ 1047              		.loc 1 249 0
+ 1048 004a 0020     		mov	r0, #0
+ 1049 004c FFF7FEFF 		bl	Blast_Green_Write
+ 1050              	.L49:
+ 250:.\main.c      ****     }
+ 251:.\main.c      **** }
+ 1051              		.loc 1 251 0
+ 1052 0050 BD46     		mov	sp, r7
+ 1053 0052 02B0     		add	sp, sp, #8
+ 1054              		@ sp needed for prologue
+ 1055 0054 80BD     		pop	{r7, pc}
+ 1056              		.cfi_endproc
+ 1057              	.LFE36:
+ 1058              		.size	color, .-color
+ 1059 0056 C046     		.section	.rodata
+ 1060              		.align	2
+ 1061              	.LC8:
+ 1062 0000 25642053 		.ascii	"%d Stars\000"
+ 1062      74617273 
+ 1062      00
+ 1063 0009 000000   		.section	.text.cornerScreen1,"ax",%progbits
+ 1064              		.align	2
+ 1065              		.global	cornerScreen1
+ 1066              		.code	16
+ 1067              		.thumb_func
+ 1068              		.type	cornerScreen1, %function
+ 1069              	cornerScreen1:
+ 1070              	.LFB37:
+ 252:.\main.c      **** 
+ 253:.\main.c      **** void cornerScreen1(score)
+ 254:.\main.c      **** {
+ 1071              		.loc 1 254 0
+ 1072              		.cfi_startproc
+ 1073 0000 80B5     		push	{r7, lr}
+ 1074              	.LCFI12:
+ 1075              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 26
+
+
+ 1076              		.cfi_offset 7, -8
+ 1077              		.cfi_offset 14, -4
+ 1078 0002 8AB0     		sub	sp, sp, #40
+ 1079              	.LCFI13:
+ 1080              		.cfi_def_cfa_offset 48
+ 1081 0004 02AF     		add	r7, sp, #8
+ 1082              	.LCFI14:
+ 1083              		.cfi_def_cfa 7, 40
+ 1084 0006 7860     		str	r0, [r7, #4]
+ 255:.\main.c      ****     char scoreStr[20];
+ 256:.\main.c      ****     sprintf(scoreStr, "%d Stars", (200-score));
+ 1085              		.loc 1 256 0
+ 1086 0008 7B68     		ldr	r3, [r7, #4]
+ 1087 000a C822     		mov	r2, #200
+ 1088 000c D31A     		sub	r3, r2, r3
+ 1089 000e 391C     		mov	r1, r7
+ 1090 0010 0C31     		add	r1, r1, #12
+ 1091 0012 0F4A     		ldr	r2, .L54
+ 1092 0014 081C     		mov	r0, r1
+ 1093 0016 111C     		mov	r1, r2
+ 1094 0018 1A1C     		mov	r2, r3
+ 1095 001a FFF7FEFF 		bl	sprintf
+ 257:.\main.c      ****     GLCD_DrawRect(0,20,50,110,1,GLCD_ORANGE); //Draw splash screen
+ 1096              		.loc 1 257 0
+ 1097 001e 0123     		mov	r3, #1
+ 1098 0020 0093     		str	r3, [sp]
+ 1099 0022 F423     		mov	r3, #244
+ 1100 0024 1B01     		lsl	r3, r3, #4
+ 1101 0026 0193     		str	r3, [sp, #4]
+ 1102 0028 0020     		mov	r0, #0
+ 1103 002a 1421     		mov	r1, #20
+ 1104 002c 3222     		mov	r2, #50
+ 1105 002e 6E23     		mov	r3, #110
+ 1106 0030 FFF7FEFF 		bl	GLCD_DrawRect
+ 258:.\main.c      ****     GLCD_PrintString(scoreStr,15,30,GLCD_BLACK,GLCD_ORANGE);
+ 1107              		.loc 1 258 0
+ 1108 0034 3B1C     		mov	r3, r7
+ 1109 0036 0C33     		add	r3, r3, #12
+ 1110 0038 F422     		mov	r2, #244
+ 1111 003a 1201     		lsl	r2, r2, #4
+ 1112 003c 0092     		str	r2, [sp]
+ 1113 003e 181C     		mov	r0, r3
+ 1114 0040 0F21     		mov	r1, #15
+ 1115 0042 1E22     		mov	r2, #30
+ 1116 0044 0023     		mov	r3, #0
+ 1117 0046 FFF7FEFF 		bl	GLCD_PrintString
+ 259:.\main.c      **** }
+ 1118              		.loc 1 259 0
+ 1119 004a BD46     		mov	sp, r7
+ 1120 004c 08B0     		add	sp, sp, #32
+ 1121              		@ sp needed for prologue
+ 1122 004e 80BD     		pop	{r7, pc}
+ 1123              	.L55:
+ 1124              		.align	2
+ 1125              	.L54:
+ 1126 0050 00000000 		.word	.LC8
+ 1127              		.cfi_endproc
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 27
+
+
+ 1128              	.LFE37:
+ 1129              		.size	cornerScreen1, .-cornerScreen1
+ 1130              		.section	.text.cornerScreen2,"ax",%progbits
+ 1131              		.align	2
+ 1132              		.global	cornerScreen2
+ 1133              		.code	16
+ 1134              		.thumb_func
+ 1135              		.type	cornerScreen2, %function
+ 1136              	cornerScreen2:
+ 1137              	.LFB38:
+ 260:.\main.c      **** 
+ 261:.\main.c      **** void cornerScreen2(score)
+ 262:.\main.c      **** {
+ 1138              		.loc 1 262 0
+ 1139              		.cfi_startproc
+ 1140 0000 80B5     		push	{r7, lr}
+ 1141              	.LCFI15:
+ 1142              		.cfi_def_cfa_offset 8
+ 1143              		.cfi_offset 7, -8
+ 1144              		.cfi_offset 14, -4
+ 1145 0002 8AB0     		sub	sp, sp, #40
+ 1146              	.LCFI16:
+ 1147              		.cfi_def_cfa_offset 48
+ 1148 0004 02AF     		add	r7, sp, #8
+ 1149              	.LCFI17:
+ 1150              		.cfi_def_cfa 7, 40
+ 1151 0006 7860     		str	r0, [r7, #4]
+ 263:.\main.c      ****     char scoreStr[20];
+ 264:.\main.c      ****     sprintf(scoreStr, "%d Stars", (200-score));
+ 1152              		.loc 1 264 0
+ 1153 0008 7B68     		ldr	r3, [r7, #4]
+ 1154 000a C822     		mov	r2, #200
+ 1155 000c D31A     		sub	r3, r2, r3
+ 1156 000e 391C     		mov	r1, r7
+ 1157 0010 0C31     		add	r1, r1, #12
+ 1158 0012 0E4A     		ldr	r2, .L57
+ 1159 0014 081C     		mov	r0, r1
+ 1160 0016 111C     		mov	r1, r2
+ 1161 0018 1A1C     		mov	r2, r3
+ 1162 001a FFF7FEFF 		bl	sprintf
+ 265:.\main.c      ****     GLCD_DrawRect(132,20,82,110,1,GLCD_BLUE); //Draw splash screen
+ 1163              		.loc 1 265 0
+ 1164 001e 0123     		mov	r3, #1
+ 1165 0020 0093     		str	r3, [sp]
+ 1166 0022 0F23     		mov	r3, #15
+ 1167 0024 0193     		str	r3, [sp, #4]
+ 1168 0026 8420     		mov	r0, #132
+ 1169 0028 1421     		mov	r1, #20
+ 1170 002a 5222     		mov	r2, #82
+ 1171 002c 6E23     		mov	r3, #110
+ 1172 002e FFF7FEFF 		bl	GLCD_DrawRect
+ 266:.\main.c      ****     GLCD_PrintString(scoreStr,97,30,GLCD_BLACK,GLCD_BLUE);
+ 1173              		.loc 1 266 0
+ 1174 0032 3B1C     		mov	r3, r7
+ 1175 0034 0C33     		add	r3, r3, #12
+ 1176 0036 0F22     		mov	r2, #15
+ 1177 0038 0092     		str	r2, [sp]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 28
+
+
+ 1178 003a 181C     		mov	r0, r3
+ 1179 003c 6121     		mov	r1, #97
+ 1180 003e 1E22     		mov	r2, #30
+ 1181 0040 0023     		mov	r3, #0
+ 1182 0042 FFF7FEFF 		bl	GLCD_PrintString
+ 267:.\main.c      **** }
+ 1183              		.loc 1 267 0
+ 1184 0046 BD46     		mov	sp, r7
+ 1185 0048 08B0     		add	sp, sp, #32
+ 1186              		@ sp needed for prologue
+ 1187 004a 80BD     		pop	{r7, pc}
+ 1188              	.L58:
+ 1189              		.align	2
+ 1190              	.L57:
+ 1191 004c 00000000 		.word	.LC8
+ 1192              		.cfi_endproc
+ 1193              	.LFE38:
+ 1194              		.size	cornerScreen2, .-cornerScreen2
+ 1195              		.section	.text.distance,"ax",%progbits
+ 1196              		.align	2
+ 1197              		.global	distance
+ 1198              		.code	16
+ 1199              		.thumb_func
+ 1200              		.type	distance, %function
+ 1201              	distance:
+ 1202              	.LFB39:
+ 268:.\main.c      **** 
+ 269:.\main.c      **** inline int distance(x1,y1,x2,y2)
+ 270:.\main.c      **** {
+ 1203              		.loc 1 270 0
+ 1204              		.cfi_startproc
+ 1205 0000 80B5     		push	{r7, lr}
+ 1206              	.LCFI18:
+ 1207              		.cfi_def_cfa_offset 8
+ 1208              		.cfi_offset 7, -8
+ 1209              		.cfi_offset 14, -4
+ 1210 0002 84B0     		sub	sp, sp, #16
+ 1211              	.LCFI19:
+ 1212              		.cfi_def_cfa_offset 24
+ 1213 0004 00AF     		add	r7, sp, #0
+ 1214              	.LCFI20:
+ 1215              		.cfi_def_cfa_register 7
+ 1216 0006 F860     		str	r0, [r7, #12]
+ 1217 0008 B960     		str	r1, [r7, #8]
+ 1218 000a 7A60     		str	r2, [r7, #4]
+ 1219 000c 3B60     		str	r3, [r7]
+ 271:.\main.c      ****     return (((x1-y1)*(x1-y1))+((x2-y2)*(x2-y2)));
+ 1220              		.loc 1 271 0
+ 1221 000e FA68     		ldr	r2, [r7, #12]
+ 1222 0010 BB68     		ldr	r3, [r7, #8]
+ 1223 0012 D31A     		sub	r3, r2, r3
+ 1224 0014 F968     		ldr	r1, [r7, #12]
+ 1225 0016 BA68     		ldr	r2, [r7, #8]
+ 1226 0018 8A1A     		sub	r2, r1, r2
+ 1227 001a 5A43     		mul	r2, r3
+ 1228 001c 7968     		ldr	r1, [r7, #4]
+ 1229 001e 3B68     		ldr	r3, [r7]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 29
+
+
+ 1230 0020 CB1A     		sub	r3, r1, r3
+ 1231 0022 7868     		ldr	r0, [r7, #4]
+ 1232 0024 3968     		ldr	r1, [r7]
+ 1233 0026 411A     		sub	r1, r0, r1
+ 1234 0028 4B43     		mul	r3, r1
+ 1235 002a D318     		add	r3, r2, r3
+ 272:.\main.c      **** }...
+ 1236              		.loc 1 272 0
+ 1237 002c 181C     		mov	r0, r3
+ 1238 002e BD46     		mov	sp, r7
+ 1239 0030 04B0     		add	sp, sp, #16
+ 1240              		@ sp needed for prologue
+ 1241 0032 80BD     		pop	{r7, pc}
+ 1242              		.cfi_endproc
+ 1243              	.LFE39:
+ 1244              		.size	distance, .-distance
+ 1245              		.text
+ 1246              	.Letext0:
+ 1247              		.file 2 "./Generated_Source/PSoC4/cytypes.h"
+ 1248              		.file 3 "./Generated_Source/PSoC4/GLCD.h"
+ 1249              		.section	.debug_info,"",%progbits
+ 1250              	.Ldebug_info0:
+ 1251 0000 F3030000 		.4byte	0x3f3
+ 1252 0004 0200     		.2byte	0x2
+ 1253 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1254 000a 04       		.byte	0x4
+ 1255 000b 01       		.uleb128 0x1
+ 1256 000c 33020000 		.4byte	.LASF49
+ 1257 0010 01       		.byte	0x1
+ 1258 0011 90000000 		.4byte	.LASF50
+ 1259 0015 90010000 		.4byte	.LASF51
+ 1260 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1261 001d 00000000 		.4byte	0
+ 1262 0021 00000000 		.4byte	0
+ 1263 0025 00000000 		.4byte	.Ldebug_line0
+ 1264 0029 02       		.uleb128 0x2
+ 1265 002a 01       		.byte	0x1
+ 1266 002b 06       		.byte	0x6
+ 1267 002c 85020000 		.4byte	.LASF0
+ 1268 0030 02       		.uleb128 0x2
+ 1269 0031 01       		.byte	0x1
+ 1270 0032 08       		.byte	0x8
+ 1271 0033 B4000000 		.4byte	.LASF1
+ 1272 0037 02       		.uleb128 0x2
+ 1273 0038 02       		.byte	0x2
+ 1274 0039 05       		.byte	0x5
+ 1275 003a 23020000 		.4byte	.LASF2
+ 1276 003e 02       		.uleb128 0x2
+ 1277 003f 02       		.byte	0x2
+ 1278 0040 07       		.byte	0x7
+ 1279 0041 91020000 		.4byte	.LASF3
+ 1280 0045 02       		.uleb128 0x2
+ 1281 0046 04       		.byte	0x4
+ 1282 0047 05       		.byte	0x5
+ 1283 0048 7C020000 		.4byte	.LASF4
+ 1284 004c 02       		.uleb128 0x2
+ 1285 004d 04       		.byte	0x4
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 30
+
+
+ 1286 004e 07       		.byte	0x7
+ 1287 004f 67000000 		.4byte	.LASF5
+ 1288 0053 02       		.uleb128 0x2
+ 1289 0054 08       		.byte	0x8
+ 1290 0055 05       		.byte	0x5
+ 1291 0056 00000000 		.4byte	.LASF6
+ 1292 005a 02       		.uleb128 0x2
+ 1293 005b 08       		.byte	0x8
+ 1294 005c 07       		.byte	0x7
+ 1295 005d 42010000 		.4byte	.LASF7
+ 1296 0061 03       		.uleb128 0x3
+ 1297 0062 04       		.byte	0x4
+ 1298 0063 05       		.byte	0x5
+ 1299 0064 696E7400 		.ascii	"int\000"
+ 1300 0068 02       		.uleb128 0x2
+ 1301 0069 04       		.byte	0x4
+ 1302 006a 07       		.byte	0x7
+ 1303 006b 28010000 		.4byte	.LASF8
+ 1304 006f 04       		.uleb128 0x4
+ 1305 0070 2D020000 		.4byte	.LASF9
+ 1306 0074 02       		.byte	0x2
+ 1307 0075 5B       		.byte	0x5b
+ 1308 0076 30000000 		.4byte	0x30
+ 1309 007a 04       		.uleb128 0x4
+ 1310 007b 0C010000 		.4byte	.LASF10
+ 1311 007f 02       		.byte	0x2
+ 1312 0080 5C       		.byte	0x5c
+ 1313 0081 3E000000 		.4byte	0x3e
+ 1314 0085 04       		.uleb128 0x4
+ 1315 0086 13010000 		.4byte	.LASF11
+ 1316 008a 02       		.byte	0x2
+ 1317 008b 5D       		.byte	0x5d
+ 1318 008c 4C000000 		.4byte	0x4c
+ 1319 0090 02       		.uleb128 0x2
+ 1320 0091 04       		.byte	0x4
+ 1321 0092 04       		.byte	0x4
+ 1322 0093 46000000 		.4byte	.LASF12
+ 1323 0097 02       		.uleb128 0x2
+ 1324 0098 08       		.byte	0x8
+ 1325 0099 04       		.byte	0x4
+ 1326 009a DE000000 		.4byte	.LASF13
+ 1327 009e 02       		.uleb128 0x2
+ 1328 009f 01       		.byte	0x1
+ 1329 00a0 08       		.byte	0x8
+ 1330 00a1 14020000 		.4byte	.LASF14
+ 1331 00a5 02       		.uleb128 0x2
+ 1332 00a6 04       		.byte	0x4
+ 1333 00a7 07       		.byte	0x7
+ 1334 00a8 87010000 		.4byte	.LASF15
+ 1335 00ac 05       		.uleb128 0x5
+ 1336 00ad 01       		.byte	0x1
+ 1337 00ae 82010000 		.4byte	.LASF30
+ 1338 00b2 01       		.byte	0x1
+ 1339 00b3 17       		.byte	0x17
+ 1340 00b4 61000000 		.4byte	0x61
+ 1341 00b8 00000000 		.4byte	.LFB33
+ 1342 00bc 44040000 		.4byte	.LFE33
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 31
+
+
+ 1343 00c0 00000000 		.4byte	.LLST0
+ 1344 00c4 01       		.byte	0x1
+ 1345 00c5 C1010000 		.4byte	0x1c1
+ 1346 00c9 06       		.uleb128 0x6
+ 1347 00ca FE000000 		.4byte	.LASF16
+ 1348 00ce 01       		.byte	0x1
+ 1349 00cf 1A       		.byte	0x1a
+ 1350 00d0 61000000 		.4byte	0x61
+ 1351 00d4 02       		.byte	0x2
+ 1352 00d5 91       		.byte	0x91
+ 1353 00d6 6C       		.sleb128 -20
+ 1354 00d7 06       		.uleb128 0x6
+ 1355 00d8 29000000 		.4byte	.LASF17
+ 1356 00dc 01       		.byte	0x1
+ 1357 00dd 1B       		.byte	0x1b
+ 1358 00de 61000000 		.4byte	0x61
+ 1359 00e2 02       		.byte	0x2
+ 1360 00e3 91       		.byte	0x91
+ 1361 00e4 68       		.sleb128 -24
+ 1362 00e5 06       		.uleb128 0x6
+ 1363 00e6 AA020000 		.4byte	.LASF18
+ 1364 00ea 01       		.byte	0x1
+ 1365 00eb 1C       		.byte	0x1c
+ 1366 00ec 61000000 		.4byte	0x61
+ 1367 00f0 02       		.byte	0x2
+ 1368 00f1 91       		.byte	0x91
+ 1369 00f2 64       		.sleb128 -28
+ 1370 00f3 06       		.uleb128 0x6
+ 1371 00f4 3D010000 		.4byte	.LASF19
+ 1372 00f8 01       		.byte	0x1
+ 1373 00f9 1D       		.byte	0x1d
+ 1374 00fa 7A000000 		.4byte	0x7a
+ 1375 00fe 03       		.byte	0x3
+ 1376 00ff 91       		.byte	0x91
+ 1377 0100 B07F     		.sleb128 -80
+ 1378 0102 06       		.uleb128 0x6
+ 1379 0103 A1000000 		.4byte	.LASF20
+ 1380 0107 01       		.byte	0x1
+ 1381 0108 20       		.byte	0x20
+ 1382 0109 61000000 		.4byte	0x61
+ 1383 010d 02       		.byte	0x2
+ 1384 010e 91       		.byte	0x91
+ 1385 010f 60       		.sleb128 -32
+ 1386 0110 06       		.uleb128 0x6
+ 1387 0111 1A010000 		.4byte	.LASF21
+ 1388 0115 01       		.byte	0x1
+ 1389 0116 21       		.byte	0x21
+ 1390 0117 61000000 		.4byte	0x61
+ 1391 011b 02       		.byte	0x2
+ 1392 011c 91       		.byte	0x91
+ 1393 011d 5C       		.sleb128 -36
+ 1394 011e 06       		.uleb128 0x6
+ 1395 011f 74010000 		.4byte	.LASF22
+ 1396 0123 01       		.byte	0x1
+ 1397 0124 22       		.byte	0x22
+ 1398 0125 61000000 		.4byte	0x61
+ 1399 0129 02       		.byte	0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 32
+
+
+ 1400 012a 91       		.byte	0x91
+ 1401 012b 58       		.sleb128 -40
+ 1402 012c 06       		.uleb128 0x6
+ 1403 012d 21000000 		.4byte	.LASF23
+ 1404 0131 01       		.byte	0x1
+ 1405 0132 23       		.byte	0x23
+ 1406 0133 7A000000 		.4byte	0x7a
+ 1407 0137 03       		.byte	0x3
+ 1408 0138 91       		.byte	0x91
+ 1409 0139 B27F     		.sleb128 -78
+ 1410 013b 06       		.uleb128 0x6
+ 1411 013c 62010000 		.4byte	.LASF24
+ 1412 0140 01       		.byte	0x1
+ 1413 0141 27       		.byte	0x27
+ 1414 0142 61000000 		.4byte	0x61
+ 1415 0146 02       		.byte	0x2
+ 1416 0147 91       		.byte	0x91
+ 1417 0148 54       		.sleb128 -44
+ 1418 0149 06       		.uleb128 0x6
+ 1419 014a E5000000 		.4byte	.LASF25
+ 1420 014e 01       		.byte	0x1
+ 1421 014f 28       		.byte	0x28
+ 1422 0150 61000000 		.4byte	0x61
+ 1423 0154 02       		.byte	0x2
+ 1424 0155 91       		.byte	0x91
+ 1425 0156 50       		.sleb128 -48
+ 1426 0157 06       		.uleb128 0x6
+ 1427 0158 0E000000 		.4byte	.LASF26
+ 1428 015c 01       		.byte	0x1
+ 1429 015d 29       		.byte	0x29
+ 1430 015e 85000000 		.4byte	0x85
+ 1431 0162 02       		.byte	0x2
+ 1432 0163 91       		.byte	0x91
+ 1433 0164 4C       		.sleb128 -52
+ 1434 0165 06       		.uleb128 0x6
+ 1435 0166 79000000 		.4byte	.LASF27
+ 1436 016a 01       		.byte	0x1
+ 1437 016b 2A       		.byte	0x2a
+ 1438 016c 61000000 		.4byte	0x61
+ 1439 0170 02       		.byte	0x2
+ 1440 0171 91       		.byte	0x91
+ 1441 0172 48       		.sleb128 -56
+ 1442 0173 06       		.uleb128 0x6
+ 1443 0174 5A000000 		.4byte	.LASF28
+ 1444 0178 01       		.byte	0x1
+ 1445 0179 2B       		.byte	0x2b
+ 1446 017a 61000000 		.4byte	0x61
+ 1447 017e 02       		.byte	0x2
+ 1448 017f 91       		.byte	0x91
+ 1449 0180 44       		.sleb128 -60
+ 1450 0181 06       		.uleb128 0x6
+ 1451 0182 31000000 		.4byte	.LASF29
+ 1452 0186 01       		.byte	0x1
+ 1453 0187 2C       		.byte	0x2c
+ 1454 0188 61000000 		.4byte	0x61
+ 1455 018c 02       		.byte	0x2
+ 1456 018d 91       		.byte	0x91
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 33
+
+
+ 1457 018e 40       		.sleb128 -64
+ 1458 018f 07       		.uleb128 0x7
+ 1459 0190 6900     		.ascii	"i\000"
+ 1460 0192 01       		.byte	0x1
+ 1461 0193 37       		.byte	0x37
+ 1462 0194 61000000 		.4byte	0x61
+ 1463 0198 03       		.byte	0x3
+ 1464 0199 91       		.byte	0x91
+ 1465 019a BC7F     		.sleb128 -68
+ 1466 019c 08       		.uleb128 0x8
+ 1467 019d 4A000000 		.4byte	.LBB2
+ 1468 01a1 86000000 		.4byte	.LBE2
+ 1469 01a5 07       		.uleb128 0x7
+ 1470 01a6 7800     		.ascii	"x\000"
+ 1471 01a8 01       		.byte	0x1
+ 1472 01a9 3A       		.byte	0x3a
+ 1473 01aa 61000000 		.4byte	0x61
+ 1474 01ae 03       		.byte	0x3
+ 1475 01af 91       		.byte	0x91
+ 1476 01b0 B87F     		.sleb128 -72
+ 1477 01b2 07       		.uleb128 0x7
+ 1478 01b3 7900     		.ascii	"y\000"
+ 1479 01b5 01       		.byte	0x1
+ 1480 01b6 3B       		.byte	0x3b
+ 1481 01b7 61000000 		.4byte	0x61
+ 1482 01bb 03       		.byte	0x3
+ 1483 01bc 91       		.byte	0x91
+ 1484 01bd B47F     		.sleb128 -76
+ 1485 01bf 00       		.byte	0
+ 1486 01c0 00       		.byte	0
+ 1487 01c1 09       		.uleb128 0x9
+ 1488 01c2 01       		.byte	0x1
+ 1489 01c3 19020000 		.4byte	.LASF31
+ 1490 01c7 01       		.byte	0x1
+ 1491 01c8 C5       		.byte	0xc5
+ 1492 01c9 01       		.byte	0x1
+ 1493 01ca 00000000 		.4byte	.LFB34
+ 1494 01ce 60000000 		.4byte	.LFE34
+ 1495 01d2 3A000000 		.4byte	.LLST1
+ 1496 01d6 01       		.byte	0x1
+ 1497 01d7 06020000 		.4byte	0x206
+ 1498 01db 0A       		.uleb128 0xa
+ 1499 01dc 1A000000 		.4byte	.LASF32
+ 1500 01e0 01       		.byte	0x1
+ 1501 01e1 C5       		.byte	0xc5
+ 1502 01e2 61000000 		.4byte	0x61
+ 1503 01e6 02       		.byte	0x2
+ 1504 01e7 91       		.byte	0x91
+ 1505 01e8 6C       		.sleb128 -20
+ 1506 01e9 0A       		.uleb128 0xa
+ 1507 01ea 60000000 		.4byte	.LASF33
+ 1508 01ee 01       		.byte	0x1
+ 1509 01ef C5       		.byte	0xc5
+ 1510 01f0 61000000 		.4byte	0x61
+ 1511 01f4 02       		.byte	0x2
+ 1512 01f5 91       		.byte	0x91
+ 1513 01f6 68       		.sleb128 -24
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 34
+
+
+ 1514 01f7 0A       		.uleb128 0xa
+ 1515 01f8 06010000 		.4byte	.LASF34
+ 1516 01fc 01       		.byte	0x1
+ 1517 01fd C5       		.byte	0xc5
+ 1518 01fe 61000000 		.4byte	0x61
+ 1519 0202 02       		.byte	0x2
+ 1520 0203 91       		.byte	0x91
+ 1521 0204 64       		.sleb128 -28
+ 1522 0205 00       		.byte	0
+ 1523 0206 09       		.uleb128 0x9
+ 1524 0207 01       		.byte	0x1
+ 1525 0208 A4020000 		.4byte	.LASF35
+ 1526 020c 01       		.byte	0x1
+ 1527 020d CE       		.byte	0xce
+ 1528 020e 01       		.byte	0x1
+ 1529 020f 00000000 		.4byte	.LFB35
+ 1530 0213 4C010000 		.4byte	.LFE35
+ 1531 0217 72000000 		.4byte	.LLST2
+ 1532 021b 01       		.byte	0x1
+ 1533 021c 6F020000 		.4byte	0x26f
+ 1534 0220 0A       		.uleb128 0xa
+ 1535 0221 99000000 		.4byte	.LASF36
+ 1536 0225 01       		.byte	0x1
+ 1537 0226 CE       		.byte	0xce
+ 1538 0227 61000000 		.4byte	0x61
+ 1539 022b 02       		.byte	0x2
+ 1540 022c 91       		.byte	0x91
+ 1541 022d 6C       		.sleb128 -20
+ 1542 022e 0A       		.uleb128 0xa
+ 1543 022f 35010000 		.4byte	.LASF37
+ 1544 0233 01       		.byte	0x1
+ 1545 0234 CE       		.byte	0xce
+ 1546 0235 61000000 		.4byte	0x61
+ 1547 0239 02       		.byte	0x2
+ 1548 023a 91       		.byte	0x91
+ 1549 023b 68       		.sleb128 -24
+ 1550 023c 0A       		.uleb128 0xa
+ 1551 023d 31000000 		.4byte	.LASF29
+ 1552 0241 01       		.byte	0x1
+ 1553 0242 CE       		.byte	0xce
+ 1554 0243 61000000 		.4byte	0x61
+ 1555 0247 02       		.byte	0x2
+ 1556 0248 91       		.byte	0x91
+ 1557 0249 64       		.sleb128 -28
+ 1558 024a 0A       		.uleb128 0xa
+ 1559 024b F7000000 		.4byte	.LASF38
+ 1560 024f 01       		.byte	0x1
+ 1561 0250 CE       		.byte	0xce
+ 1562 0251 61000000 		.4byte	0x61
+ 1563 0255 02       		.byte	0x2
+ 1564 0256 91       		.byte	0x91
+ 1565 0257 60       		.sleb128 -32
+ 1566 0258 08       		.uleb128 0x8
+ 1567 0259 16000000 		.4byte	.LBB3
+ 1568 025d 36010000 		.4byte	.LBE3
+ 1569 0261 07       		.uleb128 0x7
+ 1570 0262 6A00     		.ascii	"j\000"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 35
+
+
+ 1571 0264 01       		.byte	0x1
+ 1572 0265 D0       		.byte	0xd0
+ 1573 0266 61000000 		.4byte	0x61
+ 1574 026a 02       		.byte	0x2
+ 1575 026b 91       		.byte	0x91
+ 1576 026c 74       		.sleb128 -12
+ 1577 026d 00       		.byte	0
+ 1578 026e 00       		.byte	0
+ 1579 026f 09       		.uleb128 0x9
+ 1580 0270 01       		.byte	0x1
+ 1581 0271 06010000 		.4byte	.LASF34
+ 1582 0275 01       		.byte	0x1
+ 1583 0276 EA       		.byte	0xea
+ 1584 0277 01       		.byte	0x1
+ 1585 0278 00000000 		.4byte	.LFB36
+ 1586 027c 56000000 		.4byte	.LFE36
+ 1587 0280 AA000000 		.4byte	.LLST3
+ 1588 0284 01       		.byte	0x1
+ 1589 0285 98020000 		.4byte	0x298
+ 1590 0289 0A       		.uleb128 0xa
+ 1591 028a 00020000 		.4byte	.LASF39
+ 1592 028e 01       		.byte	0x1
+ 1593 028f EA       		.byte	0xea
+ 1594 0290 61000000 		.4byte	0x61
+ 1595 0294 02       		.byte	0x2
+ 1596 0295 91       		.byte	0x91
+ 1597 0296 74       		.sleb128 -12
+ 1598 0297 00       		.byte	0
+ 1599 0298 09       		.uleb128 0x9
+ 1600 0299 01       		.byte	0x1
+ 1601 029a C2000000 		.4byte	.LASF40
+ 1602 029e 01       		.byte	0x1
+ 1603 029f FD       		.byte	0xfd
+ 1604 02a0 01       		.byte	0x1
+ 1605 02a1 00000000 		.4byte	.LFB37
+ 1606 02a5 54000000 		.4byte	.LFE37
+ 1607 02a9 E2000000 		.4byte	.LLST4
+ 1608 02ad 01       		.byte	0x1
+ 1609 02ae CF020000 		.4byte	0x2cf
+ 1610 02b2 0A       		.uleb128 0xa
+ 1611 02b3 40000000 		.4byte	.LASF41
+ 1612 02b7 01       		.byte	0x1
+ 1613 02b8 FD       		.byte	0xfd
+ 1614 02b9 61000000 		.4byte	0x61
+ 1615 02bd 02       		.byte	0x2
+ 1616 02be 91       		.byte	0x91
+ 1617 02bf 5C       		.sleb128 -36
+ 1618 02c0 06       		.uleb128 0x6
+ 1619 02c1 59010000 		.4byte	.LASF42
+ 1620 02c5 01       		.byte	0x1
+ 1621 02c6 FF       		.byte	0xff
+ 1622 02c7 CF020000 		.4byte	0x2cf
+ 1623 02cb 02       		.byte	0x2
+ 1624 02cc 91       		.byte	0x91
+ 1625 02cd 64       		.sleb128 -28
+ 1626 02ce 00       		.byte	0
+ 1627 02cf 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 36
+
+
+ 1628 02d0 9E000000 		.4byte	0x9e
+ 1629 02d4 DF020000 		.4byte	0x2df
+ 1630 02d8 0C       		.uleb128 0xc
+ 1631 02d9 A5000000 		.4byte	0xa5
+ 1632 02dd 13       		.byte	0x13
+ 1633 02de 00       		.byte	0
+ 1634 02df 0D       		.uleb128 0xd
+ 1635 02e0 01       		.byte	0x1
+ 1636 02e1 D0000000 		.4byte	.LASF43
+ 1637 02e5 01       		.byte	0x1
+ 1638 02e6 0501     		.2byte	0x105
+ 1639 02e8 01       		.byte	0x1
+ 1640 02e9 00000000 		.4byte	.LFB38
+ 1641 02ed 50000000 		.4byte	.LFE38
+ 1642 02f1 1A010000 		.4byte	.LLST5
+ 1643 02f5 01       		.byte	0x1
+ 1644 02f6 19030000 		.4byte	0x319
+ 1645 02fa 0E       		.uleb128 0xe
+ 1646 02fb 40000000 		.4byte	.LASF41
+ 1647 02ff 01       		.byte	0x1
+ 1648 0300 0501     		.2byte	0x105
+ 1649 0302 61000000 		.4byte	0x61
+ 1650 0306 02       		.byte	0x2
+ 1651 0307 91       		.byte	0x91
+ 1652 0308 5C       		.sleb128 -36
+ 1653 0309 0F       		.uleb128 0xf
+ 1654 030a 59010000 		.4byte	.LASF42
+ 1655 030e 01       		.byte	0x1
+ 1656 030f 0701     		.2byte	0x107
+ 1657 0311 CF020000 		.4byte	0x2cf
+ 1658 0315 02       		.byte	0x2
+ 1659 0316 91       		.byte	0x91
+ 1660 0317 64       		.sleb128 -28
+ 1661 0318 00       		.byte	0
+ 1662 0319 10       		.uleb128 0x10
+ 1663 031a 01       		.byte	0x1
+ 1664 031b 37000000 		.4byte	.LASF52
+ 1665 031f 01       		.byte	0x1
+ 1666 0320 0D01     		.2byte	0x10d
+ 1667 0322 01       		.byte	0x1
+ 1668 0323 61000000 		.4byte	0x61
+ 1669 0327 00000000 		.4byte	.LFB39
+ 1670 032b 34000000 		.4byte	.LFE39
+ 1671 032f 52010000 		.4byte	.LLST6
+ 1672 0333 01       		.byte	0x1
+ 1673 0334 71030000 		.4byte	0x371
+ 1674 0338 11       		.uleb128 0x11
+ 1675 0339 783100   		.ascii	"x1\000"
+ 1676 033c 01       		.byte	0x1
+ 1677 033d 0D01     		.2byte	0x10d
+ 1678 033f 61000000 		.4byte	0x61
+ 1679 0343 02       		.byte	0x2
+ 1680 0344 91       		.byte	0x91
+ 1681 0345 74       		.sleb128 -12
+ 1682 0346 11       		.uleb128 0x11
+ 1683 0347 793100   		.ascii	"y1\000"
+ 1684 034a 01       		.byte	0x1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 37
+
+
+ 1685 034b 0D01     		.2byte	0x10d
+ 1686 034d 61000000 		.4byte	0x61
+ 1687 0351 02       		.byte	0x2
+ 1688 0352 91       		.byte	0x91
+ 1689 0353 70       		.sleb128 -16
+ 1690 0354 11       		.uleb128 0x11
+ 1691 0355 783200   		.ascii	"x2\000"
+ 1692 0358 01       		.byte	0x1
+ 1693 0359 0D01     		.2byte	0x10d
+ 1694 035b 61000000 		.4byte	0x61
+ 1695 035f 02       		.byte	0x2
+ 1696 0360 91       		.byte	0x91
+ 1697 0361 6C       		.sleb128 -20
+ 1698 0362 11       		.uleb128 0x11
+ 1699 0363 793200   		.ascii	"y2\000"
+ 1700 0366 01       		.byte	0x1
+ 1701 0367 0D01     		.2byte	0x10d
+ 1702 0369 61000000 		.4byte	0x61
+ 1703 036d 02       		.byte	0x2
+ 1704 036e 91       		.byte	0x91
+ 1705 036f 68       		.sleb128 -24
+ 1706 0370 00       		.byte	0
+ 1707 0371 0B       		.uleb128 0xb
+ 1708 0372 6F000000 		.4byte	0x6f
+ 1709 0376 87030000 		.4byte	0x387
+ 1710 037a 0C       		.uleb128 0xc
+ 1711 037b A5000000 		.4byte	0xa5
+ 1712 037f 60       		.byte	0x60
+ 1713 0380 0C       		.uleb128 0xc
+ 1714 0381 A5000000 		.4byte	0xa5
+ 1715 0385 0F       		.byte	0xf
+ 1716 0386 00       		.byte	0
+ 1717 0387 12       		.uleb128 0x12
+ 1718 0388 06020000 		.4byte	.LASF44
+ 1719 038c 03       		.byte	0x3
+ 1720 038d 42       		.byte	0x42
+ 1721 038e 99030000 		.4byte	0x399
+ 1722 0392 01       		.byte	0x1
+ 1723 0393 05       		.byte	0x5
+ 1724 0394 03       		.byte	0x3
+ 1725 0395 00000000 		.4byte	GLCD_FONT8x16
+ 1726 0399 13       		.uleb128 0x13
+ 1727 039a 71030000 		.4byte	0x371
+ 1728 039e 0B       		.uleb128 0xb
+ 1729 039f 61000000 		.4byte	0x61
+ 1730 03a3 AE030000 		.4byte	0x3ae
+ 1731 03a7 0C       		.uleb128 0xc
+ 1732 03a8 A5000000 		.4byte	0xa5
+ 1733 03ac C7       		.byte	0xc7
+ 1734 03ad 00       		.byte	0
+ 1735 03ae 12       		.uleb128 0x12
+ 1736 03af 4C000000 		.4byte	.LASF45
+ 1737 03b3 01       		.byte	0x1
+ 1738 03b4 12       		.byte	0x12
+ 1739 03b5 9E030000 		.4byte	0x39e
+ 1740 03b9 01       		.byte	0x1
+ 1741 03ba 05       		.byte	0x5
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 38
+
+
+ 1742 03bb 03       		.byte	0x3
+ 1743 03bc 00000000 		.4byte	coordx
+ 1744 03c0 12       		.uleb128 0x12
+ 1745 03c1 53000000 		.4byte	.LASF46
+ 1746 03c5 01       		.byte	0x1
+ 1747 03c6 13       		.byte	0x13
+ 1748 03c7 9E030000 		.4byte	0x39e
+ 1749 03cb 01       		.byte	0x1
+ 1750 03cc 05       		.byte	0x5
+ 1751 03cd 03       		.byte	0x3
+ 1752 03ce 00000000 		.4byte	coordy
+ 1753 03d2 12       		.uleb128 0x12
+ 1754 03d3 82000000 		.4byte	.LASF47
+ 1755 03d7 01       		.byte	0x1
+ 1756 03d8 14       		.byte	0x14
+ 1757 03d9 61000000 		.4byte	0x61
+ 1758 03dd 01       		.byte	0x1
+ 1759 03de 05       		.byte	0x5
+ 1760 03df 03       		.byte	0x3
+ 1761 03e0 00000000 		.4byte	score1
+ 1762 03e4 12       		.uleb128 0x12
+ 1763 03e5 89000000 		.4byte	.LASF48
+ 1764 03e9 01       		.byte	0x1
+ 1765 03ea 15       		.byte	0x15
+ 1766 03eb 61000000 		.4byte	0x61
+ 1767 03ef 01       		.byte	0x1
+ 1768 03f0 05       		.byte	0x5
+ 1769 03f1 03       		.byte	0x3
+ 1770 03f2 00000000 		.4byte	score2
+ 1771 03f6 00       		.byte	0
+ 1772              		.section	.debug_abbrev,"",%progbits
+ 1773              	.Ldebug_abbrev0:
+ 1774 0000 01       		.uleb128 0x1
+ 1775 0001 11       		.uleb128 0x11
+ 1776 0002 01       		.byte	0x1
+ 1777 0003 25       		.uleb128 0x25
+ 1778 0004 0E       		.uleb128 0xe
+ 1779 0005 13       		.uleb128 0x13
+ 1780 0006 0B       		.uleb128 0xb
+ 1781 0007 03       		.uleb128 0x3
+ 1782 0008 0E       		.uleb128 0xe
+ 1783 0009 1B       		.uleb128 0x1b
+ 1784 000a 0E       		.uleb128 0xe
+ 1785 000b 55       		.uleb128 0x55
+ 1786 000c 06       		.uleb128 0x6
+ 1787 000d 11       		.uleb128 0x11
+ 1788 000e 01       		.uleb128 0x1
+ 1789 000f 52       		.uleb128 0x52
+ 1790 0010 01       		.uleb128 0x1
+ 1791 0011 10       		.uleb128 0x10
+ 1792 0012 06       		.uleb128 0x6
+ 1793 0013 00       		.byte	0
+ 1794 0014 00       		.byte	0
+ 1795 0015 02       		.uleb128 0x2
+ 1796 0016 24       		.uleb128 0x24
+ 1797 0017 00       		.byte	0
+ 1798 0018 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 39
+
+
+ 1799 0019 0B       		.uleb128 0xb
+ 1800 001a 3E       		.uleb128 0x3e
+ 1801 001b 0B       		.uleb128 0xb
+ 1802 001c 03       		.uleb128 0x3
+ 1803 001d 0E       		.uleb128 0xe
+ 1804 001e 00       		.byte	0
+ 1805 001f 00       		.byte	0
+ 1806 0020 03       		.uleb128 0x3
+ 1807 0021 24       		.uleb128 0x24
+ 1808 0022 00       		.byte	0
+ 1809 0023 0B       		.uleb128 0xb
+ 1810 0024 0B       		.uleb128 0xb
+ 1811 0025 3E       		.uleb128 0x3e
+ 1812 0026 0B       		.uleb128 0xb
+ 1813 0027 03       		.uleb128 0x3
+ 1814 0028 08       		.uleb128 0x8
+ 1815 0029 00       		.byte	0
+ 1816 002a 00       		.byte	0
+ 1817 002b 04       		.uleb128 0x4
+ 1818 002c 16       		.uleb128 0x16
+ 1819 002d 00       		.byte	0
+ 1820 002e 03       		.uleb128 0x3
+ 1821 002f 0E       		.uleb128 0xe
+ 1822 0030 3A       		.uleb128 0x3a
+ 1823 0031 0B       		.uleb128 0xb
+ 1824 0032 3B       		.uleb128 0x3b
+ 1825 0033 0B       		.uleb128 0xb
+ 1826 0034 49       		.uleb128 0x49
+ 1827 0035 13       		.uleb128 0x13
+ 1828 0036 00       		.byte	0
+ 1829 0037 00       		.byte	0
+ 1830 0038 05       		.uleb128 0x5
+ 1831 0039 2E       		.uleb128 0x2e
+ 1832 003a 01       		.byte	0x1
+ 1833 003b 3F       		.uleb128 0x3f
+ 1834 003c 0C       		.uleb128 0xc
+ 1835 003d 03       		.uleb128 0x3
+ 1836 003e 0E       		.uleb128 0xe
+ 1837 003f 3A       		.uleb128 0x3a
+ 1838 0040 0B       		.uleb128 0xb
+ 1839 0041 3B       		.uleb128 0x3b
+ 1840 0042 0B       		.uleb128 0xb
+ 1841 0043 49       		.uleb128 0x49
+ 1842 0044 13       		.uleb128 0x13
+ 1843 0045 11       		.uleb128 0x11
+ 1844 0046 01       		.uleb128 0x1
+ 1845 0047 12       		.uleb128 0x12
+ 1846 0048 01       		.uleb128 0x1
+ 1847 0049 40       		.uleb128 0x40
+ 1848 004a 06       		.uleb128 0x6
+ 1849 004b 9642     		.uleb128 0x2116
+ 1850 004d 0C       		.uleb128 0xc
+ 1851 004e 01       		.uleb128 0x1
+ 1852 004f 13       		.uleb128 0x13
+ 1853 0050 00       		.byte	0
+ 1854 0051 00       		.byte	0
+ 1855 0052 06       		.uleb128 0x6
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 40
+
+
+ 1856 0053 34       		.uleb128 0x34
+ 1857 0054 00       		.byte	0
+ 1858 0055 03       		.uleb128 0x3
+ 1859 0056 0E       		.uleb128 0xe
+ 1860 0057 3A       		.uleb128 0x3a
+ 1861 0058 0B       		.uleb128 0xb
+ 1862 0059 3B       		.uleb128 0x3b
+ 1863 005a 0B       		.uleb128 0xb
+ 1864 005b 49       		.uleb128 0x49
+ 1865 005c 13       		.uleb128 0x13
+ 1866 005d 02       		.uleb128 0x2
+ 1867 005e 0A       		.uleb128 0xa
+ 1868 005f 00       		.byte	0
+ 1869 0060 00       		.byte	0
+ 1870 0061 07       		.uleb128 0x7
+ 1871 0062 34       		.uleb128 0x34
+ 1872 0063 00       		.byte	0
+ 1873 0064 03       		.uleb128 0x3
+ 1874 0065 08       		.uleb128 0x8
+ 1875 0066 3A       		.uleb128 0x3a
+ 1876 0067 0B       		.uleb128 0xb
+ 1877 0068 3B       		.uleb128 0x3b
+ 1878 0069 0B       		.uleb128 0xb
+ 1879 006a 49       		.uleb128 0x49
+ 1880 006b 13       		.uleb128 0x13
+ 1881 006c 02       		.uleb128 0x2
+ 1882 006d 0A       		.uleb128 0xa
+ 1883 006e 00       		.byte	0
+ 1884 006f 00       		.byte	0
+ 1885 0070 08       		.uleb128 0x8
+ 1886 0071 0B       		.uleb128 0xb
+ 1887 0072 01       		.byte	0x1
+ 1888 0073 11       		.uleb128 0x11
+ 1889 0074 01       		.uleb128 0x1
+ 1890 0075 12       		.uleb128 0x12
+ 1891 0076 01       		.uleb128 0x1
+ 1892 0077 00       		.byte	0
+ 1893 0078 00       		.byte	0
+ 1894 0079 09       		.uleb128 0x9
+ 1895 007a 2E       		.uleb128 0x2e
+ 1896 007b 01       		.byte	0x1
+ 1897 007c 3F       		.uleb128 0x3f
+ 1898 007d 0C       		.uleb128 0xc
+ 1899 007e 03       		.uleb128 0x3
+ 1900 007f 0E       		.uleb128 0xe
+ 1901 0080 3A       		.uleb128 0x3a
+ 1902 0081 0B       		.uleb128 0xb
+ 1903 0082 3B       		.uleb128 0x3b
+ 1904 0083 0B       		.uleb128 0xb
+ 1905 0084 27       		.uleb128 0x27
+ 1906 0085 0C       		.uleb128 0xc
+ 1907 0086 11       		.uleb128 0x11
+ 1908 0087 01       		.uleb128 0x1
+ 1909 0088 12       		.uleb128 0x12
+ 1910 0089 01       		.uleb128 0x1
+ 1911 008a 40       		.uleb128 0x40
+ 1912 008b 06       		.uleb128 0x6
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 41
+
+
+ 1913 008c 9642     		.uleb128 0x2116
+ 1914 008e 0C       		.uleb128 0xc
+ 1915 008f 01       		.uleb128 0x1
+ 1916 0090 13       		.uleb128 0x13
+ 1917 0091 00       		.byte	0
+ 1918 0092 00       		.byte	0
+ 1919 0093 0A       		.uleb128 0xa
+ 1920 0094 05       		.uleb128 0x5
+ 1921 0095 00       		.byte	0
+ 1922 0096 03       		.uleb128 0x3
+ 1923 0097 0E       		.uleb128 0xe
+ 1924 0098 3A       		.uleb128 0x3a
+ 1925 0099 0B       		.uleb128 0xb
+ 1926 009a 3B       		.uleb128 0x3b
+ 1927 009b 0B       		.uleb128 0xb
+ 1928 009c 49       		.uleb128 0x49
+ 1929 009d 13       		.uleb128 0x13
+ 1930 009e 02       		.uleb128 0x2
+ 1931 009f 0A       		.uleb128 0xa
+ 1932 00a0 00       		.byte	0
+ 1933 00a1 00       		.byte	0
+ 1934 00a2 0B       		.uleb128 0xb
+ 1935 00a3 01       		.uleb128 0x1
+ 1936 00a4 01       		.byte	0x1
+ 1937 00a5 49       		.uleb128 0x49
+ 1938 00a6 13       		.uleb128 0x13
+ 1939 00a7 01       		.uleb128 0x1
+ 1940 00a8 13       		.uleb128 0x13
+ 1941 00a9 00       		.byte	0
+ 1942 00aa 00       		.byte	0
+ 1943 00ab 0C       		.uleb128 0xc
+ 1944 00ac 21       		.uleb128 0x21
+ 1945 00ad 00       		.byte	0
+ 1946 00ae 49       		.uleb128 0x49
+ 1947 00af 13       		.uleb128 0x13
+ 1948 00b0 2F       		.uleb128 0x2f
+ 1949 00b1 0B       		.uleb128 0xb
+ 1950 00b2 00       		.byte	0
+ 1951 00b3 00       		.byte	0
+ 1952 00b4 0D       		.uleb128 0xd
+ 1953 00b5 2E       		.uleb128 0x2e
+ 1954 00b6 01       		.byte	0x1
+ 1955 00b7 3F       		.uleb128 0x3f
+ 1956 00b8 0C       		.uleb128 0xc
+ 1957 00b9 03       		.uleb128 0x3
+ 1958 00ba 0E       		.uleb128 0xe
+ 1959 00bb 3A       		.uleb128 0x3a
+ 1960 00bc 0B       		.uleb128 0xb
+ 1961 00bd 3B       		.uleb128 0x3b
+ 1962 00be 05       		.uleb128 0x5
+ 1963 00bf 27       		.uleb128 0x27
+ 1964 00c0 0C       		.uleb128 0xc
+ 1965 00c1 11       		.uleb128 0x11
+ 1966 00c2 01       		.uleb128 0x1
+ 1967 00c3 12       		.uleb128 0x12
+ 1968 00c4 01       		.uleb128 0x1
+ 1969 00c5 40       		.uleb128 0x40
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 42
+
+
+ 1970 00c6 06       		.uleb128 0x6
+ 1971 00c7 9642     		.uleb128 0x2116
+ 1972 00c9 0C       		.uleb128 0xc
+ 1973 00ca 01       		.uleb128 0x1
+ 1974 00cb 13       		.uleb128 0x13
+ 1975 00cc 00       		.byte	0
+ 1976 00cd 00       		.byte	0
+ 1977 00ce 0E       		.uleb128 0xe
+ 1978 00cf 05       		.uleb128 0x5
+ 1979 00d0 00       		.byte	0
+ 1980 00d1 03       		.uleb128 0x3
+ 1981 00d2 0E       		.uleb128 0xe
+ 1982 00d3 3A       		.uleb128 0x3a
+ 1983 00d4 0B       		.uleb128 0xb
+ 1984 00d5 3B       		.uleb128 0x3b
+ 1985 00d6 05       		.uleb128 0x5
+ 1986 00d7 49       		.uleb128 0x49
+ 1987 00d8 13       		.uleb128 0x13
+ 1988 00d9 02       		.uleb128 0x2
+ 1989 00da 0A       		.uleb128 0xa
+ 1990 00db 00       		.byte	0
+ 1991 00dc 00       		.byte	0
+ 1992 00dd 0F       		.uleb128 0xf
+ 1993 00de 34       		.uleb128 0x34
+ 1994 00df 00       		.byte	0
+ 1995 00e0 03       		.uleb128 0x3
+ 1996 00e1 0E       		.uleb128 0xe
+ 1997 00e2 3A       		.uleb128 0x3a
+ 1998 00e3 0B       		.uleb128 0xb
+ 1999 00e4 3B       		.uleb128 0x3b
+ 2000 00e5 05       		.uleb128 0x5
+ 2001 00e6 49       		.uleb128 0x49
+ 2002 00e7 13       		.uleb128 0x13
+ 2003 00e8 02       		.uleb128 0x2
+ 2004 00e9 0A       		.uleb128 0xa
+ 2005 00ea 00       		.byte	0
+ 2006 00eb 00       		.byte	0
+ 2007 00ec 10       		.uleb128 0x10
+ 2008 00ed 2E       		.uleb128 0x2e
+ 2009 00ee 01       		.byte	0x1
+ 2010 00ef 3F       		.uleb128 0x3f
+ 2011 00f0 0C       		.uleb128 0xc
+ 2012 00f1 03       		.uleb128 0x3
+ 2013 00f2 0E       		.uleb128 0xe
+ 2014 00f3 3A       		.uleb128 0x3a
+ 2015 00f4 0B       		.uleb128 0xb
+ 2016 00f5 3B       		.uleb128 0x3b
+ 2017 00f6 05       		.uleb128 0x5
+ 2018 00f7 27       		.uleb128 0x27
+ 2019 00f8 0C       		.uleb128 0xc
+ 2020 00f9 49       		.uleb128 0x49
+ 2021 00fa 13       		.uleb128 0x13
+ 2022 00fb 11       		.uleb128 0x11
+ 2023 00fc 01       		.uleb128 0x1
+ 2024 00fd 12       		.uleb128 0x12
+ 2025 00fe 01       		.uleb128 0x1
+ 2026 00ff 40       		.uleb128 0x40
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 43
+
+
+ 2027 0100 06       		.uleb128 0x6
+ 2028 0101 9742     		.uleb128 0x2117
+ 2029 0103 0C       		.uleb128 0xc
+ 2030 0104 01       		.uleb128 0x1
+ 2031 0105 13       		.uleb128 0x13
+ 2032 0106 00       		.byte	0
+ 2033 0107 00       		.byte	0
+ 2034 0108 11       		.uleb128 0x11
+ 2035 0109 05       		.uleb128 0x5
+ 2036 010a 00       		.byte	0
+ 2037 010b 03       		.uleb128 0x3
+ 2038 010c 08       		.uleb128 0x8
+ 2039 010d 3A       		.uleb128 0x3a
+ 2040 010e 0B       		.uleb128 0xb
+ 2041 010f 3B       		.uleb128 0x3b
+ 2042 0110 05       		.uleb128 0x5
+ 2043 0111 49       		.uleb128 0x49
+ 2044 0112 13       		.uleb128 0x13
+ 2045 0113 02       		.uleb128 0x2
+ 2046 0114 0A       		.uleb128 0xa
+ 2047 0115 00       		.byte	0
+ 2048 0116 00       		.byte	0
+ 2049 0117 12       		.uleb128 0x12
+ 2050 0118 34       		.uleb128 0x34
+ 2051 0119 00       		.byte	0
+ 2052 011a 03       		.uleb128 0x3
+ 2053 011b 0E       		.uleb128 0xe
+ 2054 011c 3A       		.uleb128 0x3a
+ 2055 011d 0B       		.uleb128 0xb
+ 2056 011e 3B       		.uleb128 0x3b
+ 2057 011f 0B       		.uleb128 0xb
+ 2058 0120 49       		.uleb128 0x49
+ 2059 0121 13       		.uleb128 0x13
+ 2060 0122 3F       		.uleb128 0x3f
+ 2061 0123 0C       		.uleb128 0xc
+ 2062 0124 02       		.uleb128 0x2
+ 2063 0125 0A       		.uleb128 0xa
+ 2064 0126 00       		.byte	0
+ 2065 0127 00       		.byte	0
+ 2066 0128 13       		.uleb128 0x13
+ 2067 0129 26       		.uleb128 0x26
+ 2068 012a 00       		.byte	0
+ 2069 012b 49       		.uleb128 0x49
+ 2070 012c 13       		.uleb128 0x13
+ 2071 012d 00       		.byte	0
+ 2072 012e 00       		.byte	0
+ 2073 012f 00       		.byte	0
+ 2074              		.section	.debug_loc,"",%progbits
+ 2075              	.Ldebug_loc0:
+ 2076              	.LLST0:
+ 2077 0000 00000000 		.4byte	.LFB33
+ 2078 0004 02000000 		.4byte	.LCFI0
+ 2079 0008 0200     		.2byte	0x2
+ 2080 000a 7D       		.byte	0x7d
+ 2081 000b 00       		.sleb128 0
+ 2082 000c 02000000 		.4byte	.LCFI0
+ 2083 0010 04000000 		.4byte	.LCFI1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 44
+
+
+ 2084 0014 0200     		.2byte	0x2
+ 2085 0016 7D       		.byte	0x7d
+ 2086 0017 0C       		.sleb128 12
+ 2087 0018 04000000 		.4byte	.LCFI1
+ 2088 001c 06000000 		.4byte	.LCFI2
+ 2089 0020 0300     		.2byte	0x3
+ 2090 0022 7D       		.byte	0x7d
+ 2091 0023 D000     		.sleb128 80
+ 2092 0025 06000000 		.4byte	.LCFI2
+ 2093 0029 44040000 		.4byte	.LFE33
+ 2094 002d 0300     		.2byte	0x3
+ 2095 002f 77       		.byte	0x77
+ 2096 0030 D000     		.sleb128 80
+ 2097 0032 00000000 		.4byte	0
+ 2098 0036 00000000 		.4byte	0
+ 2099              	.LLST1:
+ 2100 003a 00000000 		.4byte	.LFB34
+ 2101 003e 02000000 		.4byte	.LCFI3
+ 2102 0042 0200     		.2byte	0x2
+ 2103 0044 7D       		.byte	0x7d
+ 2104 0045 00       		.sleb128 0
+ 2105 0046 02000000 		.4byte	.LCFI3
+ 2106 004a 04000000 		.4byte	.LCFI4
+ 2107 004e 0200     		.2byte	0x2
+ 2108 0050 7D       		.byte	0x7d
+ 2109 0051 0C       		.sleb128 12
+ 2110 0052 04000000 		.4byte	.LCFI4
+ 2111 0056 06000000 		.4byte	.LCFI5
+ 2112 005a 0200     		.2byte	0x2
+ 2113 005c 7D       		.byte	0x7d
+ 2114 005d 28       		.sleb128 40
+ 2115 005e 06000000 		.4byte	.LCFI5
+ 2116 0062 60000000 		.4byte	.LFE34
+ 2117 0066 0200     		.2byte	0x2
+ 2118 0068 77       		.byte	0x77
+ 2119 0069 20       		.sleb128 32
+ 2120 006a 00000000 		.4byte	0
+ 2121 006e 00000000 		.4byte	0
+ 2122              	.LLST2:
+ 2123 0072 00000000 		.4byte	.LFB35
+ 2124 0076 02000000 		.4byte	.LCFI6
+ 2125 007a 0200     		.2byte	0x2
+ 2126 007c 7D       		.byte	0x7d
+ 2127 007d 00       		.sleb128 0
+ 2128 007e 02000000 		.4byte	.LCFI6
+ 2129 0082 04000000 		.4byte	.LCFI7
+ 2130 0086 0200     		.2byte	0x2
+ 2131 0088 7D       		.byte	0x7d
+ 2132 0089 08       		.sleb128 8
+ 2133 008a 04000000 		.4byte	.LCFI7
+ 2134 008e 06000000 		.4byte	.LCFI8
+ 2135 0092 0200     		.2byte	0x2
+ 2136 0094 7D       		.byte	0x7d
+ 2137 0095 20       		.sleb128 32
+ 2138 0096 06000000 		.4byte	.LCFI8
+ 2139 009a 4C010000 		.4byte	.LFE35
+ 2140 009e 0200     		.2byte	0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 45
+
+
+ 2141 00a0 77       		.byte	0x77
+ 2142 00a1 20       		.sleb128 32
+ 2143 00a2 00000000 		.4byte	0
+ 2144 00a6 00000000 		.4byte	0
+ 2145              	.LLST3:
+ 2146 00aa 00000000 		.4byte	.LFB36
+ 2147 00ae 02000000 		.4byte	.LCFI9
+ 2148 00b2 0200     		.2byte	0x2
+ 2149 00b4 7D       		.byte	0x7d
+ 2150 00b5 00       		.sleb128 0
+ 2151 00b6 02000000 		.4byte	.LCFI9
+ 2152 00ba 04000000 		.4byte	.LCFI10
+ 2153 00be 0200     		.2byte	0x2
+ 2154 00c0 7D       		.byte	0x7d
+ 2155 00c1 08       		.sleb128 8
+ 2156 00c2 04000000 		.4byte	.LCFI10
+ 2157 00c6 06000000 		.4byte	.LCFI11
+ 2158 00ca 0200     		.2byte	0x2
+ 2159 00cc 7D       		.byte	0x7d
+ 2160 00cd 10       		.sleb128 16
+ 2161 00ce 06000000 		.4byte	.LCFI11
+ 2162 00d2 56000000 		.4byte	.LFE36
+ 2163 00d6 0200     		.2byte	0x2
+ 2164 00d8 77       		.byte	0x77
+ 2165 00d9 10       		.sleb128 16
+ 2166 00da 00000000 		.4byte	0
+ 2167 00de 00000000 		.4byte	0
+ 2168              	.LLST4:
+ 2169 00e2 00000000 		.4byte	.LFB37
+ 2170 00e6 02000000 		.4byte	.LCFI12
+ 2171 00ea 0200     		.2byte	0x2
+ 2172 00ec 7D       		.byte	0x7d
+ 2173 00ed 00       		.sleb128 0
+ 2174 00ee 02000000 		.4byte	.LCFI12
+ 2175 00f2 04000000 		.4byte	.LCFI13
+ 2176 00f6 0200     		.2byte	0x2
+ 2177 00f8 7D       		.byte	0x7d
+ 2178 00f9 08       		.sleb128 8
+ 2179 00fa 04000000 		.4byte	.LCFI13
+ 2180 00fe 06000000 		.4byte	.LCFI14
+ 2181 0102 0200     		.2byte	0x2
+ 2182 0104 7D       		.byte	0x7d
+ 2183 0105 30       		.sleb128 48
+ 2184 0106 06000000 		.4byte	.LCFI14
+ 2185 010a 54000000 		.4byte	.LFE37
+ 2186 010e 0200     		.2byte	0x2
+ 2187 0110 77       		.byte	0x77
+ 2188 0111 28       		.sleb128 40
+ 2189 0112 00000000 		.4byte	0
+ 2190 0116 00000000 		.4byte	0
+ 2191              	.LLST5:
+ 2192 011a 00000000 		.4byte	.LFB38
+ 2193 011e 02000000 		.4byte	.LCFI15
+ 2194 0122 0200     		.2byte	0x2
+ 2195 0124 7D       		.byte	0x7d
+ 2196 0125 00       		.sleb128 0
+ 2197 0126 02000000 		.4byte	.LCFI15
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 46
+
+
+ 2198 012a 04000000 		.4byte	.LCFI16
+ 2199 012e 0200     		.2byte	0x2
+ 2200 0130 7D       		.byte	0x7d
+ 2201 0131 08       		.sleb128 8
+ 2202 0132 04000000 		.4byte	.LCFI16
+ 2203 0136 06000000 		.4byte	.LCFI17
+ 2204 013a 0200     		.2byte	0x2
+ 2205 013c 7D       		.byte	0x7d
+ 2206 013d 30       		.sleb128 48
+ 2207 013e 06000000 		.4byte	.LCFI17
+ 2208 0142 50000000 		.4byte	.LFE38
+ 2209 0146 0200     		.2byte	0x2
+ 2210 0148 77       		.byte	0x77
+ 2211 0149 28       		.sleb128 40
+ 2212 014a 00000000 		.4byte	0
+ 2213 014e 00000000 		.4byte	0
+ 2214              	.LLST6:
+ 2215 0152 00000000 		.4byte	.LFB39
+ 2216 0156 02000000 		.4byte	.LCFI18
+ 2217 015a 0200     		.2byte	0x2
+ 2218 015c 7D       		.byte	0x7d
+ 2219 015d 00       		.sleb128 0
+ 2220 015e 02000000 		.4byte	.LCFI18
+ 2221 0162 04000000 		.4byte	.LCFI19
+ 2222 0166 0200     		.2byte	0x2
+ 2223 0168 7D       		.byte	0x7d
+ 2224 0169 08       		.sleb128 8
+ 2225 016a 04000000 		.4byte	.LCFI19
+ 2226 016e 06000000 		.4byte	.LCFI20
+ 2227 0172 0200     		.2byte	0x2
+ 2228 0174 7D       		.byte	0x7d
+ 2229 0175 18       		.sleb128 24
+ 2230 0176 06000000 		.4byte	.LCFI20
+ 2231 017a 34000000 		.4byte	.LFE39
+ 2232 017e 0200     		.2byte	0x2
+ 2233 0180 77       		.byte	0x77
+ 2234 0181 18       		.sleb128 24
+ 2235 0182 00000000 		.4byte	0
+ 2236 0186 00000000 		.4byte	0
+ 2237              		.section	.debug_aranges,"",%progbits
+ 2238 0000 4C000000 		.4byte	0x4c
+ 2239 0004 0200     		.2byte	0x2
+ 2240 0006 00000000 		.4byte	.Ldebug_info0
+ 2241 000a 04       		.byte	0x4
+ 2242 000b 00       		.byte	0
+ 2243 000c 0000     		.2byte	0
+ 2244 000e 0000     		.2byte	0
+ 2245 0010 00000000 		.4byte	.LFB33
+ 2246 0014 44040000 		.4byte	.LFE33-.LFB33
+ 2247 0018 00000000 		.4byte	.LFB34
+ 2248 001c 60000000 		.4byte	.LFE34-.LFB34
+ 2249 0020 00000000 		.4byte	.LFB35
+ 2250 0024 4C010000 		.4byte	.LFE35-.LFB35
+ 2251 0028 00000000 		.4byte	.LFB36
+ 2252 002c 56000000 		.4byte	.LFE36-.LFB36
+ 2253 0030 00000000 		.4byte	.LFB37
+ 2254 0034 54000000 		.4byte	.LFE37-.LFB37
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 47
+
+
+ 2255 0038 00000000 		.4byte	.LFB38
+ 2256 003c 50000000 		.4byte	.LFE38-.LFB38
+ 2257 0040 00000000 		.4byte	.LFB39
+ 2258 0044 34000000 		.4byte	.LFE39-.LFB39
+ 2259 0048 00000000 		.4byte	0
+ 2260 004c 00000000 		.4byte	0
+ 2261              		.section	.debug_ranges,"",%progbits
+ 2262              	.Ldebug_ranges0:
+ 2263 0000 00000000 		.4byte	.LFB33
+ 2264 0004 44040000 		.4byte	.LFE33
+ 2265 0008 00000000 		.4byte	.LFB34
+ 2266 000c 60000000 		.4byte	.LFE34
+ 2267 0010 00000000 		.4byte	.LFB35
+ 2268 0014 4C010000 		.4byte	.LFE35
+ 2269 0018 00000000 		.4byte	.LFB36
+ 2270 001c 56000000 		.4byte	.LFE36
+ 2271 0020 00000000 		.4byte	.LFB37
+ 2272 0024 54000000 		.4byte	.LFE37
+ 2273 0028 00000000 		.4byte	.LFB38
+ 2274 002c 50000000 		.4byte	.LFE38
+ 2275 0030 00000000 		.4byte	.LFB39
+ 2276 0034 34000000 		.4byte	.LFE39
+ 2277 0038 00000000 		.4byte	0
+ 2278 003c 00000000 		.4byte	0
+ 2279              		.section	.debug_line,"",%progbits
+ 2280              	.Ldebug_line0:
+ 2281 0000 D7010000 		.section	.debug_str,"MS",%progbits,1
+ 2281      02004F00 
+ 2281      00000201 
+ 2281      FB0E0D00 
+ 2281      01010101 
+ 2282              	.LASF6:
+ 2283 0000 6C6F6E67 		.ascii	"long long int\000"
+ 2283      206C6F6E 
+ 2283      6720696E 
+ 2283      7400
+ 2284              	.LASF26:
+ 2285 000e 736C6F77 		.ascii	"slowtwinkle\000"
+ 2285      7477696E 
+ 2285      6B6C6500 
+ 2286              	.LASF32:
+ 2287 001a 78636F6F 		.ascii	"xcoord\000"
+ 2287      726400
+ 2288              	.LASF23:
+ 2289 0021 72656365 		.ascii	"receive\000"
+ 2289      69766500 
+ 2290              	.LASF17:
+ 2291 0029 7963656E 		.ascii	"ycenter\000"
+ 2291      74657200 
+ 2292              	.LASF29:
+ 2293 0031 706F7765 		.ascii	"power\000"
+ 2293      7200
+ 2294              	.LASF52:
+ 2295 0037 64697374 		.ascii	"distance\000"
+ 2295      616E6365 
+ 2295      00
+ 2296              	.LASF41:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 48
+
+
+ 2297 0040 73636F72 		.ascii	"score\000"
+ 2297      6500
+ 2298              	.LASF12:
+ 2299 0046 666C6F61 		.ascii	"float\000"
+ 2299      7400
+ 2300              	.LASF45:
+ 2301 004c 636F6F72 		.ascii	"coordx\000"
+ 2301      647800
+ 2302              	.LASF46:
+ 2303 0053 636F6F72 		.ascii	"coordy\000"
+ 2303      647900
+ 2304              	.LASF28:
+ 2305 005a 74696D65 		.ascii	"timer\000"
+ 2305      7200
+ 2306              	.LASF33:
+ 2307 0060 79636F6F 		.ascii	"ycoord\000"
+ 2307      726400
+ 2308              	.LASF5:
+ 2309 0067 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2309      20756E73 
+ 2309      69676E65 
+ 2309      6420696E 
+ 2309      7400
+ 2310              	.LASF27:
+ 2311 0079 72616E64 		.ascii	"randstar\000"
+ 2311      73746172 
+ 2311      00
+ 2312              	.LASF47:
+ 2313 0082 73636F72 		.ascii	"score1\000"
+ 2313      653100
+ 2314              	.LASF48:
+ 2315 0089 73636F72 		.ascii	"score2\000"
+ 2315      653200
+ 2316              	.LASF50:
+ 2317 0090 2E5C6D61 		.ascii	".\\main.c\000"
+ 2317      696E2E63 
+ 2317      00
+ 2318              	.LASF36:
+ 2319 0099 786D6964 		.ascii	"xmiddle\000"
+ 2319      646C6500 
+ 2320              	.LASF20:
+ 2321 00a1 6F746865 		.ascii	"other_blast_status\000"
+ 2321      725F626C 
+ 2321      6173745F 
+ 2321      73746174 
+ 2321      757300
+ 2322              	.LASF1:
+ 2323 00b4 756E7369 		.ascii	"unsigned char\000"
+ 2323      676E6564 
+ 2323      20636861 
+ 2323      7200
+ 2324              	.LASF40:
+ 2325 00c2 636F726E 		.ascii	"cornerScreen1\000"
+ 2325      65725363 
+ 2325      7265656E 
+ 2325      3100
+ 2326              	.LASF43:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 49
+
+
+ 2327 00d0 636F726E 		.ascii	"cornerScreen2\000"
+ 2327      65725363 
+ 2327      7265656E 
+ 2327      3200
+ 2328              	.LASF13:
+ 2329 00de 646F7562 		.ascii	"double\000"
+ 2329      6C6500
+ 2330              	.LASF25:
+ 2331 00e5 6F746865 		.ascii	"other_old_yCenter\000"
+ 2331      725F6F6C 
+ 2331      645F7943 
+ 2331      656E7465 
+ 2331      7200
+ 2332              	.LASF38:
+ 2333 00f7 706C6179 		.ascii	"player\000"
+ 2333      657200
+ 2334              	.LASF16:
+ 2335 00fe 7863656E 		.ascii	"xcenter\000"
+ 2335      74657200 
+ 2336              	.LASF34:
+ 2337 0106 636F6C6F 		.ascii	"color\000"
+ 2337      7200
+ 2338              	.LASF10:
+ 2339 010c 75696E74 		.ascii	"uint16\000"
+ 2339      313600
+ 2340              	.LASF11:
+ 2341 0113 75696E74 		.ascii	"uint32\000"
+ 2341      333200
+ 2342              	.LASF21:
+ 2343 011a 6F746865 		.ascii	"other_xCenter\000"
+ 2343      725F7843 
+ 2343      656E7465 
+ 2343      7200
+ 2344              	.LASF8:
+ 2345 0128 756E7369 		.ascii	"unsigned int\000"
+ 2345      676E6564 
+ 2345      20696E74 
+ 2345      00
+ 2346              	.LASF37:
+ 2347 0135 796D6964 		.ascii	"ymiddle\000"
+ 2347      646C6500 
+ 2348              	.LASF19:
+ 2349 013d 73656E64 		.ascii	"send\000"
+ 2349      00
+ 2350              	.LASF7:
+ 2351 0142 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2351      206C6F6E 
+ 2351      6720756E 
+ 2351      7369676E 
+ 2351      65642069 
+ 2352              	.LASF42:
+ 2353 0159 73636F72 		.ascii	"scoreStr\000"
+ 2353      65537472 
+ 2353      00
+ 2354              	.LASF24:
+ 2355 0162 6F746865 		.ascii	"other_old_xCenter\000"
+ 2355      725F6F6C 
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 50
+
+
+ 2355      645F7843 
+ 2355      656E7465 
+ 2355      7200
+ 2356              	.LASF22:
+ 2357 0174 6F746865 		.ascii	"other_yCenter\000"
+ 2357      725F7943 
+ 2357      656E7465 
+ 2357      7200
+ 2358              	.LASF30:
+ 2359 0182 6D61696E 		.ascii	"main\000"
+ 2359      00
+ 2360              	.LASF15:
+ 2361 0187 73697A65 		.ascii	"sizetype\000"
+ 2361      74797065 
+ 2361      00
+ 2362              	.LASF51:
+ 2363 0190 433A5C55 		.ascii	"C:\\Users\\Trenton\\Desktop\\School Stuff\\Junior Y"
+ 2363      73657273 
+ 2363      5C547265 
+ 2363      6E746F6E 
+ 2363      5C446573 
+ 2364 01be 65617220 		.ascii	"ear (2013-2014)\\Spring 2014\\Microcontrollers\\Dua"
+ 2364      28323031 
+ 2364      332D3230 
+ 2364      3134295C 
+ 2364      53707269 
+ 2365 01ee 6C5F5374 		.ascii	"l_Starblast.cydsn\000"
+ 2365      6172626C 
+ 2365      6173742E 
+ 2365      63796473 
+ 2365      6E00
+ 2366              	.LASF39:
+ 2367 0200 6C657665 		.ascii	"level\000"
+ 2367      6C00
+ 2368              	.LASF44:
+ 2369 0206 474C4344 		.ascii	"GLCD_FONT8x16\000"
+ 2369      5F464F4E 
+ 2369      54387831 
+ 2369      3600
+ 2370              	.LASF14:
+ 2371 0214 63686172 		.ascii	"char\000"
+ 2371      00
+ 2372              	.LASF31:
+ 2373 0219 63726F73 		.ascii	"crosshair\000"
+ 2373      73686169 
+ 2373      7200
+ 2374              	.LASF2:
+ 2375 0223 73686F72 		.ascii	"short int\000"
+ 2375      7420696E 
+ 2375      7400
+ 2376              	.LASF9:
+ 2377 022d 75696E74 		.ascii	"uint8\000"
+ 2377      3800
+ 2378              	.LASF49:
+ 2379 0233 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 2379      4320342E 
+ 2379      372E3320 
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccZLiGyS.s 			page 51
+
+
+ 2379      32303133 
+ 2379      30333132 
+ 2380 0266 616E6368 		.ascii	"anch revision 196615]\000"
+ 2380      20726576 
+ 2380      6973696F 
+ 2380      6E203139 
+ 2380      36363135 
+ 2381              	.LASF4:
+ 2382 027c 6C6F6E67 		.ascii	"long int\000"
+ 2382      20696E74 
+ 2382      00
+ 2383              	.LASF0:
+ 2384 0285 7369676E 		.ascii	"signed char\000"
+ 2384      65642063 
+ 2384      68617200 
+ 2385              	.LASF3:
+ 2386 0291 73686F72 		.ascii	"short unsigned int\000"
+ 2386      7420756E 
+ 2386      7369676E 
+ 2386      65642069 
+ 2386      6E7400
+ 2387              	.LASF35:
+ 2388 02a4 626C6173 		.ascii	"blast\000"
+ 2388      7400
+ 2389              	.LASF18:
+ 2390 02aa 626C6173 		.ascii	"blast_status\000"
+ 2390      745F7374 
+ 2390      61747573 
+ 2390      00
+ 2391              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br

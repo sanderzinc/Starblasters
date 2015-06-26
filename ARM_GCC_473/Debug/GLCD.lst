@@ -1,0 +1,4240 @@
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"GLCD.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.comm	GLCD_FONT8x16,1552,4
+  18              		.comm	GLCD_driver,1,1
+  19              		.bss
+  20              		.align	2
+  21              	GLCD_x_offset:
+  22 0000 00000000 		.space	4
+  23              		.align	2
+  24              	GLCD_y_offset:
+  25 0004 00000000 		.space	4
+  26              		.section	.text.GLCD_Command,"ax",%progbits
+  27              		.align	2
+  28              		.global	GLCD_Command
+  29              		.code	16
+  30              		.thumb_func
+  31              		.type	GLCD_Command, %function
+  32              	GLCD_Command:
+  33              	.LFB0:
+  34              		.file 1 ".\\Generated_Source\\PSoC4\\GLCD.c"
+   1:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC4/GLCD.c **** * File Name: GLCD.c  
+   3:.\Generated_Source\PSoC4/GLCD.c **** * Version 0.3
+   4:.\Generated_Source\PSoC4/GLCD.c **** *
+   5:.\Generated_Source\PSoC4/GLCD.c **** *  Description:
+   6:.\Generated_Source\PSoC4/GLCD.c **** *    This file contains all the API for the SparkFun Color Graphics
+   7:.\Generated_Source\PSoC4/GLCD.c **** *    Arduino Shield board which uses a Nokia 6100 LCD.
+   8:.\Generated_Source\PSoC4/GLCD.c **** *
+   9:.\Generated_Source\PSoC4/GLCD.c **** * Note:  This code has been tested with the Philips PCF8833 controller, but not
+  10:.\Generated_Source\PSoC4/GLCD.c **** *        the EPSON S115D10 controller as of release 0.3.
+  11:.\Generated_Source\PSoC4/GLCD.c **** *
+  12:.\Generated_Source\PSoC4/GLCD.c **** *        Code has been optimized for a 32-bit processor such as the Cortex
+  13:.\Generated_Source\PSoC4/GLCD.c **** *        M0 or M3.
+  14:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************
+  15:.\Generated_Source\PSoC4/GLCD.c **** * The following firmware was developed by Cypress Semiconductor
+  16:.\Generated_Source\PSoC4/GLCD.c **** * This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+  17:.\Generated_Source\PSoC4/GLCD.c **** *
+  18:.\Generated_Source\PSoC4/GLCD.c **** * http://creativecommons.org/licenses/by/3.0/deed.en_US
+  19:.\Generated_Source\PSoC4/GLCD.c **** * 
+  20:.\Generated_Source\PSoC4/GLCD.c **** * You are free to:
+  21:.\Generated_Source\PSoC4/GLCD.c **** * -To Share — to copy, distribute and transmit the work 
+  22:.\Generated_Source\PSoC4/GLCD.c **** * -To Remix — to adapt the work 
+  23:.\Generated_Source\PSoC4/GLCD.c **** * -To make commercial use of the work
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 2
+
+
+  24:.\Generated_Source\PSoC4/GLCD.c **** *
+  25:.\Generated_Source\PSoC4/GLCD.c **** * Much of this code was ported from the LCD_driver code by Mark Sproul
+  26:.\Generated_Source\PSoC4/GLCD.c **** * and Peter DavenPort.  Also the tutorial by James P. Lynch
+  27:.\Generated_Source\PSoC4/GLCD.c **** * on how the controller works was invaluable.
+  28:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************/
+  29:.\Generated_Source\PSoC4/GLCD.c **** #include "cytypes.h"
+  30:.\Generated_Source\PSoC4/GLCD.c **** #include "GLCD.h"
+  31:.\Generated_Source\PSoC4/GLCD.c **** #include "GLCD_SPIM_SCB.h"
+  32:.\Generated_Source\PSoC4/GLCD.c **** #include "GLCD_Reset.h"
+  33:.\Generated_Source\PSoC4/GLCD.c **** #include "cyfitter.h"
+  34:.\Generated_Source\PSoC4/GLCD.c **** 
+  35:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_SCB_TYPE)
+  36:.\Generated_Source\PSoC4/GLCD.c **** #include "GLCD_SPIM_SCB_SPI_UART.h"
+  37:.\Generated_Source\PSoC4/GLCD.c **** #endif
+  38:.\Generated_Source\PSoC4/GLCD.c **** 
+  39:.\Generated_Source\PSoC4/GLCD.c **** uint8 GLCD_driver;
+  40:.\Generated_Source\PSoC4/GLCD.c **** 				
+  41:.\Generated_Source\PSoC4/GLCD.c **** static int32 GLCD_x_offset = 0;
+  42:.\Generated_Source\PSoC4/GLCD.c **** static int32 GLCD_y_offset = 0;
+  43:.\Generated_Source\PSoC4/GLCD.c **** 
+  44:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+  45:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Command
+  46:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+  47:.\Generated_Source\PSoC4/GLCD.c **** *
+  48:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+  49:.\Generated_Source\PSoC4/GLCD.c **** *  This function sends a command to the LCD controller.  
+  50:.\Generated_Source\PSoC4/GLCD.c **** *
+  51:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+  52:.\Generated_Source\PSoC4/GLCD.c **** *  cmdData:  This is the command to be sent to the LCD controller  
+  53:.\Generated_Source\PSoC4/GLCD.c **** *
+  54:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+  55:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+  56:.\Generated_Source\PSoC4/GLCD.c **** *  
+  57:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+  58:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Command(uint32 cmdData)
+  59:.\Generated_Source\PSoC4/GLCD.c **** {
+  35              		.loc 1 59 0
+  36              		.cfi_startproc
+  37 0000 80B5     		push	{r7, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 82B0     		sub	sp, sp, #8
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 16
+  45 0004 00AF     		add	r7, sp, #0
+  46              	.LCFI2:
+  47              		.cfi_def_cfa_register 7
+  48 0006 7860     		str	r0, [r7, #4]
+  60:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_UDB_TYPE)
+  61:.\Generated_Source\PSoC4/GLCD.c ****   while((GLCD_SPIM_SCB_ReadTxStatus() & (GLCD_SPIM_SCB_STS_SPI_DONE | GLCD_SPIM_SCB_STS_SPI_IDLE) )
+  62:.\Generated_Source\PSoC4/GLCD.c ****   GLCD_SPIM_SCB_WriteTxData((uint16)cmdData);
+  63:.\Generated_Source\PSoC4/GLCD.c **** #endif
+  64:.\Generated_Source\PSoC4/GLCD.c **** 
+  65:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_SCB_TYPE)
+  66:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_SPIM_SCB_SpiUartWriteTxData(cmdData);
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 3
+
+
+  49              		.loc 1 66 0
+  50 0008 7B68     		ldr	r3, [r7, #4]
+  51 000a 181C     		mov	r0, r3
+  52 000c FFF7FEFF 		bl	GLCD_SPIM_SCB_SpiUartWriteTxData
+  67:.\Generated_Source\PSoC4/GLCD.c **** #endif
+  68:.\Generated_Source\PSoC4/GLCD.c **** }
+  53              		.loc 1 68 0
+  54 0010 BD46     		mov	sp, r7
+  55 0012 02B0     		add	sp, sp, #8
+  56              		@ sp needed for prologue
+  57 0014 80BD     		pop	{r7, pc}
+  58              		.cfi_endproc
+  59              	.LFE0:
+  60              		.size	GLCD_Command, .-GLCD_Command
+  61 0016 C046     		.section	.text.GLCD_Data,"ax",%progbits
+  62              		.align	2
+  63              		.global	GLCD_Data
+  64              		.code	16
+  65              		.thumb_func
+  66              		.type	GLCD_Data, %function
+  67              	GLCD_Data:
+  68              	.LFB1:
+  69:.\Generated_Source\PSoC4/GLCD.c **** 
+  70:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+  71:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Data
+  72:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+  73:.\Generated_Source\PSoC4/GLCD.c **** *
+  74:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+  75:.\Generated_Source\PSoC4/GLCD.c **** *  This function sends raw data to the controller.  The 9th bit is set to signal
+  76:.\Generated_Source\PSoC4/GLCD.c **** *  the controller that it information is data and not a command.
+  77:.\Generated_Source\PSoC4/GLCD.c **** *
+  78:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+  79:.\Generated_Source\PSoC4/GLCD.c **** *  rawData:  The data to be sent to the controller. 
+  80:.\Generated_Source\PSoC4/GLCD.c **** *
+  81:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+  82:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+  83:.\Generated_Source\PSoC4/GLCD.c **** *  
+  84:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+  85:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Data(uint32 rawData)
+  86:.\Generated_Source\PSoC4/GLCD.c **** {	
+  69              		.loc 1 86 0
+  70              		.cfi_startproc
+  71 0000 80B5     		push	{r7, lr}
+  72              	.LCFI3:
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 7, -8
+  75              		.cfi_offset 14, -4
+  76 0002 82B0     		sub	sp, sp, #8
+  77              	.LCFI4:
+  78              		.cfi_def_cfa_offset 16
+  79 0004 00AF     		add	r7, sp, #0
+  80              	.LCFI5:
+  81              		.cfi_def_cfa_register 7
+  82 0006 7860     		str	r0, [r7, #4]
+  87:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_UDB_TYPE)
+  88:.\Generated_Source\PSoC4/GLCD.c ****     uint16 data16;
+  89:.\Generated_Source\PSoC4/GLCD.c ****     data16 = (uint16)rawData | 0x0100;
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 4
+
+
+  90:.\Generated_Source\PSoC4/GLCD.c **** 	
+  91:.\Generated_Source\PSoC4/GLCD.c ****     while((GLCD_SPIM_SCB_ReadTxStatus() & (GLCD_SPIM_SCB_STS_SPI_DONE | GLCD_SPIM_SCB_STS_SPI_IDLE)
+  92:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_SPIM_SCB_WriteTxData(data16);
+  93:.\Generated_Source\PSoC4/GLCD.c **** #endif
+  94:.\Generated_Source\PSoC4/GLCD.c **** 
+  95:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_SCB_TYPE)
+  96:.\Generated_Source\PSoC4/GLCD.c **** 
+  97:.\Generated_Source\PSoC4/GLCD.c ****     rawData = rawData | 0x00000100;
+  83              		.loc 1 97 0
+  84 0008 7B68     		ldr	r3, [r7, #4]
+  85 000a 8022     		mov	r2, #128
+  86 000c 5200     		lsl	r2, r2, #1
+  87 000e 1343     		orr	r3, r2
+  88 0010 7B60     		str	r3, [r7, #4]
+  98:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_SPIM_SCB_SpiUartWriteTxData(rawData);
+  89              		.loc 1 98 0
+  90 0012 7B68     		ldr	r3, [r7, #4]
+  91 0014 181C     		mov	r0, r3
+  92 0016 FFF7FEFF 		bl	GLCD_SPIM_SCB_SpiUartWriteTxData
+  99:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 100:.\Generated_Source\PSoC4/GLCD.c **** 
+ 101:.\Generated_Source\PSoC4/GLCD.c **** }
+  93              		.loc 1 101 0
+  94 001a BD46     		mov	sp, r7
+  95 001c 02B0     		add	sp, sp, #8
+  96              		@ sp needed for prologue
+  97 001e 80BD     		pop	{r7, pc}
+  98              		.cfi_endproc
+  99              	.LFE1:
+ 100              		.size	GLCD_Data, .-GLCD_Data
+ 101              		.section	.text.GLCD_Start,"ax",%progbits
+ 102              		.align	2
+ 103              		.global	GLCD_Start
+ 104              		.code	16
+ 105              		.thumb_func
+ 106              		.type	GLCD_Start, %function
+ 107              	GLCD_Start:
+ 108              	.LFB2:
+ 102:.\Generated_Source\PSoC4/GLCD.c **** 
+ 103:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 104:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Start
+ 105:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 106:.\Generated_Source\PSoC4/GLCD.c **** *
+ 107:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 108:.\Generated_Source\PSoC4/GLCD.c **** *  This function initializes the SPI interface and the LCD controller.  
+ 109:.\Generated_Source\PSoC4/GLCD.c **** *
+ 110:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 111:.\Generated_Source\PSoC4/GLCD.c **** *  None:   
+ 112:.\Generated_Source\PSoC4/GLCD.c **** *
+ 113:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 114:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 115:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 116:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 117:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Start(void)
+ 118:.\Generated_Source\PSoC4/GLCD.c **** {
+ 109              		.loc 1 118 0
+ 110              		.cfi_startproc
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 5
+
+
+ 111 0000 80B5     		push	{r7, lr}
+ 112              	.LCFI6:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 7, -8
+ 115              		.cfi_offset 14, -4
+ 116 0002 00AF     		add	r7, sp, #0
+ 117              	.LCFI7:
+ 118              		.cfi_def_cfa_register 7
+ 119:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 120:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_SPIM_SCB_Start();
+ 119              		.loc 1 120 0
+ 120 0004 FFF7FEFF 		bl	GLCD_SPIM_SCB_Start
+ 121:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_SPIM_TYPE == GLCD_SPIM_SCB_TYPE)
+ 122:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_SPIM_SCB_SpiSetActiveSlaveSelect(3u);
+ 121              		.loc 1 122 0
+ 122 0008 0320     		mov	r0, #3
+ 123 000a FFF7FEFF 		bl	GLCD_SPIM_SCB_SpiSetActiveSlaveSelect
+ 123:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 124:.\Generated_Source\PSoC4/GLCD.c **** 
+ 125:.\Generated_Source\PSoC4/GLCD.c **** 	CyDelayUs(20);			            /* 20us delay    */
+ 124              		.loc 1 125 0
+ 125 000e 1420     		mov	r0, #20
+ 126 0010 FFF7FEFF 		bl	CyDelayUs
+ 126:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Reset_Write(0x00);	/* Display Reset */
+ 127              		.loc 1 126 0
+ 128 0014 0020     		mov	r0, #0
+ 129 0016 FFF7FEFF 		bl	GLCD_Reset_Write
+ 127:.\Generated_Source\PSoC4/GLCD.c **** 	CyDelay(200);			            /* 200ms delay   */
+ 130              		.loc 1 127 0
+ 131 001a C820     		mov	r0, #200
+ 132 001c FFF7FEFF 		bl	CyDelay
+ 128:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Reset_Write(0xFF);	/* Release Reset */
+ 133              		.loc 1 128 0
+ 134 0020 FF20     		mov	r0, #255
+ 135 0022 FFF7FEFF 		bl	GLCD_Reset_Write
+ 129:.\Generated_Source\PSoC4/GLCD.c **** 	CyDelay(200);			            /* 200ms delay   */
+ 136              		.loc 1 129 0
+ 137 0026 C820     		mov	r0, #200
+ 138 0028 FFF7FEFF 		bl	CyDelay
+ 130:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 131:.\Generated_Source\PSoC4/GLCD.c **** #if(GLCD_Controller == GLCD_EPSON)
+ 132:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_DISCTL);	/*  Display control (0xCA)         */
+ 133:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x0C);		/* 12 = 1100 - CL dividing ratio [don't divide] switching period 8H (default) */
+ 134:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x20);		/* nlines/4 - 1 = 132/4 - 1 = 32 duty              */
+ 135:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x00);		/* No inversely highlighted lines                  */
+ 136:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 137:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COMSCN);	  /* common scanning direction     */
+ 138:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x01);		                  /* 1->68, 132<-69 scan direction */
+ 139:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 140:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_OSCON);	  /* internal oscialltor ON        */
+ 141:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_SLEEPOUT);  /* sleep out                     */    
+ 142:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 143:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PWRCTR);	  /* Power ctrl                    */
+ 144:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x0F);	                      /* everything on, no external reference  resistors  */
+ 145:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 146:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_DINVON);	  /* invert display mode           */
+ 147:.\Generated_Source\PSoC4/GLCD.c **** 	
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 6
+
+
+ 148:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_DATCTL);	  /* data control                  */
+ 149:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x03);		/* Inverse page address, reverse rotation column address, column scan-direction	
+ 150:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x00);		                  /* normal RGB arrangement                 */
+ 151:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x02);		                  /* 16-bit Grayscale Type A (12-bit color) */
+ 152:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 153:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_SETCONST);	/* Electronic volume, this is the contrast/brightness        */
+ 154:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_CONST_DEFAULT);  /* Volume (contrast) setting - fine tuning, original (0-63)  */
+ 155:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(3);			                    /* Internal resistor ratio - coarse adjustment (0-7)         *
+ 156:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 157:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_NOP);	        /* nop */
+ 158:.\Generated_Source\PSoC4/GLCD.c **** 
+ 159:.\Generated_Source\PSoC4/GLCD.c **** 	CyDelay(100);
+ 160:.\Generated_Source\PSoC4/GLCD.c **** 
+ 161:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_DISPON);	     /*  Display on */
+ 162:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 163:.\Generated_Source\PSoC4/GLCD.c **** 
+ 164:.\Generated_Source\PSoC4/GLCD.c **** #if(GLCD_Controller == GLCD_PHILIPS) /* Driver is Philips */
+ 165:.\Generated_Source\PSoC4/GLCD.c **** 
+ 166:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_SLEEPOUT);	 /* Sleep Out          */
+ 139              		.loc 1 166 0
+ 140 002c 1120     		mov	r0, #17
+ 141 002e FFF7FEFF 		bl	GLCD_Command
+ 167:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_BSTRON);       /* Booster voltage on */
+ 142              		.loc 1 167 0
+ 143 0032 0320     		mov	r0, #3
+ 144 0034 FFF7FEFF 		bl	GLCD_Command
+ 168:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_DISPON);		 /* Display on         */
+ 145              		.loc 1 168 0
+ 146 0038 2920     		mov	r0, #41
+ 147 003a FFF7FEFF 		bl	GLCD_Command
+ 169:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 170:.\Generated_Source\PSoC4/GLCD.c **** 	/* 12-bit color pixel format:  */
+ 171:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLMOD);		 /* Color interface format     */
+ 148              		.loc 1 171 0
+ 149 003e 3A20     		mov	r0, #58
+ 150 0040 FFF7FEFF 		bl	GLCD_Command
+ 172:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(0x03);			                 /* 0b011 is 12-bit/pixel mode */
+ 151              		.loc 1 172 0
+ 152 0044 0320     		mov	r0, #3
+ 153 0046 FFF7FEFF 		bl	GLCD_Data
+ 173:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 174:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_MADCTL);		 /* Memory Access Control      */
+ 154              		.loc 1 174 0
+ 155 004a 3620     		mov	r0, #54
+ 156 004c FFF7FEFF 		bl	GLCD_Command
+ 175:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_SETCONST);     /* Set Contrast               */          
+ 157              		.loc 1 175 0
+ 158 0050 2520     		mov	r0, #37
+ 159 0052 FFF7FEFF 		bl	GLCD_Command
+ 176:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_CONST_DEFAULT);
+ 160              		.loc 1 176 0
+ 161 0056 3020     		mov	r0, #48
+ 162 0058 FFF7FEFF 		bl	GLCD_Data
+ 177:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 178:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_NOP);	
+ 163              		.loc 1 178 0
+ 164 005c 0020     		mov	r0, #0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 7
+
+
+ 165 005e FFF7FEFF 		bl	GLCD_Command
+ 179:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 180:.\Generated_Source\PSoC4/GLCD.c **** 
+ 181:.\Generated_Source\PSoC4/GLCD.c ****   	GLCD_Contrast(60);                           /* Set default contrast  */
+ 166              		.loc 1 181 0
+ 167 0062 3C20     		mov	r0, #60
+ 168 0064 FFF7FEFF 		bl	GLCD_Contrast
+ 182:.\Generated_Source\PSoC4/GLCD.c ****   	GLCD_Clear(GLCD_BLACK);          /* Clear screen to black */
+ 169              		.loc 1 182 0
+ 170 0068 0020     		mov	r0, #0
+ 171 006a FFF7FEFF 		bl	GLCD_Clear
+ 183:.\Generated_Source\PSoC4/GLCD.c **** }
+ 172              		.loc 1 183 0
+ 173 006e BD46     		mov	sp, r7
+ 174              		@ sp needed for prologue
+ 175 0070 80BD     		pop	{r7, pc}
+ 176              		.cfi_endproc
+ 177              	.LFE2:
+ 178              		.size	GLCD_Start, .-GLCD_Start
+ 179 0072 C046     		.section	.text.GLCD_Stop,"ax",%progbits
+ 180              		.align	2
+ 181              		.global	GLCD_Stop
+ 182              		.code	16
+ 183              		.thumb_func
+ 184              		.type	GLCD_Stop, %function
+ 185              	GLCD_Stop:
+ 186              	.LFB3:
+ 184:.\Generated_Source\PSoC4/GLCD.c **** 
+ 185:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 186:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Stop
+ 187:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 188:.\Generated_Source\PSoC4/GLCD.c **** *
+ 189:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 190:.\Generated_Source\PSoC4/GLCD.c **** *  This function clears the LCD to black and turns off the display.  
+ 191:.\Generated_Source\PSoC4/GLCD.c **** *
+ 192:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 193:.\Generated_Source\PSoC4/GLCD.c **** *   None:   
+ 194:.\Generated_Source\PSoC4/GLCD.c **** *
+ 195:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 196:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 197:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 198:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 199:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Stop(void)
+ 200:.\Generated_Source\PSoC4/GLCD.c **** {
+ 187              		.loc 1 200 0
+ 188              		.cfi_startproc
+ 189 0000 80B5     		push	{r7, lr}
+ 190              	.LCFI8:
+ 191              		.cfi_def_cfa_offset 8
+ 192              		.cfi_offset 7, -8
+ 193              		.cfi_offset 14, -4
+ 194 0002 00AF     		add	r7, sp, #0
+ 195              	.LCFI9:
+ 196              		.cfi_def_cfa_register 7
+ 201:.\Generated_Source\PSoC4/GLCD.c ****    GLCD_Clear(GLCD_BLACK);
+ 197              		.loc 1 201 0
+ 198 0004 0020     		mov	r0, #0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 8
+
+
+ 199 0006 FFF7FEFF 		bl	GLCD_Clear
+ 202:.\Generated_Source\PSoC4/GLCD.c ****    GLCD_Command(GLCD_DISPOFF);
+ 200              		.loc 1 202 0
+ 201 000a 2820     		mov	r0, #40
+ 202 000c FFF7FEFF 		bl	GLCD_Command
+ 203:.\Generated_Source\PSoC4/GLCD.c **** }
+ 203              		.loc 1 203 0
+ 204 0010 BD46     		mov	sp, r7
+ 205              		@ sp needed for prologue
+ 206 0012 80BD     		pop	{r7, pc}
+ 207              		.cfi_endproc
+ 208              	.LFE3:
+ 209              		.size	GLCD_Stop, .-GLCD_Stop
+ 210              		.section	.text.GLCD_Clear,"ax",%progbits
+ 211              		.align	2
+ 212              		.global	GLCD_Clear
+ 213              		.code	16
+ 214              		.thumb_func
+ 215              		.type	GLCD_Clear, %function
+ 216              	GLCD_Clear:
+ 217              	.LFB4:
+ 204:.\Generated_Source\PSoC4/GLCD.c **** 
+ 205:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 206:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Clear
+ 207:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 208:.\Generated_Source\PSoC4/GLCD.c **** *
+ 209:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 210:.\Generated_Source\PSoC4/GLCD.c **** *  Clear the display.  
+ 211:.\Generated_Source\PSoC4/GLCD.c **** *
+ 212:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 213:.\Generated_Source\PSoC4/GLCD.c **** *  color: Color to clear display with. 
+ 214:.\Generated_Source\PSoC4/GLCD.c **** *
+ 215:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 216:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 217:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 218:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 219:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Clear(int32 color)
+ 220:.\Generated_Source\PSoC4/GLCD.c **** {
+ 218              		.loc 1 220 0
+ 219              		.cfi_startproc
+ 220 0000 80B5     		push	{r7, lr}
+ 221              	.LCFI10:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 7, -8
+ 224              		.cfi_offset 14, -4
+ 225 0002 84B0     		sub	sp, sp, #16
+ 226              	.LCFI11:
+ 227              		.cfi_def_cfa_offset 24
+ 228 0004 00AF     		add	r7, sp, #0
+ 229              	.LCFI12:
+ 230              		.cfi_def_cfa_register 7
+ 231 0006 7860     		str	r0, [r7, #4]
+ 221:.\Generated_Source\PSoC4/GLCD.c ****     int32 i;
+ 222:.\Generated_Source\PSoC4/GLCD.c **** 
+ 223:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PAGEADDR);
+ 232              		.loc 1 223 0
+ 233 0008 2B20     		mov	r0, #43
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 9
+
+
+ 234 000a FFF7FEFF 		bl	GLCD_Command
+ 224:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_MINX);
+ 235              		.loc 1 224 0
+ 236 000e 0020     		mov	r0, #0
+ 237 0010 FFF7FEFF 		bl	GLCD_Data
+ 225:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_MAXX);
+ 238              		.loc 1 225 0
+ 239 0014 8320     		mov	r0, #131
+ 240 0016 FFF7FEFF 		bl	GLCD_Data
+ 226:.\Generated_Source\PSoC4/GLCD.c **** 
+ 227:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLADDR);
+ 241              		.loc 1 227 0
+ 242 001a 2A20     		mov	r0, #42
+ 243 001c FFF7FEFF 		bl	GLCD_Command
+ 228:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_MINY);
+ 244              		.loc 1 228 0
+ 245 0020 0020     		mov	r0, #0
+ 246 0022 FFF7FEFF 		bl	GLCD_Data
+ 229:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_MAXY);
+ 247              		.loc 1 229 0
+ 248 0026 8320     		mov	r0, #131
+ 249 0028 FFF7FEFF 		bl	GLCD_Data
+ 230:.\Generated_Source\PSoC4/GLCD.c **** 
+ 231:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_RAMWR);
+ 250              		.loc 1 231 0
+ 251 002c 2C20     		mov	r0, #44
+ 252 002e FFF7FEFF 		bl	GLCD_Command
+ 232:.\Generated_Source\PSoC4/GLCD.c **** 
+ 233:.\Generated_Source\PSoC4/GLCD.c **** 
+ 234:.\Generated_Source\PSoC4/GLCD.c **** 	for( i=0; i < (GLCD_MAXX*GLCD_MAXY)/2; i++)
+ 253              		.loc 1 234 0
+ 254 0032 0023     		mov	r3, #0
+ 255 0034 FB60     		str	r3, [r7, #12]
+ 256 0036 1AE0     		b	.L6
+ 257              	.L7:
+ 235:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 236:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Data((color>>4)&0x00FF);
+ 258              		.loc 1 236 0 discriminator 2
+ 259 0038 7B68     		ldr	r3, [r7, #4]
+ 260 003a 1B11     		asr	r3, r3, #4
+ 261 003c 1A1C     		mov	r2, r3
+ 262 003e FF23     		mov	r3, #255
+ 263 0040 1340     		and	r3, r2
+ 264 0042 181C     		mov	r0, r3
+ 265 0044 FFF7FEFF 		bl	GLCD_Data
+ 237:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Data(((color&0x0F)<<4)|(color>>8));
+ 266              		.loc 1 237 0 discriminator 2
+ 267 0048 7B68     		ldr	r3, [r7, #4]
+ 268 004a 1A01     		lsl	r2, r3, #4
+ 269 004c FF23     		mov	r3, #255
+ 270 004e 1A40     		and	r2, r3
+ 271 0050 7B68     		ldr	r3, [r7, #4]
+ 272 0052 1B12     		asr	r3, r3, #8
+ 273 0054 1343     		orr	r3, r2
+ 274 0056 181C     		mov	r0, r3
+ 275 0058 FFF7FEFF 		bl	GLCD_Data
+ 238:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Data(color&0x0FF);
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 10
+
+
+ 276              		.loc 1 238 0 discriminator 2
+ 277 005c 7A68     		ldr	r2, [r7, #4]
+ 278 005e FF23     		mov	r3, #255
+ 279 0060 1340     		and	r3, r2
+ 280 0062 181C     		mov	r0, r3
+ 281 0064 FFF7FEFF 		bl	GLCD_Data
+ 234:.\Generated_Source\PSoC4/GLCD.c **** 	for( i=0; i < (GLCD_MAXX*GLCD_MAXY)/2; i++)
+ 282              		.loc 1 234 0 discriminator 2
+ 283 0068 FB68     		ldr	r3, [r7, #12]
+ 284 006a 0133     		add	r3, r3, #1
+ 285 006c FB60     		str	r3, [r7, #12]
+ 286              	.L6:
+ 234:.\Generated_Source\PSoC4/GLCD.c **** 	for( i=0; i < (GLCD_MAXX*GLCD_MAXY)/2; i++)
+ 287              		.loc 1 234 0 is_stmt 0 discriminator 1
+ 288 006e FA68     		ldr	r2, [r7, #12]
+ 289 0070 054B     		ldr	r3, .L8
+ 290 0072 9A42     		cmp	r2, r3
+ 291 0074 E0D9     		bls	.L7
+ 239:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 240:.\Generated_Source\PSoC4/GLCD.c **** 
+ 241:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_x_offset = 0;
+ 292              		.loc 1 241 0 is_stmt 1
+ 293 0076 054B     		ldr	r3, .L8+4
+ 294 0078 0022     		mov	r2, #0
+ 295 007a 1A60     		str	r2, [r3]
+ 242:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_y_offset = 0;
+ 296              		.loc 1 242 0
+ 297 007c 044B     		ldr	r3, .L8+8
+ 298 007e 0022     		mov	r2, #0
+ 299 0080 1A60     		str	r2, [r3]
+ 243:.\Generated_Source\PSoC4/GLCD.c **** }
+ 300              		.loc 1 243 0
+ 301 0082 BD46     		mov	sp, r7
+ 302 0084 04B0     		add	sp, sp, #16
+ 303              		@ sp needed for prologue
+ 304 0086 80BD     		pop	{r7, pc}
+ 305              	.L9:
+ 306              		.align	2
+ 307              	.L8:
+ 308 0088 83210000 		.word	8579
+ 309 008c 00000000 		.word	GLCD_x_offset
+ 310 0090 04000000 		.word	GLCD_y_offset
+ 311              		.cfi_endproc
+ 312              	.LFE4:
+ 313              		.size	GLCD_Clear, .-GLCD_Clear
+ 314              		.section	.text.GLCD_Contrast,"ax",%progbits
+ 315              		.align	2
+ 316              		.global	GLCD_Contrast
+ 317              		.code	16
+ 318              		.thumb_func
+ 319              		.type	GLCD_Contrast, %function
+ 320              	GLCD_Contrast:
+ 321              	.LFB5:
+ 244:.\Generated_Source\PSoC4/GLCD.c **** 
+ 245:.\Generated_Source\PSoC4/GLCD.c **** 
+ 246:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 247:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Contrast
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 11
+
+
+ 248:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 249:.\Generated_Source\PSoC4/GLCD.c **** *
+ 250:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 251:.\Generated_Source\PSoC4/GLCD.c **** *  Set color contrast  
+ 252:.\Generated_Source\PSoC4/GLCD.c **** *
+ 253:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 254:.\Generated_Source\PSoC4/GLCD.c **** *  setting: Contrast value.  
+ 255:.\Generated_Source\PSoC4/GLCD.c **** *
+ 256:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 257:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 258:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 259:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 260:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Contrast(int32 setting)
+ 261:.\Generated_Source\PSoC4/GLCD.c **** {
+ 322              		.loc 1 261 0
+ 323              		.cfi_startproc
+ 324 0000 80B5     		push	{r7, lr}
+ 325              	.LCFI13:
+ 326              		.cfi_def_cfa_offset 8
+ 327              		.cfi_offset 7, -8
+ 328              		.cfi_offset 14, -4
+ 329 0002 82B0     		sub	sp, sp, #8
+ 330              	.LCFI14:
+ 331              		.cfi_def_cfa_offset 16
+ 332 0004 00AF     		add	r7, sp, #0
+ 333              	.LCFI15:
+ 334              		.cfi_def_cfa_register 7
+ 335 0006 7860     		str	r0, [r7, #4]
+ 262:.\Generated_Source\PSoC4/GLCD.c ****     setting &= GLCD_CONST_MASK;	                /* Mask off contrast value */
+ 336              		.loc 1 262 0
+ 337 0008 7A68     		ldr	r2, [r7, #4]
+ 338 000a 7F23     		mov	r3, #127
+ 339 000c 1340     		and	r3, r2
+ 340 000e 7B60     		str	r3, [r7, #4]
+ 263:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_Command(GLCD_SETCONST);	/* Set Contrast            */
+ 341              		.loc 1 263 0
+ 342 0010 2520     		mov	r0, #37
+ 343 0012 FFF7FEFF 		bl	GLCD_Command
+ 264:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_Data(setting);	                    
+ 344              		.loc 1 264 0
+ 345 0016 7B68     		ldr	r3, [r7, #4]
+ 346 0018 181C     		mov	r0, r3
+ 347 001a FFF7FEFF 		bl	GLCD_Data
+ 265:.\Generated_Source\PSoC4/GLCD.c **** 
+ 266:.\Generated_Source\PSoC4/GLCD.c **** #if(GLCD_Controller == GLCD_EPSON)  /* Only required for Epson */
+ 267:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_Data(3);			
+ 268:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 269:.\Generated_Source\PSoC4/GLCD.c **** 
+ 270:.\Generated_Source\PSoC4/GLCD.c **** }
+ 348              		.loc 1 270 0
+ 349 001e BD46     		mov	sp, r7
+ 350 0020 02B0     		add	sp, sp, #8
+ 351              		@ sp needed for prologue
+ 352 0022 80BD     		pop	{r7, pc}
+ 353              		.cfi_endproc
+ 354              	.LFE5:
+ 355              		.size	GLCD_Contrast, .-GLCD_Contrast
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 12
+
+
+ 356              		.section	.text.GLCD_SwapColors,"ax",%progbits
+ 357              		.align	2
+ 358              		.global	GLCD_SwapColors
+ 359              		.code	16
+ 360              		.thumb_func
+ 361              		.type	GLCD_SwapColors, %function
+ 362              	GLCD_SwapColors:
+ 363              	.LFB6:
+ 271:.\Generated_Source\PSoC4/GLCD.c **** 
+ 272:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 273:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_SwapColors
+ 274:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 275:.\Generated_Source\PSoC4/GLCD.c **** *
+ 276:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 277:.\Generated_Source\PSoC4/GLCD.c **** *   Swaps colors between Epson and Philips mode.  
+ 278:.\Generated_Source\PSoC4/GLCD.c **** *
+ 279:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 280:.\Generated_Source\PSoC4/GLCD.c **** *  prtValue:  The value  
+ 281:.\Generated_Source\PSoC4/GLCD.c **** *
+ 282:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 283:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 284:.\Generated_Source\PSoC4/GLCD.c **** *  Added by Steve Sparks @ Big Nerd Ranch.
+ 285:.\Generated_Source\PSoC4/GLCD.c **** *  This swaps the Epson RGB order into the Philips RGB order. (Or, vice versa, I suppose.)
+ 286:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 287:.\Generated_Source\PSoC4/GLCD.c **** int32 GLCD_SwapColors(int32 in)
+ 288:.\Generated_Source\PSoC4/GLCD.c **** {
+ 364              		.loc 1 288 0
+ 365              		.cfi_startproc
+ 366 0000 80B5     		push	{r7, lr}
+ 367              	.LCFI16:
+ 368              		.cfi_def_cfa_offset 8
+ 369              		.cfi_offset 7, -8
+ 370              		.cfi_offset 14, -4
+ 371 0002 82B0     		sub	sp, sp, #8
+ 372              	.LCFI17:
+ 373              		.cfi_def_cfa_offset 16
+ 374 0004 00AF     		add	r7, sp, #0
+ 375              	.LCFI18:
+ 376              		.cfi_def_cfa_register 7
+ 377 0006 7860     		str	r0, [r7, #4]
+ 289:.\Generated_Source\PSoC4/GLCD.c ****     return ((in & 0x000F)<<8)|(in & 0x00F0)|((in & 0x0F00)>>8);
+ 378              		.loc 1 289 0
+ 379 0008 7A68     		ldr	r2, [r7, #4]
+ 380 000a 0F23     		mov	r3, #15
+ 381 000c 1340     		and	r3, r2
+ 382 000e 1A02     		lsl	r2, r3, #8
+ 383 0010 7968     		ldr	r1, [r7, #4]
+ 384 0012 F023     		mov	r3, #240
+ 385 0014 0B40     		and	r3, r1
+ 386 0016 1A43     		orr	r2, r3
+ 387 0018 7968     		ldr	r1, [r7, #4]
+ 388 001a F023     		mov	r3, #240
+ 389 001c 1B01     		lsl	r3, r3, #4
+ 390 001e 0B40     		and	r3, r1
+ 391 0020 1B12     		asr	r3, r3, #8
+ 392 0022 1343     		orr	r3, r2
+ 290:.\Generated_Source\PSoC4/GLCD.c **** }
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 13
+
+
+ 393              		.loc 1 290 0
+ 394 0024 181C     		mov	r0, r3
+ 395 0026 BD46     		mov	sp, r7
+ 396 0028 02B0     		add	sp, sp, #8
+ 397              		@ sp needed for prologue
+ 398 002a 80BD     		pop	{r7, pc}
+ 399              		.cfi_endproc
+ 400              	.LFE6:
+ 401              		.size	GLCD_SwapColors, .-GLCD_SwapColors
+ 402              		.section	.text.GLCD_Pixel,"ax",%progbits
+ 403              		.align	2
+ 404              		.global	GLCD_Pixel
+ 405              		.code	16
+ 406              		.thumb_func
+ 407              		.type	GLCD_Pixel, %function
+ 408              	GLCD_Pixel:
+ 409              	.LFB7:
+ 291:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 292:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Pixel
+ 293:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 294:.\Generated_Source\PSoC4/GLCD.c **** *
+ 295:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 296:.\Generated_Source\PSoC4/GLCD.c **** *  Draw Pixel  
+ 297:.\Generated_Source\PSoC4/GLCD.c **** *
+ 298:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 299:.\Generated_Source\PSoC4/GLCD.c **** *  x,y:    Location to draw the pixel
+ 300:.\Generated_Source\PSoC4/GLCD.c **** *  color:  Color of the pixel
+ 301:.\Generated_Source\PSoC4/GLCD.c **** *
+ 302:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 303:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 304:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 305:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Pixel(int32 x, int32 y, int32 color)
+ 306:.\Generated_Source\PSoC4/GLCD.c **** {
+ 410              		.loc 1 306 0
+ 411              		.cfi_startproc
+ 412 0000 80B5     		push	{r7, lr}
+ 413              	.LCFI19:
+ 414              		.cfi_def_cfa_offset 8
+ 415              		.cfi_offset 7, -8
+ 416              		.cfi_offset 14, -4
+ 417 0002 84B0     		sub	sp, sp, #16
+ 418              	.LCFI20:
+ 419              		.cfi_def_cfa_offset 24
+ 420 0004 00AF     		add	r7, sp, #0
+ 421              	.LCFI21:
+ 422              		.cfi_def_cfa_register 7
+ 423 0006 F860     		str	r0, [r7, #12]
+ 424 0008 B960     		str	r1, [r7, #8]
+ 425 000a 7A60     		str	r2, [r7, #4]
+ 307:.\Generated_Source\PSoC4/GLCD.c ****     y =	(GLCD_COL_HEIGHT - 1) - y;
+ 426              		.loc 1 307 0
+ 427 000c BB68     		ldr	r3, [r7, #8]
+ 428 000e 8322     		mov	r2, #131
+ 429 0010 D31A     		sub	r3, r2, r3
+ 430 0012 BB60     		str	r3, [r7, #8]
+ 308:.\Generated_Source\PSoC4/GLCD.c ****     x = (GLCD_ROW_LENGTH - 1) - x;
+ 431              		.loc 1 308 0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 14
+
+
+ 432 0014 FB68     		ldr	r3, [r7, #12]
+ 433 0016 8322     		mov	r2, #131
+ 434 0018 D31A     		sub	r3, r2, r3
+ 435 001a FB60     		str	r3, [r7, #12]
+ 309:.\Generated_Source\PSoC4/GLCD.c **** 
+ 310:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_Controller == GLCD_EPSON) /* EPSON     */
+ 311:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PAGEADDR);    /* Set page  */
+ 312:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(x);
+ 313:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_ENDPAGE);
+ 314:.\Generated_Source\PSoC4/GLCD.c **** 
+ 315:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLADDR);     /* Set column */
+ 316:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(y);
+ 317:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(GLCD_ENDCOL);
+ 318:.\Generated_Source\PSoC4/GLCD.c **** 
+ 319:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_RAMWR);       /* Write color data */
+ 320:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((color>>4)&0x00FF);
+ 321:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(((color&0x0F)<<4)|(color>>8));
+ 322:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(color&0x0FF);
+ 323:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 324:.\Generated_Source\PSoC4/GLCD.c **** 
+ 325:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_Controller == GLCD_PHILIPS) /* PHILIPS   */
+ 326:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PAGEADDR);      /* Set page  */
+ 436              		.loc 1 326 0
+ 437 001c 2B20     		mov	r0, #43
+ 438 001e FFF7FEFF 		bl	GLCD_Command
+ 327:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)x);
+ 439              		.loc 1 327 0
+ 440 0022 FB68     		ldr	r3, [r7, #12]
+ 441 0024 DBB2     		uxtb	r3, r3
+ 442 0026 181C     		mov	r0, r3
+ 443 0028 FFF7FEFF 		bl	GLCD_Data
+ 328:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)x);
+ 444              		.loc 1 328 0
+ 445 002c FB68     		ldr	r3, [r7, #12]
+ 446 002e DBB2     		uxtb	r3, r3
+ 447 0030 181C     		mov	r0, r3
+ 448 0032 FFF7FEFF 		bl	GLCD_Data
+ 329:.\Generated_Source\PSoC4/GLCD.c **** 
+ 330:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLADDR);       /* Set column */
+ 449              		.loc 1 330 0
+ 450 0036 2A20     		mov	r0, #42
+ 451 0038 FFF7FEFF 		bl	GLCD_Command
+ 331:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)y);
+ 452              		.loc 1 331 0
+ 453 003c BB68     		ldr	r3, [r7, #8]
+ 454 003e DBB2     		uxtb	r3, r3
+ 455 0040 181C     		mov	r0, r3
+ 456 0042 FFF7FEFF 		bl	GLCD_Data
+ 332:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)y);
+ 457              		.loc 1 332 0
+ 458 0046 BB68     		ldr	r3, [r7, #8]
+ 459 0048 DBB2     		uxtb	r3, r3
+ 460 004a 181C     		mov	r0, r3
+ 461 004c FFF7FEFF 		bl	GLCD_Data
+ 333:.\Generated_Source\PSoC4/GLCD.c **** 
+ 334:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_RAMWR);         /* Write color data */
+ 462              		.loc 1 334 0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 15
+
+
+ 463 0050 2C20     		mov	r0, #44
+ 464 0052 FFF7FEFF 		bl	GLCD_Command
+ 335:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)((color>>4)&0x00FF));
+ 465              		.loc 1 335 0
+ 466 0056 7B68     		ldr	r3, [r7, #4]
+ 467 0058 1B11     		asr	r3, r3, #4
+ 468 005a DBB2     		uxtb	r3, r3
+ 469 005c 181C     		mov	r0, r3
+ 470 005e FFF7FEFF 		bl	GLCD_Data
+ 336:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)(((color&0x0F)<<4)|0x00));
+ 471              		.loc 1 336 0
+ 472 0062 7B68     		ldr	r3, [r7, #4]
+ 473 0064 1B01     		lsl	r3, r3, #4
+ 474 0066 DBB2     		uxtb	r3, r3
+ 475 0068 181C     		mov	r0, r3
+ 476 006a FFF7FEFF 		bl	GLCD_Data
+ 337:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 338:.\Generated_Source\PSoC4/GLCD.c **** }
+ 477              		.loc 1 338 0
+ 478 006e BD46     		mov	sp, r7
+ 479 0070 04B0     		add	sp, sp, #16
+ 480              		@ sp needed for prologue
+ 481 0072 80BD     		pop	{r7, pc}
+ 482              		.cfi_endproc
+ 483              	.LFE7:
+ 484              		.size	GLCD_Pixel, .-GLCD_Pixel
+ 485              		.section	.text.GLCD_DrawCircle,"ax",%progbits
+ 486              		.align	2
+ 487              		.global	GLCD_DrawCircle
+ 488              		.code	16
+ 489              		.thumb_func
+ 490              		.type	GLCD_DrawCircle, %function
+ 491              	GLCD_DrawCircle:
+ 492              	.LFB8:
+ 339:.\Generated_Source\PSoC4/GLCD.c **** 
+ 340:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 341:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_DrawCircle
+ 342:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 343:.\Generated_Source\PSoC4/GLCD.c **** *
+ 344:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 345:.\Generated_Source\PSoC4/GLCD.c **** *  Draw a circle on the display given a start point and radius.  
+ 346:.\Generated_Source\PSoC4/GLCD.c **** *
+ 347:.\Generated_Source\PSoC4/GLCD.c **** *  This code uses Bresenham's Circle Algorithm. 
+ 348:.\Generated_Source\PSoC4/GLCD.c **** *
+ 349:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 350:.\Generated_Source\PSoC4/GLCD.c **** *  x0, y0: Center of circle
+ 351:.\Generated_Source\PSoC4/GLCD.c **** *  radius: Radius of circle
+ 352:.\Generated_Source\PSoC4/GLCD.c **** *  color:  Color of circle
+ 353:.\Generated_Source\PSoC4/GLCD.c **** *
+ 354:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 355:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 356:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 357:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 358:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_DrawCircle (int32 x0, int32 y0, int32 radius, int32 color)
+ 359:.\Generated_Source\PSoC4/GLCD.c **** {
+ 493              		.loc 1 359 0
+ 494              		.cfi_startproc
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 16
+
+
+ 495 0000 80B5     		push	{r7, lr}
+ 496              	.LCFI22:
+ 497              		.cfi_def_cfa_offset 8
+ 498              		.cfi_offset 7, -8
+ 499              		.cfi_offset 14, -4
+ 500 0002 8AB0     		sub	sp, sp, #40
+ 501              	.LCFI23:
+ 502              		.cfi_def_cfa_offset 48
+ 503 0004 00AF     		add	r7, sp, #0
+ 504              	.LCFI24:
+ 505              		.cfi_def_cfa_register 7
+ 506 0006 F860     		str	r0, [r7, #12]
+ 507 0008 B960     		str	r1, [r7, #8]
+ 508 000a 7A60     		str	r2, [r7, #4]
+ 509 000c 3B60     		str	r3, [r7]
+ 360:.\Generated_Source\PSoC4/GLCD.c **** 	int32 f = 1 - radius;
+ 510              		.loc 1 360 0
+ 511 000e 7B68     		ldr	r3, [r7, #4]
+ 512 0010 0122     		mov	r2, #1
+ 513 0012 D31A     		sub	r3, r2, r3
+ 514 0014 7B62     		str	r3, [r7, #36]
+ 361:.\Generated_Source\PSoC4/GLCD.c **** 	int32 ddF_x = 0;
+ 515              		.loc 1 361 0
+ 516 0016 0023     		mov	r3, #0
+ 517 0018 3B62     		str	r3, [r7, #32]
+ 362:.\Generated_Source\PSoC4/GLCD.c **** 	int32 ddF_y = -2 * radius;
+ 518              		.loc 1 362 0
+ 519 001a 7A68     		ldr	r2, [r7, #4]
+ 520 001c 131C     		mov	r3, r2
+ 521 001e DB07     		lsl	r3, r3, #31
+ 522 0020 9B1A     		sub	r3, r3, r2
+ 523 0022 5B00     		lsl	r3, r3, #1
+ 524 0024 FB61     		str	r3, [r7, #28]
+ 363:.\Generated_Source\PSoC4/GLCD.c **** 	int32 x = 0;
+ 525              		.loc 1 363 0
+ 526 0026 0023     		mov	r3, #0
+ 527 0028 BB61     		str	r3, [r7, #24]
+ 364:.\Generated_Source\PSoC4/GLCD.c **** 	int32 y = radius;
+ 528              		.loc 1 364 0
+ 529 002a 7B68     		ldr	r3, [r7, #4]
+ 530 002c 7B61     		str	r3, [r7, #20]
+ 365:.\Generated_Source\PSoC4/GLCD.c **** 
+ 366:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Pixel(x0, y0 + radius, color);
+ 531              		.loc 1 366 0
+ 532 002e BA68     		ldr	r2, [r7, #8]
+ 533 0030 7B68     		ldr	r3, [r7, #4]
+ 534 0032 D218     		add	r2, r2, r3
+ 535 0034 F968     		ldr	r1, [r7, #12]
+ 536 0036 3B68     		ldr	r3, [r7]
+ 537 0038 081C     		mov	r0, r1
+ 538 003a 111C     		mov	r1, r2
+ 539 003c 1A1C     		mov	r2, r3
+ 540 003e FFF7FEFF 		bl	GLCD_Pixel
+ 367:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Pixel(x0, y0 - radius, color);
+ 541              		.loc 1 367 0
+ 542 0042 BA68     		ldr	r2, [r7, #8]
+ 543 0044 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 17
+
+
+ 544 0046 D21A     		sub	r2, r2, r3
+ 545 0048 F968     		ldr	r1, [r7, #12]
+ 546 004a 3B68     		ldr	r3, [r7]
+ 547 004c 081C     		mov	r0, r1
+ 548 004e 111C     		mov	r1, r2
+ 549 0050 1A1C     		mov	r2, r3
+ 550 0052 FFF7FEFF 		bl	GLCD_Pixel
+ 368:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Pixel( x0 + radius, y0, color);
+ 551              		.loc 1 368 0
+ 552 0056 FA68     		ldr	r2, [r7, #12]
+ 553 0058 7B68     		ldr	r3, [r7, #4]
+ 554 005a D118     		add	r1, r2, r3
+ 555 005c BA68     		ldr	r2, [r7, #8]
+ 556 005e 3B68     		ldr	r3, [r7]
+ 557 0060 081C     		mov	r0, r1
+ 558 0062 111C     		mov	r1, r2
+ 559 0064 1A1C     		mov	r2, r3
+ 560 0066 FFF7FEFF 		bl	GLCD_Pixel
+ 369:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Pixel( x0 - radius, y0, color);
+ 561              		.loc 1 369 0
+ 562 006a FA68     		ldr	r2, [r7, #12]
+ 563 006c 7B68     		ldr	r3, [r7, #4]
+ 564 006e D11A     		sub	r1, r2, r3
+ 565 0070 BA68     		ldr	r2, [r7, #8]
+ 566 0072 3B68     		ldr	r3, [r7]
+ 567 0074 081C     		mov	r0, r1
+ 568 0076 111C     		mov	r1, r2
+ 569 0078 1A1C     		mov	r2, r3
+ 570 007a FFF7FEFF 		bl	GLCD_Pixel
+ 370:.\Generated_Source\PSoC4/GLCD.c **** 
+ 371:.\Generated_Source\PSoC4/GLCD.c **** 	while(x < y)
+ 571              		.loc 1 371 0
+ 572 007e 77E0     		b	.L15
+ 573              	.L17:
+ 372:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 373:.\Generated_Source\PSoC4/GLCD.c **** 		if(f >= 0)
+ 574              		.loc 1 373 0
+ 575 0080 7B6A     		ldr	r3, [r7, #36]
+ 576 0082 002B     		cmp	r3, #0
+ 577 0084 09DB     		blt	.L16
+ 374:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 375:.\Generated_Source\PSoC4/GLCD.c **** 			y--;
+ 578              		.loc 1 375 0
+ 579 0086 7B69     		ldr	r3, [r7, #20]
+ 580 0088 013B     		sub	r3, r3, #1
+ 581 008a 7B61     		str	r3, [r7, #20]
+ 376:.\Generated_Source\PSoC4/GLCD.c **** 			ddF_y += 2;
+ 582              		.loc 1 376 0
+ 583 008c FB69     		ldr	r3, [r7, #28]
+ 584 008e 0233     		add	r3, r3, #2
+ 585 0090 FB61     		str	r3, [r7, #28]
+ 377:.\Generated_Source\PSoC4/GLCD.c **** 			f += ddF_y;
+ 586              		.loc 1 377 0
+ 587 0092 7A6A     		ldr	r2, [r7, #36]
+ 588 0094 FB69     		ldr	r3, [r7, #28]
+ 589 0096 D318     		add	r3, r2, r3
+ 590 0098 7B62     		str	r3, [r7, #36]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 18
+
+
+ 591              	.L16:
+ 378:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 379:.\Generated_Source\PSoC4/GLCD.c **** 		x++;
+ 592              		.loc 1 379 0
+ 593 009a BB69     		ldr	r3, [r7, #24]
+ 594 009c 0133     		add	r3, r3, #1
+ 595 009e BB61     		str	r3, [r7, #24]
+ 380:.\Generated_Source\PSoC4/GLCD.c **** 		ddF_x += 2;
+ 596              		.loc 1 380 0
+ 597 00a0 3B6A     		ldr	r3, [r7, #32]
+ 598 00a2 0233     		add	r3, r3, #2
+ 599 00a4 3B62     		str	r3, [r7, #32]
+ 381:.\Generated_Source\PSoC4/GLCD.c **** 		f += ddF_x + 1;
+ 600              		.loc 1 381 0
+ 601 00a6 3B6A     		ldr	r3, [r7, #32]
+ 602 00a8 0133     		add	r3, r3, #1
+ 603 00aa 7A6A     		ldr	r2, [r7, #36]
+ 604 00ac D318     		add	r3, r2, r3
+ 605 00ae 7B62     		str	r3, [r7, #36]
+ 382:.\Generated_Source\PSoC4/GLCD.c **** 
+ 383:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel(x0 + x, y0 + y, color);
+ 606              		.loc 1 383 0
+ 607 00b0 FA68     		ldr	r2, [r7, #12]
+ 608 00b2 BB69     		ldr	r3, [r7, #24]
+ 609 00b4 D118     		add	r1, r2, r3
+ 610 00b6 BA68     		ldr	r2, [r7, #8]
+ 611 00b8 7B69     		ldr	r3, [r7, #20]
+ 612 00ba D218     		add	r2, r2, r3
+ 613 00bc 3B68     		ldr	r3, [r7]
+ 614 00be 081C     		mov	r0, r1
+ 615 00c0 111C     		mov	r1, r2
+ 616 00c2 1A1C     		mov	r2, r3
+ 617 00c4 FFF7FEFF 		bl	GLCD_Pixel
+ 384:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel(x0 - x, y0 + y, color);
+ 618              		.loc 1 384 0
+ 619 00c8 FA68     		ldr	r2, [r7, #12]
+ 620 00ca BB69     		ldr	r3, [r7, #24]
+ 621 00cc D11A     		sub	r1, r2, r3
+ 622 00ce BA68     		ldr	r2, [r7, #8]
+ 623 00d0 7B69     		ldr	r3, [r7, #20]
+ 624 00d2 D218     		add	r2, r2, r3
+ 625 00d4 3B68     		ldr	r3, [r7]
+ 626 00d6 081C     		mov	r0, r1
+ 627 00d8 111C     		mov	r1, r2
+ 628 00da 1A1C     		mov	r2, r3
+ 629 00dc FFF7FEFF 		bl	GLCD_Pixel
+ 385:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 + x, y0 - y, color);
+ 630              		.loc 1 385 0
+ 631 00e0 FA68     		ldr	r2, [r7, #12]
+ 632 00e2 BB69     		ldr	r3, [r7, #24]
+ 633 00e4 D118     		add	r1, r2, r3
+ 634 00e6 BA68     		ldr	r2, [r7, #8]
+ 635 00e8 7B69     		ldr	r3, [r7, #20]
+ 636 00ea D21A     		sub	r2, r2, r3
+ 637 00ec 3B68     		ldr	r3, [r7]
+ 638 00ee 081C     		mov	r0, r1
+ 639 00f0 111C     		mov	r1, r2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 19
+
+
+ 640 00f2 1A1C     		mov	r2, r3
+ 641 00f4 FFF7FEFF 		bl	GLCD_Pixel
+ 386:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 - x, y0 - y, color);
+ 642              		.loc 1 386 0
+ 643 00f8 FA68     		ldr	r2, [r7, #12]
+ 644 00fa BB69     		ldr	r3, [r7, #24]
+ 645 00fc D11A     		sub	r1, r2, r3
+ 646 00fe BA68     		ldr	r2, [r7, #8]
+ 647 0100 7B69     		ldr	r3, [r7, #20]
+ 648 0102 D21A     		sub	r2, r2, r3
+ 649 0104 3B68     		ldr	r3, [r7]
+ 650 0106 081C     		mov	r0, r1
+ 651 0108 111C     		mov	r1, r2
+ 652 010a 1A1C     		mov	r2, r3
+ 653 010c FFF7FEFF 		bl	GLCD_Pixel
+ 387:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 + y, y0 + x, color);
+ 654              		.loc 1 387 0
+ 655 0110 FA68     		ldr	r2, [r7, #12]
+ 656 0112 7B69     		ldr	r3, [r7, #20]
+ 657 0114 D118     		add	r1, r2, r3
+ 658 0116 BA68     		ldr	r2, [r7, #8]
+ 659 0118 BB69     		ldr	r3, [r7, #24]
+ 660 011a D218     		add	r2, r2, r3
+ 661 011c 3B68     		ldr	r3, [r7]
+ 662 011e 081C     		mov	r0, r1
+ 663 0120 111C     		mov	r1, r2
+ 664 0122 1A1C     		mov	r2, r3
+ 665 0124 FFF7FEFF 		bl	GLCD_Pixel
+ 388:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 - y, y0 + x, color);
+ 666              		.loc 1 388 0
+ 667 0128 FA68     		ldr	r2, [r7, #12]
+ 668 012a 7B69     		ldr	r3, [r7, #20]
+ 669 012c D11A     		sub	r1, r2, r3
+ 670 012e BA68     		ldr	r2, [r7, #8]
+ 671 0130 BB69     		ldr	r3, [r7, #24]
+ 672 0132 D218     		add	r2, r2, r3
+ 673 0134 3B68     		ldr	r3, [r7]
+ 674 0136 081C     		mov	r0, r1
+ 675 0138 111C     		mov	r1, r2
+ 676 013a 1A1C     		mov	r2, r3
+ 677 013c FFF7FEFF 		bl	GLCD_Pixel
+ 389:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 + y, y0 - x, color);
+ 678              		.loc 1 389 0
+ 679 0140 FA68     		ldr	r2, [r7, #12]
+ 680 0142 7B69     		ldr	r3, [r7, #20]
+ 681 0144 D118     		add	r1, r2, r3
+ 682 0146 BA68     		ldr	r2, [r7, #8]
+ 683 0148 BB69     		ldr	r3, [r7, #24]
+ 684 014a D21A     		sub	r2, r2, r3
+ 685 014c 3B68     		ldr	r3, [r7]
+ 686 014e 081C     		mov	r0, r1
+ 687 0150 111C     		mov	r1, r2
+ 688 0152 1A1C     		mov	r2, r3
+ 689 0154 FFF7FEFF 		bl	GLCD_Pixel
+ 390:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_Pixel( x0 - y, y0 - x, color);
+ 690              		.loc 1 390 0
+ 691 0158 FA68     		ldr	r2, [r7, #12]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 20
+
+
+ 692 015a 7B69     		ldr	r3, [r7, #20]
+ 693 015c D11A     		sub	r1, r2, r3
+ 694 015e BA68     		ldr	r2, [r7, #8]
+ 695 0160 BB69     		ldr	r3, [r7, #24]
+ 696 0162 D21A     		sub	r2, r2, r3
+ 697 0164 3B68     		ldr	r3, [r7]
+ 698 0166 081C     		mov	r0, r1
+ 699 0168 111C     		mov	r1, r2
+ 700 016a 1A1C     		mov	r2, r3
+ 701 016c FFF7FEFF 		bl	GLCD_Pixel
+ 702              	.L15:
+ 371:.\Generated_Source\PSoC4/GLCD.c **** 	while(x < y)
+ 703              		.loc 1 371 0 discriminator 1
+ 704 0170 BA69     		ldr	r2, [r7, #24]
+ 705 0172 7B69     		ldr	r3, [r7, #20]
+ 706 0174 9A42     		cmp	r2, r3
+ 707 0176 83DB     		blt	.L17
+ 391:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 392:.\Generated_Source\PSoC4/GLCD.c **** }
+ 708              		.loc 1 392 0
+ 709 0178 BD46     		mov	sp, r7
+ 710 017a 0AB0     		add	sp, sp, #40
+ 711              		@ sp needed for prologue
+ 712 017c 80BD     		pop	{r7, pc}
+ 713              		.cfi_endproc
+ 714              	.LFE8:
+ 715              		.size	GLCD_DrawCircle, .-GLCD_DrawCircle
+ 716 017e C046     		.section	.text.GLCD_PrintChar,"ax",%progbits
+ 717              		.align	2
+ 718              		.global	GLCD_PrintChar
+ 719              		.code	16
+ 720              		.thumb_func
+ 721              		.type	GLCD_PrintChar, %function
+ 722              	GLCD_PrintChar:
+ 723              	.LFB9:
+ 393:.\Generated_Source\PSoC4/GLCD.c **** 
+ 394:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 395:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_PrintChar
+ 396:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 397:.\Generated_Source\PSoC4/GLCD.c **** *
+ 398:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 399:.\Generated_Source\PSoC4/GLCD.c **** *  Print a character on the display.  
+ 400:.\Generated_Source\PSoC4/GLCD.c **** *
+ 401:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 402:.\Generated_Source\PSoC4/GLCD.c **** *  c:       ASCII character to be printed
+ 403:.\Generated_Source\PSoC4/GLCD.c **** *  x,y:     Location where character will be printed.
+ 404:.\Generated_Source\PSoC4/GLCD.c **** *  fColor:  Foreground color
+ 405:.\Generated_Source\PSoC4/GLCD.c **** *  bColor:  Background color
+ 406:.\Generated_Source\PSoC4/GLCD.c **** *
+ 407:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 408:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 409:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 410:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 411:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_PrintChar(uint8 c, int32 x, int32 y, int32 fColor, int32 bColor)
+ 412:.\Generated_Source\PSoC4/GLCD.c **** {
+ 724              		.loc 1 412 0
+ 725              		.cfi_startproc
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 21
+
+
+ 726 0000 80B5     		push	{r7, lr}
+ 727              	.LCFI25:
+ 728              		.cfi_def_cfa_offset 8
+ 729              		.cfi_offset 7, -8
+ 730              		.cfi_offset 14, -4
+ 731 0002 90B0     		sub	sp, sp, #64
+ 732              	.LCFI26:
+ 733              		.cfi_def_cfa_offset 72
+ 734 0004 00AF     		add	r7, sp, #0
+ 735              	.LCFI27:
+ 736              		.cfi_def_cfa_register 7
+ 737 0006 B960     		str	r1, [r7, #8]
+ 738 0008 7A60     		str	r2, [r7, #4]
+ 739 000a 3B60     		str	r3, [r7]
+ 740 000c 3B1C     		mov	r3, r7
+ 741 000e 0F33     		add	r3, r3, #15
+ 742 0010 021C     		add	r2, r0, #0
+ 743 0012 1A70     		strb	r2, [r3]
+ 413:.\Generated_Source\PSoC4/GLCD.c **** 	y	=	(GLCD_COL_HEIGHT - 1) - y; /* make display "right" side up */
+ 744              		.loc 1 413 0
+ 745 0014 7B68     		ldr	r3, [r7, #4]
+ 746 0016 8322     		mov	r2, #131
+ 747 0018 D31A     		sub	r3, r2, r3
+ 748 001a 7B60     		str	r3, [r7, #4]
+ 414:.\Generated_Source\PSoC4/GLCD.c **** 	x	=	(GLCD_ROW_LENGTH - 2) - x;
+ 749              		.loc 1 414 0
+ 750 001c BB68     		ldr	r3, [r7, #8]
+ 751 001e 8222     		mov	r2, #130
+ 752 0020 D31A     		sub	r3, r2, r3
+ 753 0022 BB60     		str	r3, [r7, #8]
+ 415:.\Generated_Source\PSoC4/GLCD.c **** 
+ 416:.\Generated_Source\PSoC4/GLCD.c **** 	int32             i,j;
+ 417:.\Generated_Source\PSoC4/GLCD.c **** 	int32    nCols;
+ 418:.\Generated_Source\PSoC4/GLCD.c **** 	int32    nRows;
+ 419:.\Generated_Source\PSoC4/GLCD.c **** 	int32    nBytes;
+ 420:.\Generated_Source\PSoC4/GLCD.c **** 	uint8    PixelRow;
+ 421:.\Generated_Source\PSoC4/GLCD.c **** 	uint8    Mask;
+ 422:.\Generated_Source\PSoC4/GLCD.c **** 	int32    Word0;
+ 423:.\Generated_Source\PSoC4/GLCD.c **** 	int32    Word1;
+ 424:.\Generated_Source\PSoC4/GLCD.c **** 	uint8   *pFont;
+ 425:.\Generated_Source\PSoC4/GLCD.c **** 	uint8   *pChar;
+ 426:.\Generated_Source\PSoC4/GLCD.c **** 
+ 427:.\Generated_Source\PSoC4/GLCD.c **** 	/* Get pointer to the beginning of the selected font table  */
+ 428:.\Generated_Source\PSoC4/GLCD.c **** 	pFont = (uint8 *)GLCD_FONT8x16;
+ 754              		.loc 1 428 0
+ 755 0024 584B     		ldr	r3, .L27
+ 756 0026 7B62     		str	r3, [r7, #36]
+ 429:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 430:.\Generated_Source\PSoC4/GLCD.c **** 	/* Get the nColumns, nRows and nBytes.                      */
+ 431:.\Generated_Source\PSoC4/GLCD.c **** 	nCols = *pFont;
+ 757              		.loc 1 431 0
+ 758 0028 7B6A     		ldr	r3, [r7, #36]
+ 759 002a 1B78     		ldrb	r3, [r3]
+ 760 002c 3B62     		str	r3, [r7, #32]
+ 432:.\Generated_Source\PSoC4/GLCD.c **** 	nRows = *(pFont + 1);
+ 761              		.loc 1 432 0
+ 762 002e 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 22
+
+
+ 763 0030 0133     		add	r3, r3, #1
+ 764 0032 1B78     		ldrb	r3, [r3]
+ 765 0034 FB61     		str	r3, [r7, #28]
+ 433:.\Generated_Source\PSoC4/GLCD.c **** 	nBytes = *(pFont + 2);
+ 766              		.loc 1 433 0
+ 767 0036 7B6A     		ldr	r3, [r7, #36]
+ 768 0038 0233     		add	r3, r3, #2
+ 769 003a 1B78     		ldrb	r3, [r3]
+ 770 003c BB61     		str	r3, [r7, #24]
+ 434:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 435:.\Generated_Source\PSoC4/GLCD.c **** 	/* Get pointer to the last byte of the desired character    */
+ 436:.\Generated_Source\PSoC4/GLCD.c **** 	pChar = pFont + (nBytes * (c - 0x1F)) + nBytes - 1;
+ 771              		.loc 1 436 0
+ 772 003e 3B1C     		mov	r3, r7
+ 773 0040 0F33     		add	r3, r3, #15
+ 774 0042 1B78     		ldrb	r3, [r3]
+ 775 0044 1F3B     		sub	r3, r3, #31
+ 776 0046 BA69     		ldr	r2, [r7, #24]
+ 777 0048 5343     		mul	r3, r2
+ 778 004a 1A1C     		mov	r2, r3
+ 779 004c BB69     		ldr	r3, [r7, #24]
+ 780 004e D318     		add	r3, r2, r3
+ 781 0050 013B     		sub	r3, r3, #1
+ 782 0052 7A6A     		ldr	r2, [r7, #36]
+ 783 0054 D318     		add	r3, r2, r3
+ 784 0056 BB62     		str	r3, [r7, #40]
+ 437:.\Generated_Source\PSoC4/GLCD.c **** 
+ 438:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_Controller == GLCD_EPSON)
+ 439:.\Generated_Source\PSoC4/GLCD.c **** 	/* Row address set */
+ 440:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PAGEADDR);
+ 441:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(x);
+ 442:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((x + nRows - 1));
+ 443:.\Generated_Source\PSoC4/GLCD.c **** 	/* Column address set */
+ 444:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLADDR);
+ 445:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data(y);
+ 446:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((y + nCols - 1));
+ 447:.\Generated_Source\PSoC4/GLCD.c **** 
+ 448:.\Generated_Source\PSoC4/GLCD.c **** 	/* Write Memory */
+ 449:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_RAMWR);
+ 450:.\Generated_Source\PSoC4/GLCD.c **** 	/* Loop on each row, working backwards from the bottom to the top  */
+ 451:.\Generated_Source\PSoC4/GLCD.c **** 	for (i = nRows - 1; i >= 0; i--) {
+ 452:.\Generated_Source\PSoC4/GLCD.c **** 		/* Copy pixel row from font table and then decrement row       */
+ 453:.\Generated_Source\PSoC4/GLCD.c **** 		PixelRow = *pChar++;
+ 454:.\Generated_Source\PSoC4/GLCD.c **** 		/* Loop on each pixel in the row (left to right)               */
+ 455:.\Generated_Source\PSoC4/GLCD.c **** 		/* Note: we do two pixels each loop                            */
+ 456:.\Generated_Source\PSoC4/GLCD.c **** 		Mask = 0x80;
+ 457:.\Generated_Source\PSoC4/GLCD.c **** 		for (j = 0; j < nCols; j += 2) 
+ 458:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 459:.\Generated_Source\PSoC4/GLCD.c **** 			/* If pixel bit set, use foreground color; else use the background color. */
+ 460:.\Generated_Source\PSoC4/GLCD.c **** 			/* Now get the pixel color for two successive pixels                      */
+ 461:.\Generated_Source\PSoC4/GLCD.c **** 			if ((PixelRow & Mask) == 0)
+ 462:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 463:.\Generated_Source\PSoC4/GLCD.c **** 				Word0 = bColor;
+ 464:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 465:.\Generated_Source\PSoC4/GLCD.c **** 			else
+ 466:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 467:.\Generated_Source\PSoC4/GLCD.c **** 				Word0 = fColor;
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 23
+
+
+ 468:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 469:.\Generated_Source\PSoC4/GLCD.c **** 			
+ 470:.\Generated_Source\PSoC4/GLCD.c **** 			Mask = Mask >> 1;
+ 471:.\Generated_Source\PSoC4/GLCD.c **** 			if ((PixelRow & Mask) == 0)
+ 472:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 473:.\Generated_Source\PSoC4/GLCD.c **** 				Word1 = bColor;
+ 474:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 475:.\Generated_Source\PSoC4/GLCD.c **** 			else
+ 476:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 477:.\Generated_Source\PSoC4/GLCD.c **** 				Word1 = fColor;
+ 478:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 479:.\Generated_Source\PSoC4/GLCD.c **** 			Mask = Mask >> 1;
+ 480:.\Generated_Source\PSoC4/GLCD.c **** 			/* Use this information to output three data bytes  */
+ 481:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data((uint8)((Word0 >> 4) & 0xFF));
+ 482:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data((uint8)(((Word0 & 0xF) << 4) | ((Word1 >> 8) & 0xF)));
+ 483:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data((uint8)(Word1 & 0xFF));
+ 484:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 485:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 486:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 487:.\Generated_Source\PSoC4/GLCD.c **** 
+ 488:.\Generated_Source\PSoC4/GLCD.c **** #if (GLCD_Controller == GLCD_PHILIPS)
+ 489:.\Generated_Source\PSoC4/GLCD.c **** 
+ 490:.\Generated_Source\PSoC4/GLCD.c **** 	/* Set row address     */
+ 491:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_PAGEADDR);
+ 785              		.loc 1 491 0
+ 786 0058 2B20     		mov	r0, #43
+ 787 005a FFF7FEFF 		bl	GLCD_Command
+ 492:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)x);
+ 788              		.loc 1 492 0
+ 789 005e BB68     		ldr	r3, [r7, #8]
+ 790 0060 DBB2     		uxtb	r3, r3
+ 791 0062 181C     		mov	r0, r3
+ 792 0064 FFF7FEFF 		bl	GLCD_Data
+ 493:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)(x + nRows - 1));
+ 793              		.loc 1 493 0
+ 794 0068 BB68     		ldr	r3, [r7, #8]
+ 795 006a DAB2     		uxtb	r2, r3
+ 796 006c FB69     		ldr	r3, [r7, #28]
+ 797 006e DBB2     		uxtb	r3, r3
+ 798 0070 D318     		add	r3, r2, r3
+ 799 0072 DBB2     		uxtb	r3, r3
+ 800 0074 013B     		sub	r3, r3, #1
+ 801 0076 DBB2     		uxtb	r3, r3
+ 802 0078 181C     		mov	r0, r3
+ 803 007a FFF7FEFF 		bl	GLCD_Data
+ 494:.\Generated_Source\PSoC4/GLCD.c ****     /* Set column address  */
+ 495:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_COLADDR);
+ 804              		.loc 1 495 0
+ 805 007e 2A20     		mov	r0, #42
+ 806 0080 FFF7FEFF 		bl	GLCD_Command
+ 496:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)y);
+ 807              		.loc 1 496 0
+ 808 0084 7B68     		ldr	r3, [r7, #4]
+ 809 0086 DBB2     		uxtb	r3, r3
+ 810 0088 181C     		mov	r0, r3
+ 811 008a FFF7FEFF 		bl	GLCD_Data
+ 497:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Data((uint8)(y + nCols - 1));
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 24
+
+
+ 812              		.loc 1 497 0
+ 813 008e 7B68     		ldr	r3, [r7, #4]
+ 814 0090 DAB2     		uxtb	r2, r3
+ 815 0092 3B6A     		ldr	r3, [r7, #32]
+ 816 0094 DBB2     		uxtb	r3, r3
+ 817 0096 D318     		add	r3, r2, r3
+ 818 0098 DBB2     		uxtb	r3, r3
+ 819 009a 013B     		sub	r3, r3, #1
+ 820 009c DBB2     		uxtb	r3, r3
+ 821 009e 181C     		mov	r0, r3
+ 822 00a0 FFF7FEFF 		bl	GLCD_Data
+ 498:.\Generated_Source\PSoC4/GLCD.c **** 
+ 499:.\Generated_Source\PSoC4/GLCD.c **** 	/* Write to display memory */
+ 500:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Command(GLCD_RAMWR);
+ 823              		.loc 1 500 0
+ 824 00a4 2C20     		mov	r0, #44
+ 825 00a6 FFF7FEFF 		bl	GLCD_Command
+ 501:.\Generated_Source\PSoC4/GLCD.c **** 	/* loop on each row, working backwards from the bottom to the top.  */
+ 502:.\Generated_Source\PSoC4/GLCD.c **** 	pChar+=nBytes-1;  /* Stick pChar at the end of the row, need to reverse print on phillips */
+ 826              		.loc 1 502 0
+ 827 00aa BB69     		ldr	r3, [r7, #24]
+ 828 00ac 013B     		sub	r3, r3, #1
+ 829 00ae BA6A     		ldr	r2, [r7, #40]
+ 830 00b0 D318     		add	r3, r2, r3
+ 831 00b2 BB62     		str	r3, [r7, #40]
+ 503:.\Generated_Source\PSoC4/GLCD.c **** 	for (i = nRows - 1; i >= 0; i--) {
+ 832              		.loc 1 503 0
+ 833 00b4 FB69     		ldr	r3, [r7, #28]
+ 834 00b6 013B     		sub	r3, r3, #1
+ 835 00b8 FB63     		str	r3, [r7, #60]
+ 836 00ba 5EE0     		b	.L19
+ 837              	.L26:
+ 504:.\Generated_Source\PSoC4/GLCD.c **** 		/* copy pixel row from font table and then decrement row.  */
+ 505:.\Generated_Source\PSoC4/GLCD.c **** 		PixelRow = *pChar--;
+ 838              		.loc 1 505 0
+ 839 00bc 3B1C     		mov	r3, r7
+ 840 00be 1733     		add	r3, r3, #23
+ 841 00c0 BA6A     		ldr	r2, [r7, #40]
+ 842 00c2 1278     		ldrb	r2, [r2]
+ 843 00c4 1A70     		strb	r2, [r3]
+ 844 00c6 BB6A     		ldr	r3, [r7, #40]
+ 845 00c8 013B     		sub	r3, r3, #1
+ 846 00ca BB62     		str	r3, [r7, #40]
+ 506:.\Generated_Source\PSoC4/GLCD.c **** 		/* Loop on each pixel in the row (left to right)  */
+ 507:.\Generated_Source\PSoC4/GLCD.c **** 		/* Note: we do two pixels each loop               */
+ 508:.\Generated_Source\PSoC4/GLCD.c **** 		Mask = 0x01;  
+ 847              		.loc 1 508 0
+ 848 00cc 3B1C     		mov	r3, r7
+ 849 00ce 3733     		add	r3, r3, #55
+ 850 00d0 0122     		mov	r2, #1
+ 851 00d2 1A70     		strb	r2, [r3]
+ 509:.\Generated_Source\PSoC4/GLCD.c **** 		for (j = 0; j < nCols; j += 2) 
+ 852              		.loc 1 509 0
+ 853 00d4 0023     		mov	r3, #0
+ 854 00d6 BB63     		str	r3, [r7, #56]
+ 855 00d8 48E0     		b	.L20
+ 856              	.L25:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 25
+
+
+ 510:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 511:.\Generated_Source\PSoC4/GLCD.c **** 			/* If pixel bit set, use foreground color; else use the background color  */
+ 512:.\Generated_Source\PSoC4/GLCD.c **** 			/* Get the pixel color for two successive pixels                          */
+ 513:.\Generated_Source\PSoC4/GLCD.c **** 			if ((PixelRow & Mask) == 0)
+ 857              		.loc 1 513 0
+ 858 00da 3B1C     		mov	r3, r7
+ 859 00dc 1733     		add	r3, r3, #23
+ 860 00de 3A1C     		mov	r2, r7
+ 861 00e0 3732     		add	r2, r2, #55
+ 862 00e2 1B78     		ldrb	r3, [r3]
+ 863 00e4 1278     		ldrb	r2, [r2]
+ 864 00e6 1340     		and	r3, r2
+ 865 00e8 DBB2     		uxtb	r3, r3
+ 866 00ea 002B     		cmp	r3, #0
+ 867 00ec 02D1     		bne	.L21
+ 514:.\Generated_Source\PSoC4/GLCD.c **** 				Word0 = bColor;
+ 868              		.loc 1 514 0
+ 869 00ee BB6C     		ldr	r3, [r7, #72]
+ 870 00f0 3B63     		str	r3, [r7, #48]
+ 871 00f2 01E0     		b	.L22
+ 872              	.L21:
+ 515:.\Generated_Source\PSoC4/GLCD.c **** 			else
+ 516:.\Generated_Source\PSoC4/GLCD.c **** 				Word0 = fColor;
+ 873              		.loc 1 516 0
+ 874 00f4 3B68     		ldr	r3, [r7]
+ 875 00f6 3B63     		str	r3, [r7, #48]
+ 876              	.L22:
+ 517:.\Generated_Source\PSoC4/GLCD.c **** 			Mask = Mask << 1; 
+ 877              		.loc 1 517 0
+ 878 00f8 3B1C     		mov	r3, r7
+ 879 00fa 3733     		add	r3, r3, #55
+ 880 00fc 3A1C     		mov	r2, r7
+ 881 00fe 3732     		add	r2, r2, #55
+ 882 0100 1278     		ldrb	r2, [r2]
+ 883 0102 5200     		lsl	r2, r2, #1
+ 884 0104 1A70     		strb	r2, [r3]
+ 518:.\Generated_Source\PSoC4/GLCD.c **** 			if ((PixelRow & Mask) == 0)
+ 885              		.loc 1 518 0
+ 886 0106 3B1C     		mov	r3, r7
+ 887 0108 1733     		add	r3, r3, #23
+ 888 010a 3A1C     		mov	r2, r7
+ 889 010c 3732     		add	r2, r2, #55
+ 890 010e 1B78     		ldrb	r3, [r3]
+ 891 0110 1278     		ldrb	r2, [r2]
+ 892 0112 1340     		and	r3, r2
+ 893 0114 DBB2     		uxtb	r3, r3
+ 894 0116 002B     		cmp	r3, #0
+ 895 0118 02D1     		bne	.L23
+ 519:.\Generated_Source\PSoC4/GLCD.c **** 				Word1 = bColor;
+ 896              		.loc 1 519 0
+ 897 011a BB6C     		ldr	r3, [r7, #72]
+ 898 011c FB62     		str	r3, [r7, #44]
+ 899 011e 01E0     		b	.L24
+ 900              	.L23:
+ 520:.\Generated_Source\PSoC4/GLCD.c **** 			else
+ 521:.\Generated_Source\PSoC4/GLCD.c **** 				Word1 = fColor;
+ 901              		.loc 1 521 0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 26
+
+
+ 902 0120 3B68     		ldr	r3, [r7]
+ 903 0122 FB62     		str	r3, [r7, #44]
+ 904              	.L24:
+ 522:.\Generated_Source\PSoC4/GLCD.c **** 			Mask = Mask << 1; 
+ 905              		.loc 1 522 0
+ 906 0124 3B1C     		mov	r3, r7
+ 907 0126 3733     		add	r3, r3, #55
+ 908 0128 3A1C     		mov	r2, r7
+ 909 012a 3732     		add	r2, r2, #55
+ 910 012c 1278     		ldrb	r2, [r2]
+ 911 012e 5200     		lsl	r2, r2, #1
+ 912 0130 1A70     		strb	r2, [r3]
+ 523:.\Generated_Source\PSoC4/GLCD.c **** 			/* use this information to output three data bytes */
+ 524:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data((Word0 >> 4) & 0xFF);
+ 913              		.loc 1 524 0
+ 914 0132 3B6B     		ldr	r3, [r7, #48]
+ 915 0134 1B11     		asr	r3, r3, #4
+ 916 0136 1A1C     		mov	r2, r3
+ 917 0138 FF23     		mov	r3, #255
+ 918 013a 1340     		and	r3, r2
+ 919 013c 181C     		mov	r0, r3
+ 920 013e FFF7FEFF 		bl	GLCD_Data
+ 525:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data(((Word0 & 0xF) << 4) | ((Word1 >> 8) & 0xF));
+ 921              		.loc 1 525 0
+ 922 0142 3B6B     		ldr	r3, [r7, #48]
+ 923 0144 1A01     		lsl	r2, r3, #4
+ 924 0146 FF23     		mov	r3, #255
+ 925 0148 1A40     		and	r2, r3
+ 926 014a FB6A     		ldr	r3, [r7, #44]
+ 927 014c 1912     		asr	r1, r3, #8
+ 928 014e 0F23     		mov	r3, #15
+ 929 0150 0B40     		and	r3, r1
+ 930 0152 1343     		orr	r3, r2
+ 931 0154 181C     		mov	r0, r3
+ 932 0156 FFF7FEFF 		bl	GLCD_Data
+ 526:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Data(Word1 & 0xFF);
+ 933              		.loc 1 526 0
+ 934 015a FA6A     		ldr	r2, [r7, #44]
+ 935 015c FF23     		mov	r3, #255
+ 936 015e 1340     		and	r3, r2
+ 937 0160 181C     		mov	r0, r3
+ 938 0162 FFF7FEFF 		bl	GLCD_Data
+ 509:.\Generated_Source\PSoC4/GLCD.c **** 		for (j = 0; j < nCols; j += 2) 
+ 939              		.loc 1 509 0
+ 940 0166 BB6B     		ldr	r3, [r7, #56]
+ 941 0168 0233     		add	r3, r3, #2
+ 942 016a BB63     		str	r3, [r7, #56]
+ 943              	.L20:
+ 509:.\Generated_Source\PSoC4/GLCD.c **** 		for (j = 0; j < nCols; j += 2) 
+ 944              		.loc 1 509 0 is_stmt 0 discriminator 1
+ 945 016c BA6B     		ldr	r2, [r7, #56]
+ 946 016e 3B6A     		ldr	r3, [r7, #32]
+ 947 0170 9A42     		cmp	r2, r3
+ 948 0172 B2DB     		blt	.L25
+ 503:.\Generated_Source\PSoC4/GLCD.c **** 	for (i = nRows - 1; i >= 0; i--) {
+ 949              		.loc 1 503 0 is_stmt 1
+ 950 0174 FB6B     		ldr	r3, [r7, #60]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 27
+
+
+ 951 0176 013B     		sub	r3, r3, #1
+ 952 0178 FB63     		str	r3, [r7, #60]
+ 953              	.L19:
+ 503:.\Generated_Source\PSoC4/GLCD.c **** 	for (i = nRows - 1; i >= 0; i--) {
+ 954              		.loc 1 503 0 is_stmt 0 discriminator 1
+ 955 017a FB6B     		ldr	r3, [r7, #60]
+ 956 017c 002B     		cmp	r3, #0
+ 957 017e 9DDA     		bge	.L26
+ 527:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 528:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 529:.\Generated_Source\PSoC4/GLCD.c **** #endif
+ 530:.\Generated_Source\PSoC4/GLCD.c **** }
+ 958              		.loc 1 530 0 is_stmt 1
+ 959 0180 BD46     		mov	sp, r7
+ 960 0182 10B0     		add	sp, sp, #64
+ 961              		@ sp needed for prologue
+ 962 0184 80BD     		pop	{r7, pc}
+ 963              	.L28:
+ 964 0186 C046     		.align	2
+ 965              	.L27:
+ 966 0188 00000000 		.word	GLCD_FONT8x16
+ 967              		.cfi_endproc
+ 968              	.LFE9:
+ 969              		.size	GLCD_PrintChar, .-GLCD_PrintChar
+ 970              		.section	.text.GLCD_PrintString,"ax",%progbits
+ 971              		.align	2
+ 972              		.global	GLCD_PrintString
+ 973              		.code	16
+ 974              		.thumb_func
+ 975              		.type	GLCD_PrintString, %function
+ 976              	GLCD_PrintString:
+ 977              	.LFB10:
+ 531:.\Generated_Source\PSoC4/GLCD.c **** 
+ 532:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 533:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_PrintString
+ 534:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 535:.\Generated_Source\PSoC4/GLCD.c **** *
+ 536:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 537:.\Generated_Source\PSoC4/GLCD.c **** *  Print a string horizontally on the display.  
+ 538:.\Generated_Source\PSoC4/GLCD.c **** *
+ 539:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 540:.\Generated_Source\PSoC4/GLCD.c **** *  pString:  Pointer to null terminated string to be displayed.
+ 541:.\Generated_Source\PSoC4/GLCD.c **** *  x,y:      Location where string is to be printed
+ 542:.\Generated_Source\PSoC4/GLCD.c **** *  fColor:   Forground Color
+ 543:.\Generated_Source\PSoC4/GLCD.c **** *  bColor:   Background Color
+ 544:.\Generated_Source\PSoC4/GLCD.c **** *
+ 545:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 546:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 547:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 548:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 549:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_PrintString(char *pString, int32 x, int32 y, int32 fColor, int32 bColor)
+ 550:.\Generated_Source\PSoC4/GLCD.c **** {
+ 978              		.loc 1 550 0
+ 979              		.cfi_startproc
+ 980 0000 90B5     		push	{r4, r7, lr}
+ 981              	.LCFI28:
+ 982              		.cfi_def_cfa_offset 12
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 28
+
+
+ 983              		.cfi_offset 4, -12
+ 984              		.cfi_offset 7, -8
+ 985              		.cfi_offset 14, -4
+ 986 0002 89B0     		sub	sp, sp, #36
+ 987              	.LCFI29:
+ 988              		.cfi_def_cfa_offset 48
+ 989 0004 02AF     		add	r7, sp, #8
+ 990              	.LCFI30:
+ 991              		.cfi_def_cfa 7, 40
+ 992 0006 F860     		str	r0, [r7, #12]
+ 993 0008 B960     		str	r1, [r7, #8]
+ 994 000a 7A60     		str	r2, [r7, #4]
+ 995 000c 3B60     		str	r3, [r7]
+ 551:.\Generated_Source\PSoC4/GLCD.c **** 	x = x + 16;
+ 996              		.loc 1 551 0
+ 997 000e BB68     		ldr	r3, [r7, #8]
+ 998 0010 1033     		add	r3, r3, #16
+ 999 0012 BB60     		str	r3, [r7, #8]
+ 552:.\Generated_Source\PSoC4/GLCD.c **** 	y = y + 8;
+ 1000              		.loc 1 552 0
+ 1001 0014 7B68     		ldr	r3, [r7, #4]
+ 1002 0016 0833     		add	r3, r3, #8
+ 1003 0018 7B60     		str	r3, [r7, #4]
+ 553:.\Generated_Source\PSoC4/GLCD.c ****     int32 originalY = y;
+ 1004              		.loc 1 553 0
+ 1005 001a 7B68     		ldr	r3, [r7, #4]
+ 1006 001c 7B61     		str	r3, [r7, #20]
+ 554:.\Generated_Source\PSoC4/GLCD.c **** 
+ 555:.\Generated_Source\PSoC4/GLCD.c **** 	/* Loop until null-terminator is found */
+ 556:.\Generated_Source\PSoC4/GLCD.c **** 	while (*pString != 0x00) 
+ 1007              		.loc 1 556 0
+ 1008 001e 19E0     		b	.L30
+ 1009              	.L33:
+ 557:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 558:.\Generated_Source\PSoC4/GLCD.c **** 		/* Draw the character        */
+ 559:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_PrintChar(*pString++, x, y, fColor, bColor);
+ 1010              		.loc 1 559 0
+ 1011 0020 FB68     		ldr	r3, [r7, #12]
+ 1012 0022 1878     		ldrb	r0, [r3]
+ 1013 0024 FB68     		ldr	r3, [r7, #12]
+ 1014 0026 0133     		add	r3, r3, #1
+ 1015 0028 FB60     		str	r3, [r7, #12]
+ 1016 002a B968     		ldr	r1, [r7, #8]
+ 1017 002c 7A68     		ldr	r2, [r7, #4]
+ 1018 002e 3B68     		ldr	r3, [r7]
+ 1019 0030 BC6A     		ldr	r4, [r7, #40]
+ 1020 0032 0094     		str	r4, [sp]
+ 1021 0034 FFF7FEFF 		bl	GLCD_PrintChar
+ 560:.\Generated_Source\PSoC4/GLCD.c **** 		/* Advance the y position    */
+ 561:.\Generated_Source\PSoC4/GLCD.c **** 		y = y + 8;
+ 1022              		.loc 1 561 0
+ 1023 0038 7B68     		ldr	r3, [r7, #4]
+ 1024 003a 0833     		add	r3, r3, #8
+ 1025 003c 7B60     		str	r3, [r7, #4]
+ 562:.\Generated_Source\PSoC4/GLCD.c **** 		/* Bail out if y exceeds 131 */
+ 563:.\Generated_Source\PSoC4/GLCD.c **** 		if (y > 131) 
+ 1026              		.loc 1 563 0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 29
+
+
+ 1027 003e 7B68     		ldr	r3, [r7, #4]
+ 1028 0040 832B     		cmp	r3, #131
+ 1029 0042 04DD     		ble	.L31
+ 564:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 565:.\Generated_Source\PSoC4/GLCD.c ****             x = x + 16;
+ 1030              		.loc 1 565 0
+ 1031 0044 BB68     		ldr	r3, [r7, #8]
+ 1032 0046 1033     		add	r3, r3, #16
+ 1033 0048 BB60     		str	r3, [r7, #8]
+ 566:.\Generated_Source\PSoC4/GLCD.c ****             y = originalY;
+ 1034              		.loc 1 566 0
+ 1035 004a 7B69     		ldr	r3, [r7, #20]
+ 1036 004c 7B60     		str	r3, [r7, #4]
+ 1037              	.L31:
+ 567:.\Generated_Source\PSoC4/GLCD.c ****         }
+ 568:.\Generated_Source\PSoC4/GLCD.c ****         if (x > 131) break;
+ 1038              		.loc 1 568 0
+ 1039 004e BB68     		ldr	r3, [r7, #8]
+ 1040 0050 832B     		cmp	r3, #131
+ 1041 0052 04DC     		bgt	.L34
+ 1042              	.L30:
+ 556:.\Generated_Source\PSoC4/GLCD.c **** 	while (*pString != 0x00) 
+ 1043              		.loc 1 556 0 discriminator 1
+ 1044 0054 FB68     		ldr	r3, [r7, #12]
+ 1045 0056 1B78     		ldrb	r3, [r3]
+ 1046 0058 002B     		cmp	r3, #0
+ 1047 005a E1D1     		bne	.L33
+ 1048 005c 00E0     		b	.L29
+ 1049              	.L34:
+ 1050              		.loc 1 568 0
+ 1051 005e C046     		mov	r8, r8
+ 1052              	.L29:
+ 569:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 570:.\Generated_Source\PSoC4/GLCD.c **** }
+ 1053              		.loc 1 570 0
+ 1054 0060 BD46     		mov	sp, r7
+ 1055 0062 07B0     		add	sp, sp, #28
+ 1056              		@ sp needed for prologue
+ 1057 0064 90BD     		pop	{r4, r7, pc}
+ 1058              		.cfi_endproc
+ 1059              	.LFE10:
+ 1060              		.size	GLCD_PrintString, .-GLCD_PrintString
+ 1061 0066 C046     		.section	.text.GLCD_DrawLine,"ax",%progbits
+ 1062              		.align	2
+ 1063              		.global	GLCD_DrawLine
+ 1064              		.code	16
+ 1065              		.thumb_func
+ 1066              		.type	GLCD_DrawLine, %function
+ 1067              	GLCD_DrawLine:
+ 1068              	.LFB11:
+ 571:.\Generated_Source\PSoC4/GLCD.c **** 
+ 572:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 573:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_DrawLine
+ 574:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 575:.\Generated_Source\PSoC4/GLCD.c **** *
+ 576:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 577:.\Generated_Source\PSoC4/GLCD.c **** *  Draw a line on the display.  
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 30
+
+
+ 578:.\Generated_Source\PSoC4/GLCD.c **** *
+ 579:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 580:.\Generated_Source\PSoC4/GLCD.c **** *  x0, y0:  The beginning endpoint
+ 581:.\Generated_Source\PSoC4/GLCD.c **** *  x1, y1:  The end endpoint.
+ 582:.\Generated_Source\PSoC4/GLCD.c **** *  color:   Color of the line.
+ 583:.\Generated_Source\PSoC4/GLCD.c **** *
+ 584:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 585:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 586:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 587:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 588:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_DrawLine(int32 x0, int32 y0, int32 x1, int32 y1, int32 color)
+ 589:.\Generated_Source\PSoC4/GLCD.c **** {
+ 1069              		.loc 1 589 0
+ 1070              		.cfi_startproc
+ 1071 0000 80B5     		push	{r7, lr}
+ 1072              	.LCFI31:
+ 1073              		.cfi_def_cfa_offset 8
+ 1074              		.cfi_offset 7, -8
+ 1075              		.cfi_offset 14, -4
+ 1076 0002 8AB0     		sub	sp, sp, #40
+ 1077              	.LCFI32:
+ 1078              		.cfi_def_cfa_offset 48
+ 1079 0004 00AF     		add	r7, sp, #0
+ 1080              	.LCFI33:
+ 1081              		.cfi_def_cfa_register 7
+ 1082 0006 F860     		str	r0, [r7, #12]
+ 1083 0008 B960     		str	r1, [r7, #8]
+ 1084 000a 7A60     		str	r2, [r7, #4]
+ 1085 000c 3B60     		str	r3, [r7]
+ 590:.\Generated_Source\PSoC4/GLCD.c **** 	int32 dy = y1 - y0; /* Difference between y0 and y1 */
+ 1086              		.loc 1 590 0
+ 1087 000e 3A68     		ldr	r2, [r7]
+ 1088 0010 BB68     		ldr	r3, [r7, #8]
+ 1089 0012 D31A     		sub	r3, r2, r3
+ 1090 0014 7B62     		str	r3, [r7, #36]
+ 591:.\Generated_Source\PSoC4/GLCD.c **** 	int32 dx = x1 - x0; /* Difference between x0 and x1 */
+ 1091              		.loc 1 591 0
+ 1092 0016 7A68     		ldr	r2, [r7, #4]
+ 1093 0018 FB68     		ldr	r3, [r7, #12]
+ 1094 001a D31A     		sub	r3, r2, r3
+ 1095 001c 3B62     		str	r3, [r7, #32]
+ 592:.\Generated_Source\PSoC4/GLCD.c **** 	int32 stepx, stepy;
+ 593:.\Generated_Source\PSoC4/GLCD.c **** 
+ 594:.\Generated_Source\PSoC4/GLCD.c **** 	if (dy < 0)
+ 1096              		.loc 1 594 0
+ 1097 001e 7B6A     		ldr	r3, [r7, #36]
+ 1098 0020 002B     		cmp	r3, #0
+ 1099 0022 06DA     		bge	.L36
+ 595:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 596:.\Generated_Source\PSoC4/GLCD.c **** 		dy = -dy;
+ 1100              		.loc 1 596 0
+ 1101 0024 7B6A     		ldr	r3, [r7, #36]
+ 1102 0026 5B42     		neg	r3, r3
+ 1103 0028 7B62     		str	r3, [r7, #36]
+ 597:.\Generated_Source\PSoC4/GLCD.c **** 		stepy = -1;
+ 1104              		.loc 1 597 0
+ 1105 002a 0123     		mov	r3, #1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 31
+
+
+ 1106 002c 5B42     		neg	r3, r3
+ 1107 002e BB61     		str	r3, [r7, #24]
+ 1108 0030 01E0     		b	.L37
+ 1109              	.L36:
+ 598:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 599:.\Generated_Source\PSoC4/GLCD.c **** 	else
+ 600:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 601:.\Generated_Source\PSoC4/GLCD.c **** 		stepy = 1;
+ 1110              		.loc 1 601 0
+ 1111 0032 0123     		mov	r3, #1
+ 1112 0034 BB61     		str	r3, [r7, #24]
+ 1113              	.L37:
+ 602:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 603:.\Generated_Source\PSoC4/GLCD.c **** 
+ 604:.\Generated_Source\PSoC4/GLCD.c **** 	if (dx < 0)
+ 1114              		.loc 1 604 0
+ 1115 0036 3B6A     		ldr	r3, [r7, #32]
+ 1116 0038 002B     		cmp	r3, #0
+ 1117 003a 06DA     		bge	.L38
+ 605:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 606:.\Generated_Source\PSoC4/GLCD.c **** 		dx = -dx;
+ 1118              		.loc 1 606 0
+ 1119 003c 3B6A     		ldr	r3, [r7, #32]
+ 1120 003e 5B42     		neg	r3, r3
+ 1121 0040 3B62     		str	r3, [r7, #32]
+ 607:.\Generated_Source\PSoC4/GLCD.c **** 		stepx = -1;
+ 1122              		.loc 1 607 0
+ 1123 0042 0123     		mov	r3, #1
+ 1124 0044 5B42     		neg	r3, r3
+ 1125 0046 FB61     		str	r3, [r7, #28]
+ 1126 0048 01E0     		b	.L39
+ 1127              	.L38:
+ 608:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 609:.\Generated_Source\PSoC4/GLCD.c **** 	else
+ 610:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 611:.\Generated_Source\PSoC4/GLCD.c **** 		stepx = 1;
+ 1128              		.loc 1 611 0
+ 1129 004a 0123     		mov	r3, #1
+ 1130 004c FB61     		str	r3, [r7, #28]
+ 1131              	.L39:
+ 612:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 613:.\Generated_Source\PSoC4/GLCD.c **** 
+ 614:.\Generated_Source\PSoC4/GLCD.c **** 	dy <<= 1; /* dy is now 2*dy  */
+ 1132              		.loc 1 614 0
+ 1133 004e 7B6A     		ldr	r3, [r7, #36]
+ 1134 0050 5B00     		lsl	r3, r3, #1
+ 1135 0052 7B62     		str	r3, [r7, #36]
+ 615:.\Generated_Source\PSoC4/GLCD.c **** 	dx <<= 1; /* dx is now 2*dx  */
+ 1136              		.loc 1 615 0
+ 1137 0054 3B6A     		ldr	r3, [r7, #32]
+ 1138 0056 5B00     		lsl	r3, r3, #1
+ 1139 0058 3B62     		str	r3, [r7, #32]
+ 616:.\Generated_Source\PSoC4/GLCD.c **** 	GLCD_Pixel(x0, y0, color);
+ 1140              		.loc 1 616 0
+ 1141 005a F968     		ldr	r1, [r7, #12]
+ 1142 005c BA68     		ldr	r2, [r7, #8]
+ 1143 005e 3B6B     		ldr	r3, [r7, #48]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 32
+
+
+ 1144 0060 081C     		mov	r0, r1
+ 1145 0062 111C     		mov	r1, r2
+ 1146 0064 1A1C     		mov	r2, r3
+ 1147 0066 FFF7FEFF 		bl	GLCD_Pixel
+ 617:.\Generated_Source\PSoC4/GLCD.c **** 
+ 618:.\Generated_Source\PSoC4/GLCD.c **** 	if (dx > dy) 
+ 1148              		.loc 1 618 0
+ 1149 006a 3A6A     		ldr	r2, [r7, #32]
+ 1150 006c 7B6A     		ldr	r3, [r7, #36]
+ 1151 006e 9A42     		cmp	r2, r3
+ 1152 0070 25DD     		ble	.L40
+ 1153              	.LBB2:
+ 619:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 620:.\Generated_Source\PSoC4/GLCD.c **** 		int fraction = dy - (dx >> 1);
+ 1154              		.loc 1 620 0
+ 1155 0072 3B6A     		ldr	r3, [r7, #32]
+ 1156 0074 5B10     		asr	r3, r3, #1
+ 1157 0076 7A6A     		ldr	r2, [r7, #36]
+ 1158 0078 D31A     		sub	r3, r2, r3
+ 1159 007a 7B61     		str	r3, [r7, #20]
+ 621:.\Generated_Source\PSoC4/GLCD.c **** 		while (x0 != x1)
+ 1160              		.loc 1 621 0
+ 1161 007c 1AE0     		b	.L41
+ 1162              	.L43:
+ 622:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 623:.\Generated_Source\PSoC4/GLCD.c **** 			if (fraction >= 0)
+ 1163              		.loc 1 623 0
+ 1164 007e 7B69     		ldr	r3, [r7, #20]
+ 1165 0080 002B     		cmp	r3, #0
+ 1166 0082 07DB     		blt	.L42
+ 624:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 625:.\Generated_Source\PSoC4/GLCD.c **** 				y0 += stepy;
+ 1167              		.loc 1 625 0
+ 1168 0084 BA68     		ldr	r2, [r7, #8]
+ 1169 0086 BB69     		ldr	r3, [r7, #24]
+ 1170 0088 D318     		add	r3, r2, r3
+ 1171 008a BB60     		str	r3, [r7, #8]
+ 626:.\Generated_Source\PSoC4/GLCD.c **** 				fraction -= dx;
+ 1172              		.loc 1 626 0
+ 1173 008c 7A69     		ldr	r2, [r7, #20]
+ 1174 008e 3B6A     		ldr	r3, [r7, #32]
+ 1175 0090 D31A     		sub	r3, r2, r3
+ 1176 0092 7B61     		str	r3, [r7, #20]
+ 1177              	.L42:
+ 627:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 628:.\Generated_Source\PSoC4/GLCD.c **** 			x0 += stepx;
+ 1178              		.loc 1 628 0
+ 1179 0094 FA68     		ldr	r2, [r7, #12]
+ 1180 0096 FB69     		ldr	r3, [r7, #28]
+ 1181 0098 D318     		add	r3, r2, r3
+ 1182 009a FB60     		str	r3, [r7, #12]
+ 629:.\Generated_Source\PSoC4/GLCD.c **** 			fraction += dy;
+ 1183              		.loc 1 629 0
+ 1184 009c 7A69     		ldr	r2, [r7, #20]
+ 1185 009e 7B6A     		ldr	r3, [r7, #36]
+ 1186 00a0 D318     		add	r3, r2, r3
+ 1187 00a2 7B61     		str	r3, [r7, #20]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 33
+
+
+ 630:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Pixel(x0, y0, color);
+ 1188              		.loc 1 630 0
+ 1189 00a4 F968     		ldr	r1, [r7, #12]
+ 1190 00a6 BA68     		ldr	r2, [r7, #8]
+ 1191 00a8 3B6B     		ldr	r3, [r7, #48]
+ 1192 00aa 081C     		mov	r0, r1
+ 1193 00ac 111C     		mov	r1, r2
+ 1194 00ae 1A1C     		mov	r2, r3
+ 1195 00b0 FFF7FEFF 		bl	GLCD_Pixel
+ 1196              	.L41:
+ 621:.\Generated_Source\PSoC4/GLCD.c **** 		while (x0 != x1)
+ 1197              		.loc 1 621 0 discriminator 1
+ 1198 00b4 FA68     		ldr	r2, [r7, #12]
+ 1199 00b6 7B68     		ldr	r3, [r7, #4]
+ 1200 00b8 9A42     		cmp	r2, r3
+ 1201 00ba E0D1     		bne	.L43
+ 621:.\Generated_Source\PSoC4/GLCD.c **** 		while (x0 != x1)
+ 1202              		.loc 1 621 0 is_stmt 0
+ 1203 00bc 24E0     		b	.L35
+ 1204              	.L40:
+ 1205              	.LBE2:
+ 1206              	.LBB3:
+ 631:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 632:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 633:.\Generated_Source\PSoC4/GLCD.c **** 	else
+ 634:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 635:.\Generated_Source\PSoC4/GLCD.c **** 		int fraction = dx - (dy >> 1);
+ 1207              		.loc 1 635 0 is_stmt 1
+ 1208 00be 7B6A     		ldr	r3, [r7, #36]
+ 1209 00c0 5B10     		asr	r3, r3, #1
+ 1210 00c2 3A6A     		ldr	r2, [r7, #32]
+ 1211 00c4 D31A     		sub	r3, r2, r3
+ 1212 00c6 3B61     		str	r3, [r7, #16]
+ 636:.\Generated_Source\PSoC4/GLCD.c **** 		while (y0 != y1)
+ 1213              		.loc 1 636 0
+ 1214 00c8 1AE0     		b	.L45
+ 1215              	.L47:
+ 637:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 638:.\Generated_Source\PSoC4/GLCD.c **** 			if (fraction >= 0)
+ 1216              		.loc 1 638 0
+ 1217 00ca 3B69     		ldr	r3, [r7, #16]
+ 1218 00cc 002B     		cmp	r3, #0
+ 1219 00ce 07DB     		blt	.L46
+ 639:.\Generated_Source\PSoC4/GLCD.c **** 			{
+ 640:.\Generated_Source\PSoC4/GLCD.c **** 				x0 += stepx;
+ 1220              		.loc 1 640 0
+ 1221 00d0 FA68     		ldr	r2, [r7, #12]
+ 1222 00d2 FB69     		ldr	r3, [r7, #28]
+ 1223 00d4 D318     		add	r3, r2, r3
+ 1224 00d6 FB60     		str	r3, [r7, #12]
+ 641:.\Generated_Source\PSoC4/GLCD.c **** 				fraction -= dy;
+ 1225              		.loc 1 641 0
+ 1226 00d8 3A69     		ldr	r2, [r7, #16]
+ 1227 00da 7B6A     		ldr	r3, [r7, #36]
+ 1228 00dc D31A     		sub	r3, r2, r3
+ 1229 00de 3B61     		str	r3, [r7, #16]
+ 1230              	.L46:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 34
+
+
+ 642:.\Generated_Source\PSoC4/GLCD.c **** 			}
+ 643:.\Generated_Source\PSoC4/GLCD.c **** 			y0 += stepy;
+ 1231              		.loc 1 643 0
+ 1232 00e0 BA68     		ldr	r2, [r7, #8]
+ 1233 00e2 BB69     		ldr	r3, [r7, #24]
+ 1234 00e4 D318     		add	r3, r2, r3
+ 1235 00e6 BB60     		str	r3, [r7, #8]
+ 644:.\Generated_Source\PSoC4/GLCD.c **** 			fraction += dx;
+ 1236              		.loc 1 644 0
+ 1237 00e8 3A69     		ldr	r2, [r7, #16]
+ 1238 00ea 3B6A     		ldr	r3, [r7, #32]
+ 1239 00ec D318     		add	r3, r2, r3
+ 1240 00ee 3B61     		str	r3, [r7, #16]
+ 645:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_Pixel( x0, y0, color);
+ 1241              		.loc 1 645 0
+ 1242 00f0 F968     		ldr	r1, [r7, #12]
+ 1243 00f2 BA68     		ldr	r2, [r7, #8]
+ 1244 00f4 3B6B     		ldr	r3, [r7, #48]
+ 1245 00f6 081C     		mov	r0, r1
+ 1246 00f8 111C     		mov	r1, r2
+ 1247 00fa 1A1C     		mov	r2, r3
+ 1248 00fc FFF7FEFF 		bl	GLCD_Pixel
+ 1249              	.L45:
+ 636:.\Generated_Source\PSoC4/GLCD.c **** 		while (y0 != y1)
+ 1250              		.loc 1 636 0 discriminator 1
+ 1251 0100 BA68     		ldr	r2, [r7, #8]
+ 1252 0102 3B68     		ldr	r3, [r7]
+ 1253 0104 9A42     		cmp	r2, r3
+ 1254 0106 E0D1     		bne	.L47
+ 1255              	.L35:
+ 1256              	.LBE3:
+ 646:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 647:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 648:.\Generated_Source\PSoC4/GLCD.c **** }
+ 1257              		.loc 1 648 0
+ 1258 0108 BD46     		mov	sp, r7
+ 1259 010a 0AB0     		add	sp, sp, #40
+ 1260              		@ sp needed for prologue
+ 1261 010c 80BD     		pop	{r7, pc}
+ 1262              		.cfi_endproc
+ 1263              	.LFE11:
+ 1264              		.size	GLCD_DrawLine, .-GLCD_DrawLine
+ 1265 010e C046     		.section	.text.GLCD_DrawRect,"ax",%progbits
+ 1266              		.align	2
+ 1267              		.global	GLCD_DrawRect
+ 1268              		.code	16
+ 1269              		.thumb_func
+ 1270              		.type	GLCD_DrawRect, %function
+ 1271              	GLCD_DrawRect:
+ 1272              	.LFB12:
+ 649:.\Generated_Source\PSoC4/GLCD.c **** 
+ 650:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 651:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_DrawRect
+ 652:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 653:.\Generated_Source\PSoC4/GLCD.c **** *
+ 654:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 655:.\Generated_Source\PSoC4/GLCD.c **** *  Draw a rectangle, filled or not.  
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 35
+
+
+ 656:.\Generated_Source\PSoC4/GLCD.c **** *
+ 657:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 658:.\Generated_Source\PSoC4/GLCD.c **** *  x0, y0:  The upper lefthand corner.
+ 659:.\Generated_Source\PSoC4/GLCD.c **** *  x1, y1:  The lower right corner.
+ 660:.\Generated_Source\PSoC4/GLCD.c **** *  fill:    Non-Zero if retangle is to be filled.
+ 661:.\Generated_Source\PSoC4/GLCD.c **** *  color:   Color for rectangle, border and fill.
+ 662:.\Generated_Source\PSoC4/GLCD.c **** *
+ 663:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 664:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 665:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 666:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 667:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_DrawRect(int32 x0, int32 y0, int32 x1, int32 y1, int32 fill, int32 color)
+ 668:.\Generated_Source\PSoC4/GLCD.c **** {	
+ 1273              		.loc 1 668 0
+ 1274              		.cfi_startproc
+ 1275 0000 90B5     		push	{r4, r7, lr}
+ 1276              	.LCFI34:
+ 1277              		.cfi_def_cfa_offset 12
+ 1278              		.cfi_offset 4, -12
+ 1279              		.cfi_offset 7, -8
+ 1280              		.cfi_offset 14, -4
+ 1281 0002 89B0     		sub	sp, sp, #36
+ 1282              	.LCFI35:
+ 1283              		.cfi_def_cfa_offset 48
+ 1284 0004 02AF     		add	r7, sp, #8
+ 1285              	.LCFI36:
+ 1286              		.cfi_def_cfa 7, 40
+ 1287 0006 F860     		str	r0, [r7, #12]
+ 1288 0008 B960     		str	r1, [r7, #8]
+ 1289 000a 7A60     		str	r2, [r7, #4]
+ 1290 000c 3B60     		str	r3, [r7]
+ 669:.\Generated_Source\PSoC4/GLCD.c ****      int xDiff;
+ 670:.\Generated_Source\PSoC4/GLCD.c **** 	/* Check if the rectangle is to be filled    */
+ 671:.\Generated_Source\PSoC4/GLCD.c **** 	if (fill != 0)
+ 1291              		.loc 1 671 0
+ 1292 000e BB6A     		ldr	r3, [r7, #40]
+ 1293 0010 002B     		cmp	r3, #0
+ 1294 0012 27D0     		beq	.L49
+ 672:.\Generated_Source\PSoC4/GLCD.c **** 	{	
+ 673:.\Generated_Source\PSoC4/GLCD.c ****         /* Find the difference between the x vars */
+ 674:.\Generated_Source\PSoC4/GLCD.c **** 		if(x0 > x1)
+ 1295              		.loc 1 674 0
+ 1296 0014 FA68     		ldr	r2, [r7, #12]
+ 1297 0016 7B68     		ldr	r3, [r7, #4]
+ 1298 0018 9A42     		cmp	r2, r3
+ 1299 001a 04DD     		ble	.L50
+ 675:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 676:.\Generated_Source\PSoC4/GLCD.c **** 			xDiff = x0 - x1; 
+ 1300              		.loc 1 676 0
+ 1301 001c FA68     		ldr	r2, [r7, #12]
+ 1302 001e 7B68     		ldr	r3, [r7, #4]
+ 1303 0020 D31A     		sub	r3, r2, r3
+ 1304 0022 7B61     		str	r3, [r7, #20]
+ 677:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 678:.\Generated_Source\PSoC4/GLCD.c **** 		else
+ 679:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 680:.\Generated_Source\PSoC4/GLCD.c **** 			xDiff = x1 - x0;
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 36
+
+
+ 681:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 682:.\Generated_Source\PSoC4/GLCD.c **** 	
+ 683:.\Generated_Source\PSoC4/GLCD.c **** 	    /* Fill it with lines  */
+ 684:.\Generated_Source\PSoC4/GLCD.c **** 		while(xDiff >= 0)
+ 1305              		.loc 1 684 0
+ 1306 0024 1AE0     		b	.L52
+ 1307              	.L50:
+ 680:.\Generated_Source\PSoC4/GLCD.c **** 			xDiff = x1 - x0;
+ 1308              		.loc 1 680 0
+ 1309 0026 7A68     		ldr	r2, [r7, #4]
+ 1310 0028 FB68     		ldr	r3, [r7, #12]
+ 1311 002a D31A     		sub	r3, r2, r3
+ 1312 002c 7B61     		str	r3, [r7, #20]
+ 1313              		.loc 1 684 0
+ 1314 002e 15E0     		b	.L52
+ 1315              	.L55:
+ 685:.\Generated_Source\PSoC4/GLCD.c **** 		{
+ 686:.\Generated_Source\PSoC4/GLCD.c **** 			GLCD_DrawLine(x0, y0, x0, y1, color);
+ 1316              		.loc 1 686 0
+ 1317 0030 F868     		ldr	r0, [r7, #12]
+ 1318 0032 B968     		ldr	r1, [r7, #8]
+ 1319 0034 FA68     		ldr	r2, [r7, #12]
+ 1320 0036 3B68     		ldr	r3, [r7]
+ 1321 0038 FC6A     		ldr	r4, [r7, #44]
+ 1322 003a 0094     		str	r4, [sp]
+ 1323 003c FFF7FEFF 		bl	GLCD_DrawLine
+ 687:.\Generated_Source\PSoC4/GLCD.c **** 		
+ 688:.\Generated_Source\PSoC4/GLCD.c **** 			if(x0 > x1)
+ 1324              		.loc 1 688 0
+ 1325 0040 FA68     		ldr	r2, [r7, #12]
+ 1326 0042 7B68     		ldr	r3, [r7, #4]
+ 1327 0044 9A42     		cmp	r2, r3
+ 1328 0046 03DD     		ble	.L53
+ 689:.\Generated_Source\PSoC4/GLCD.c **** 				x0--;
+ 1329              		.loc 1 689 0
+ 1330 0048 FB68     		ldr	r3, [r7, #12]
+ 1331 004a 013B     		sub	r3, r3, #1
+ 1332 004c FB60     		str	r3, [r7, #12]
+ 1333 004e 02E0     		b	.L54
+ 1334              	.L53:
+ 690:.\Generated_Source\PSoC4/GLCD.c **** 			else
+ 691:.\Generated_Source\PSoC4/GLCD.c **** 				x0++;
+ 1335              		.loc 1 691 0
+ 1336 0050 FB68     		ldr	r3, [r7, #12]
+ 1337 0052 0133     		add	r3, r3, #1
+ 1338 0054 FB60     		str	r3, [r7, #12]
+ 1339              	.L54:
+ 692:.\Generated_Source\PSoC4/GLCD.c **** 		
+ 693:.\Generated_Source\PSoC4/GLCD.c **** 			xDiff--;
+ 1340              		.loc 1 693 0
+ 1341 0056 7B69     		ldr	r3, [r7, #20]
+ 1342 0058 013B     		sub	r3, r3, #1
+ 1343 005a 7B61     		str	r3, [r7, #20]
+ 1344              	.L52:
+ 684:.\Generated_Source\PSoC4/GLCD.c **** 		while(xDiff >= 0)
+ 1345              		.loc 1 684 0 discriminator 1
+ 1346 005c 7B69     		ldr	r3, [r7, #20]
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 37
+
+
+ 1347 005e 002B     		cmp	r3, #0
+ 1348 0060 E6DA     		bge	.L55
+ 684:.\Generated_Source\PSoC4/GLCD.c **** 		while(xDiff >= 0)
+ 1349              		.loc 1 684 0 is_stmt 0
+ 1350 0062 1FE0     		b	.L48
+ 1351              	.L49:
+ 694:.\Generated_Source\PSoC4/GLCD.c **** 		}
+ 695:.\Generated_Source\PSoC4/GLCD.c **** 
+ 696:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 697:.\Generated_Source\PSoC4/GLCD.c **** 	else 
+ 698:.\Generated_Source\PSoC4/GLCD.c **** 	{
+ 699:.\Generated_Source\PSoC4/GLCD.c **** 		/* Draw the four sides of the rectangle */
+ 700:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_DrawLine(x0, y0, x1, y0, color);
+ 1352              		.loc 1 700 0 is_stmt 1
+ 1353 0064 F868     		ldr	r0, [r7, #12]
+ 1354 0066 B968     		ldr	r1, [r7, #8]
+ 1355 0068 7A68     		ldr	r2, [r7, #4]
+ 1356 006a BB68     		ldr	r3, [r7, #8]
+ 1357 006c FC6A     		ldr	r4, [r7, #44]
+ 1358 006e 0094     		str	r4, [sp]
+ 1359 0070 FFF7FEFF 		bl	GLCD_DrawLine
+ 701:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_DrawLine(x0, y1, x1, y1, color);
+ 1360              		.loc 1 701 0
+ 1361 0074 F868     		ldr	r0, [r7, #12]
+ 1362 0076 3968     		ldr	r1, [r7]
+ 1363 0078 7A68     		ldr	r2, [r7, #4]
+ 1364 007a 3B68     		ldr	r3, [r7]
+ 1365 007c FC6A     		ldr	r4, [r7, #44]
+ 1366 007e 0094     		str	r4, [sp]
+ 1367 0080 FFF7FEFF 		bl	GLCD_DrawLine
+ 702:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_DrawLine(x0, y0, x0, y1, color);
+ 1368              		.loc 1 702 0
+ 1369 0084 F868     		ldr	r0, [r7, #12]
+ 1370 0086 B968     		ldr	r1, [r7, #8]
+ 1371 0088 FA68     		ldr	r2, [r7, #12]
+ 1372 008a 3B68     		ldr	r3, [r7]
+ 1373 008c FC6A     		ldr	r4, [r7, #44]
+ 1374 008e 0094     		str	r4, [sp]
+ 1375 0090 FFF7FEFF 		bl	GLCD_DrawLine
+ 703:.\Generated_Source\PSoC4/GLCD.c **** 		GLCD_DrawLine(x1, y0, x1, y1, color);
+ 1376              		.loc 1 703 0
+ 1377 0094 7868     		ldr	r0, [r7, #4]
+ 1378 0096 B968     		ldr	r1, [r7, #8]
+ 1379 0098 7A68     		ldr	r2, [r7, #4]
+ 1380 009a 3B68     		ldr	r3, [r7]
+ 1381 009c FC6A     		ldr	r4, [r7, #44]
+ 1382 009e 0094     		str	r4, [sp]
+ 1383 00a0 FFF7FEFF 		bl	GLCD_DrawLine
+ 1384              	.L48:
+ 704:.\Generated_Source\PSoC4/GLCD.c **** 	}
+ 705:.\Generated_Source\PSoC4/GLCD.c **** }
+ 1385              		.loc 1 705 0
+ 1386 00a4 BD46     		mov	sp, r7
+ 1387 00a6 07B0     		add	sp, sp, #28
+ 1388              		@ sp needed for prologue
+ 1389 00a8 90BD     		pop	{r4, r7, pc}
+ 1390              		.cfi_endproc
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 38
+
+
+ 1391              	.LFE12:
+ 1392              		.size	GLCD_DrawRect, .-GLCD_DrawRect
+ 1393 00aa C046     		.section	.text.GLCD_Off,"ax",%progbits
+ 1394              		.align	2
+ 1395              		.global	GLCD_Off
+ 1396              		.code	16
+ 1397              		.thumb_func
+ 1398              		.type	GLCD_Off, %function
+ 1399              	GLCD_Off:
+ 1400              	.LFB13:
+ 706:.\Generated_Source\PSoC4/GLCD.c **** 
+ 707:.\Generated_Source\PSoC4/GLCD.c **** 
+ 708:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 709:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_Off
+ 710:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 711:.\Generated_Source\PSoC4/GLCD.c **** *
+ 712:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 713:.\Generated_Source\PSoC4/GLCD.c **** *  Turn off display
+ 714:.\Generated_Source\PSoC4/GLCD.c **** *
+ 715:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 716:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 717:.\Generated_Source\PSoC4/GLCD.c **** *
+ 718:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 719:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 720:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 721:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 722:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_Off(void)		/* Turn off the display  */
+ 723:.\Generated_Source\PSoC4/GLCD.c **** {
+ 1401              		.loc 1 723 0
+ 1402              		.cfi_startproc
+ 1403 0000 80B5     		push	{r7, lr}
+ 1404              	.LCFI37:
+ 1405              		.cfi_def_cfa_offset 8
+ 1406              		.cfi_offset 7, -8
+ 1407              		.cfi_offset 14, -4
+ 1408 0002 00AF     		add	r7, sp, #0
+ 1409              	.LCFI38:
+ 1410              		.cfi_def_cfa_register 7
+ 724:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_Command(GLCD_DISPOFF);
+ 1411              		.loc 1 724 0
+ 1412 0004 2820     		mov	r0, #40
+ 1413 0006 FFF7FEFF 		bl	GLCD_Command
+ 725:.\Generated_Source\PSoC4/GLCD.c **** }
+ 1414              		.loc 1 725 0
+ 1415 000a BD46     		mov	sp, r7
+ 1416              		@ sp needed for prologue
+ 1417 000c 80BD     		pop	{r7, pc}
+ 1418              		.cfi_endproc
+ 1419              	.LFE13:
+ 1420              		.size	GLCD_Off, .-GLCD_Off
+ 1421 000e C046     		.section	.text.GLCD_On,"ax",%progbits
+ 1422              		.align	2
+ 1423              		.global	GLCD_On
+ 1424              		.code	16
+ 1425              		.thumb_func
+ 1426              		.type	GLCD_On, %function
+ 1427              	GLCD_On:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 39
+
+
+ 1428              	.LFB14:
+ 726:.\Generated_Source\PSoC4/GLCD.c **** 
+ 727:.\Generated_Source\PSoC4/GLCD.c **** /*******************************************************************************
+ 728:.\Generated_Source\PSoC4/GLCD.c **** * Function Name: GLCD_On
+ 729:.\Generated_Source\PSoC4/GLCD.c **** ********************************************************************************
+ 730:.\Generated_Source\PSoC4/GLCD.c **** *
+ 731:.\Generated_Source\PSoC4/GLCD.c **** * Summary:
+ 732:.\Generated_Source\PSoC4/GLCD.c **** *  Turn on display
+ 733:.\Generated_Source\PSoC4/GLCD.c **** *
+ 734:.\Generated_Source\PSoC4/GLCD.c **** * Parameters:  
+ 735:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 736:.\Generated_Source\PSoC4/GLCD.c **** *
+ 737:.\Generated_Source\PSoC4/GLCD.c **** * Return: 
+ 738:.\Generated_Source\PSoC4/GLCD.c **** *  None 
+ 739:.\Generated_Source\PSoC4/GLCD.c **** *  
+ 740:.\Generated_Source\PSoC4/GLCD.c **** *******************************************************************************/
+ 741:.\Generated_Source\PSoC4/GLCD.c **** void GLCD_On(void)		/* Turn on the display */
+ 742:.\Generated_Source\PSoC4/GLCD.c **** {
+ 1429              		.loc 1 742 0
+ 1430              		.cfi_startproc
+ 1431 0000 80B5     		push	{r7, lr}
+ 1432              	.LCFI39:
+ 1433              		.cfi_def_cfa_offset 8
+ 1434              		.cfi_offset 7, -8
+ 1435              		.cfi_offset 14, -4
+ 1436 0002 00AF     		add	r7, sp, #0
+ 1437              	.LCFI40:
+ 1438              		.cfi_def_cfa_register 7
+ 743:.\Generated_Source\PSoC4/GLCD.c ****     GLCD_Command(GLCD_DISPON);
+ 1439              		.loc 1 743 0
+ 1440 0004 2920     		mov	r0, #41
+ 1441 0006 FFF7FEFF 		bl	GLCD_Command
+ 744:.\Generated_Source\PSoC4/GLCD.c **** }
+ 1442              		.loc 1 744 0
+ 1443 000a BD46     		mov	sp, r7
+ 1444              		@ sp needed for prologue
+ 1445 000c 80BD     		pop	{r7, pc}
+ 1446              		.cfi_endproc
+ 1447              	.LFE14:
+ 1448              		.size	GLCD_On, .-GLCD_On
+ 1449 000e C046     		.text
+ 1450              	.Letext0:
+ 1451              		.file 2 ".\\Generated_Source\\PSoC4\\cytypes.h"
+ 1452              		.file 3 ".\\Generated_Source\\PSoC4\\GLCD.h"
+ 1453              		.section	.debug_info,"",%progbits
+ 1454              	.Ldebug_info0:
+ 1455 0000 FA050000 		.4byte	0x5fa
+ 1456 0004 0200     		.2byte	0x2
+ 1457 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1458 000a 04       		.byte	0x4
+ 1459 000b 01       		.uleb128 0x1
+ 1460 000c 1F020000 		.4byte	.LASF59
+ 1461 0010 01       		.byte	0x1
+ 1462 0011 E8020000 		.4byte	.LASF60
+ 1463 0015 2E010000 		.4byte	.LASF61
+ 1464 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1465 001d 00000000 		.4byte	0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 40
+
+
+ 1466 0021 00000000 		.4byte	0
+ 1467 0025 00000000 		.4byte	.Ldebug_line0
+ 1468 0029 02       		.uleb128 0x2
+ 1469 002a 01       		.byte	0x1
+ 1470 002b 06       		.byte	0x6
+ 1471 002c 35000000 		.4byte	.LASF0
+ 1472 0030 02       		.uleb128 0x2
+ 1473 0031 01       		.byte	0x1
+ 1474 0032 08       		.byte	0x8
+ 1475 0033 68020000 		.4byte	.LASF1
+ 1476 0037 02       		.uleb128 0x2
+ 1477 0038 02       		.byte	0x2
+ 1478 0039 05       		.byte	0x5
+ 1479 003a 7C020000 		.4byte	.LASF2
+ 1480 003e 02       		.uleb128 0x2
+ 1481 003f 02       		.byte	0x2
+ 1482 0040 07       		.byte	0x7
+ 1483 0041 0C010000 		.4byte	.LASF3
+ 1484 0045 02       		.uleb128 0x2
+ 1485 0046 04       		.byte	0x4
+ 1486 0047 05       		.byte	0x5
+ 1487 0048 50000000 		.4byte	.LASF4
+ 1488 004c 02       		.uleb128 0x2
+ 1489 004d 04       		.byte	0x4
+ 1490 004e 07       		.byte	0x7
+ 1491 004f DD000000 		.4byte	.LASF5
+ 1492 0053 02       		.uleb128 0x2
+ 1493 0054 08       		.byte	0x8
+ 1494 0055 05       		.byte	0x5
+ 1495 0056 27000000 		.4byte	.LASF6
+ 1496 005a 02       		.uleb128 0x2
+ 1497 005b 08       		.byte	0x8
+ 1498 005c 07       		.byte	0x7
+ 1499 005d 08000000 		.4byte	.LASF7
+ 1500 0061 03       		.uleb128 0x3
+ 1501 0062 04       		.byte	0x4
+ 1502 0063 05       		.byte	0x5
+ 1503 0064 696E7400 		.ascii	"int\000"
+ 1504 0068 02       		.uleb128 0x2
+ 1505 0069 04       		.byte	0x4
+ 1506 006a 07       		.byte	0x7
+ 1507 006b C0000000 		.4byte	.LASF8
+ 1508 006f 04       		.uleb128 0x4
+ 1509 0070 59000000 		.4byte	.LASF9
+ 1510 0074 02       		.byte	0x2
+ 1511 0075 5B       		.byte	0x5b
+ 1512 0076 30000000 		.4byte	0x30
+ 1513 007a 04       		.uleb128 0x4
+ 1514 007b 82000000 		.4byte	.LASF10
+ 1515 007f 02       		.byte	0x2
+ 1516 0080 5D       		.byte	0x5d
+ 1517 0081 4C000000 		.4byte	0x4c
+ 1518 0085 04       		.uleb128 0x4
+ 1519 0086 4A000000 		.4byte	.LASF11
+ 1520 008a 02       		.byte	0x2
+ 1521 008b 60       		.byte	0x60
+ 1522 008c 45000000 		.4byte	0x45
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 41
+
+
+ 1523 0090 02       		.uleb128 0x2
+ 1524 0091 04       		.byte	0x4
+ 1525 0092 04       		.byte	0x4
+ 1526 0093 FC010000 		.4byte	.LASF12
+ 1527 0097 02       		.uleb128 0x2
+ 1528 0098 08       		.byte	0x8
+ 1529 0099 04       		.byte	0x4
+ 1530 009a 70000000 		.4byte	.LASF13
+ 1531 009e 02       		.uleb128 0x2
+ 1532 009f 01       		.byte	0x1
+ 1533 00a0 08       		.byte	0x8
+ 1534 00a1 91020000 		.4byte	.LASF14
+ 1535 00a5 02       		.uleb128 0x2
+ 1536 00a6 04       		.byte	0x4
+ 1537 00a7 07       		.byte	0x7
+ 1538 00a8 B8010000 		.4byte	.LASF15
+ 1539 00ac 05       		.uleb128 0x5
+ 1540 00ad 04       		.byte	0x4
+ 1541 00ae 9E000000 		.4byte	0x9e
+ 1542 00b2 05       		.uleb128 0x5
+ 1543 00b3 04       		.byte	0x4
+ 1544 00b4 6F000000 		.4byte	0x6f
+ 1545 00b8 06       		.uleb128 0x6
+ 1546 00b9 01       		.byte	0x1
+ 1547 00ba EF010000 		.4byte	.LASF16
+ 1548 00be 01       		.byte	0x1
+ 1549 00bf 3A       		.byte	0x3a
+ 1550 00c0 01       		.byte	0x1
+ 1551 00c1 00000000 		.4byte	.LFB0
+ 1552 00c5 16000000 		.4byte	.LFE0
+ 1553 00c9 00000000 		.4byte	.LLST0
+ 1554 00cd 01       		.byte	0x1
+ 1555 00ce E1000000 		.4byte	0xe1
+ 1556 00d2 07       		.uleb128 0x7
+ 1557 00d3 26010000 		.4byte	.LASF18
+ 1558 00d7 01       		.byte	0x1
+ 1559 00d8 3A       		.byte	0x3a
+ 1560 00d9 7A000000 		.4byte	0x7a
+ 1561 00dd 02       		.byte	0x2
+ 1562 00de 91       		.byte	0x91
+ 1563 00df 74       		.sleb128 -12
+ 1564 00e0 00       		.byte	0
+ 1565 00e1 06       		.uleb128 0x6
+ 1566 00e2 01       		.byte	0x1
+ 1567 00e3 1E030000 		.4byte	.LASF17
+ 1568 00e7 01       		.byte	0x1
+ 1569 00e8 55       		.byte	0x55
+ 1570 00e9 01       		.byte	0x1
+ 1571 00ea 00000000 		.4byte	.LFB1
+ 1572 00ee 20000000 		.4byte	.LFE1
+ 1573 00f2 38000000 		.4byte	.LLST1
+ 1574 00f6 01       		.byte	0x1
+ 1575 00f7 0A010000 		.4byte	0x10a
+ 1576 00fb 07       		.uleb128 0x7
+ 1577 00fc 00000000 		.4byte	.LASF19
+ 1578 0100 01       		.byte	0x1
+ 1579 0101 55       		.byte	0x55
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 42
+
+
+ 1580 0102 7A000000 		.4byte	0x7a
+ 1581 0106 02       		.byte	0x2
+ 1582 0107 91       		.byte	0x91
+ 1583 0108 74       		.sleb128 -12
+ 1584 0109 00       		.byte	0
+ 1585 010a 08       		.uleb128 0x8
+ 1586 010b 01       		.byte	0x1
+ 1587 010c 01010000 		.4byte	.LASF20
+ 1588 0110 01       		.byte	0x1
+ 1589 0111 75       		.byte	0x75
+ 1590 0112 01       		.byte	0x1
+ 1591 0113 00000000 		.4byte	.LFB2
+ 1592 0117 72000000 		.4byte	.LFE2
+ 1593 011b 70000000 		.4byte	.LLST2
+ 1594 011f 01       		.byte	0x1
+ 1595 0120 08       		.uleb128 0x8
+ 1596 0121 01       		.byte	0x1
+ 1597 0122 98000000 		.4byte	.LASF21
+ 1598 0126 01       		.byte	0x1
+ 1599 0127 C7       		.byte	0xc7
+ 1600 0128 01       		.byte	0x1
+ 1601 0129 00000000 		.4byte	.LFB3
+ 1602 012d 14000000 		.4byte	.LFE3
+ 1603 0131 9C000000 		.4byte	.LLST3
+ 1604 0135 01       		.byte	0x1
+ 1605 0136 06       		.uleb128 0x6
+ 1606 0137 01       		.byte	0x1
+ 1607 0138 77000000 		.4byte	.LASF22
+ 1608 013c 01       		.byte	0x1
+ 1609 013d DB       		.byte	0xdb
+ 1610 013e 01       		.byte	0x1
+ 1611 013f 00000000 		.4byte	.LFB4
+ 1612 0143 94000000 		.4byte	.LFE4
+ 1613 0147 C8000000 		.4byte	.LLST4
+ 1614 014b 01       		.byte	0x1
+ 1615 014c 6B010000 		.4byte	0x16b
+ 1616 0150 07       		.uleb128 0x7
+ 1617 0151 8B020000 		.4byte	.LASF23
+ 1618 0155 01       		.byte	0x1
+ 1619 0156 DB       		.byte	0xdb
+ 1620 0157 85000000 		.4byte	0x85
+ 1621 015b 02       		.byte	0x2
+ 1622 015c 91       		.byte	0x91
+ 1623 015d 6C       		.sleb128 -20
+ 1624 015e 09       		.uleb128 0x9
+ 1625 015f 6900     		.ascii	"i\000"
+ 1626 0161 01       		.byte	0x1
+ 1627 0162 DD       		.byte	0xdd
+ 1628 0163 85000000 		.4byte	0x85
+ 1629 0167 02       		.byte	0x2
+ 1630 0168 91       		.byte	0x91
+ 1631 0169 74       		.sleb128 -12
+ 1632 016a 00       		.byte	0
+ 1633 016b 0A       		.uleb128 0xa
+ 1634 016c 01       		.byte	0x1
+ 1635 016d C1010000 		.4byte	.LASF24
+ 1636 0171 01       		.byte	0x1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 43
+
+
+ 1637 0172 0401     		.2byte	0x104
+ 1638 0174 01       		.byte	0x1
+ 1639 0175 00000000 		.4byte	.LFB5
+ 1640 0179 24000000 		.4byte	.LFE5
+ 1641 017d 00010000 		.4byte	.LLST5
+ 1642 0181 01       		.byte	0x1
+ 1643 0182 96010000 		.4byte	0x196
+ 1644 0186 0B       		.uleb128 0xb
+ 1645 0187 E0020000 		.4byte	.LASF25
+ 1646 018b 01       		.byte	0x1
+ 1647 018c 0401     		.2byte	0x104
+ 1648 018e 85000000 		.4byte	0x85
+ 1649 0192 02       		.byte	0x2
+ 1650 0193 91       		.byte	0x91
+ 1651 0194 74       		.sleb128 -12
+ 1652 0195 00       		.byte	0
+ 1653 0196 0C       		.uleb128 0xc
+ 1654 0197 01       		.byte	0x1
+ 1655 0198 0E030000 		.4byte	.LASF62
+ 1656 019c 01       		.byte	0x1
+ 1657 019d 1F01     		.2byte	0x11f
+ 1658 019f 01       		.byte	0x1
+ 1659 01a0 85000000 		.4byte	0x85
+ 1660 01a4 00000000 		.4byte	.LFB6
+ 1661 01a8 2C000000 		.4byte	.LFE6
+ 1662 01ac 38010000 		.4byte	.LLST6
+ 1663 01b0 01       		.byte	0x1
+ 1664 01b1 C4010000 		.4byte	0x1c4
+ 1665 01b5 0D       		.uleb128 0xd
+ 1666 01b6 696E00   		.ascii	"in\000"
+ 1667 01b9 01       		.byte	0x1
+ 1668 01ba 1F01     		.2byte	0x11f
+ 1669 01bc 85000000 		.4byte	0x85
+ 1670 01c0 02       		.byte	0x2
+ 1671 01c1 91       		.byte	0x91
+ 1672 01c2 74       		.sleb128 -12
+ 1673 01c3 00       		.byte	0
+ 1674 01c4 0A       		.uleb128 0xa
+ 1675 01c5 01       		.byte	0x1
+ 1676 01c6 B3020000 		.4byte	.LASF26
+ 1677 01ca 01       		.byte	0x1
+ 1678 01cb 3101     		.2byte	0x131
+ 1679 01cd 01       		.byte	0x1
+ 1680 01ce 00000000 		.4byte	.LFB7
+ 1681 01d2 74000000 		.4byte	.LFE7
+ 1682 01d6 70010000 		.4byte	.LLST7
+ 1683 01da 01       		.byte	0x1
+ 1684 01db 09020000 		.4byte	0x209
+ 1685 01df 0D       		.uleb128 0xd
+ 1686 01e0 7800     		.ascii	"x\000"
+ 1687 01e2 01       		.byte	0x1
+ 1688 01e3 3101     		.2byte	0x131
+ 1689 01e5 85000000 		.4byte	0x85
+ 1690 01e9 02       		.byte	0x2
+ 1691 01ea 91       		.byte	0x91
+ 1692 01eb 74       		.sleb128 -12
+ 1693 01ec 0D       		.uleb128 0xd
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 44
+
+
+ 1694 01ed 7900     		.ascii	"y\000"
+ 1695 01ef 01       		.byte	0x1
+ 1696 01f0 3101     		.2byte	0x131
+ 1697 01f2 85000000 		.4byte	0x85
+ 1698 01f6 02       		.byte	0x2
+ 1699 01f7 91       		.byte	0x91
+ 1700 01f8 70       		.sleb128 -16
+ 1701 01f9 0B       		.uleb128 0xb
+ 1702 01fa 8B020000 		.4byte	.LASF23
+ 1703 01fe 01       		.byte	0x1
+ 1704 01ff 3101     		.2byte	0x131
+ 1705 0201 85000000 		.4byte	0x85
+ 1706 0205 02       		.byte	0x2
+ 1707 0206 91       		.byte	0x91
+ 1708 0207 6C       		.sleb128 -20
+ 1709 0208 00       		.byte	0
+ 1710 0209 0A       		.uleb128 0xa
+ 1711 020a 01       		.byte	0x1
+ 1712 020b B0000000 		.4byte	.LASF27
+ 1713 020f 01       		.byte	0x1
+ 1714 0210 6601     		.2byte	0x166
+ 1715 0212 01       		.byte	0x1
+ 1716 0213 00000000 		.4byte	.LFB8
+ 1717 0217 7E010000 		.4byte	.LFE8
+ 1718 021b A8010000 		.4byte	.LLST8
+ 1719 021f 01       		.byte	0x1
+ 1720 0220 A4020000 		.4byte	0x2a4
+ 1721 0224 0D       		.uleb128 0xd
+ 1722 0225 783000   		.ascii	"x0\000"
+ 1723 0228 01       		.byte	0x1
+ 1724 0229 6601     		.2byte	0x166
+ 1725 022b 85000000 		.4byte	0x85
+ 1726 022f 02       		.byte	0x2
+ 1727 0230 91       		.byte	0x91
+ 1728 0231 5C       		.sleb128 -36
+ 1729 0232 0D       		.uleb128 0xd
+ 1730 0233 793000   		.ascii	"y0\000"
+ 1731 0236 01       		.byte	0x1
+ 1732 0237 6601     		.2byte	0x166
+ 1733 0239 85000000 		.4byte	0x85
+ 1734 023d 02       		.byte	0x2
+ 1735 023e 91       		.byte	0x91
+ 1736 023f 58       		.sleb128 -40
+ 1737 0240 0B       		.uleb128 0xb
+ 1738 0241 AA010000 		.4byte	.LASF28
+ 1739 0245 01       		.byte	0x1
+ 1740 0246 6601     		.2byte	0x166
+ 1741 0248 85000000 		.4byte	0x85
+ 1742 024c 02       		.byte	0x2
+ 1743 024d 91       		.byte	0x91
+ 1744 024e 54       		.sleb128 -44
+ 1745 024f 0B       		.uleb128 0xb
+ 1746 0250 8B020000 		.4byte	.LASF23
+ 1747 0254 01       		.byte	0x1
+ 1748 0255 6601     		.2byte	0x166
+ 1749 0257 85000000 		.4byte	0x85
+ 1750 025b 02       		.byte	0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 45
+
+
+ 1751 025c 91       		.byte	0x91
+ 1752 025d 50       		.sleb128 -48
+ 1753 025e 0E       		.uleb128 0xe
+ 1754 025f 6600     		.ascii	"f\000"
+ 1755 0261 01       		.byte	0x1
+ 1756 0262 6801     		.2byte	0x168
+ 1757 0264 85000000 		.4byte	0x85
+ 1758 0268 02       		.byte	0x2
+ 1759 0269 91       		.byte	0x91
+ 1760 026a 74       		.sleb128 -12
+ 1761 026b 0F       		.uleb128 0xf
+ 1762 026c EF000000 		.4byte	.LASF29
+ 1763 0270 01       		.byte	0x1
+ 1764 0271 6901     		.2byte	0x169
+ 1765 0273 85000000 		.4byte	0x85
+ 1766 0277 02       		.byte	0x2
+ 1767 0278 91       		.byte	0x91
+ 1768 0279 70       		.sleb128 -16
+ 1769 027a 0F       		.uleb128 0xf
+ 1770 027b F5000000 		.4byte	.LASF30
+ 1771 027f 01       		.byte	0x1
+ 1772 0280 6A01     		.2byte	0x16a
+ 1773 0282 85000000 		.4byte	0x85
+ 1774 0286 02       		.byte	0x2
+ 1775 0287 91       		.byte	0x91
+ 1776 0288 6C       		.sleb128 -20
+ 1777 0289 0E       		.uleb128 0xe
+ 1778 028a 7800     		.ascii	"x\000"
+ 1779 028c 01       		.byte	0x1
+ 1780 028d 6B01     		.2byte	0x16b
+ 1781 028f 85000000 		.4byte	0x85
+ 1782 0293 02       		.byte	0x2
+ 1783 0294 91       		.byte	0x91
+ 1784 0295 68       		.sleb128 -24
+ 1785 0296 0E       		.uleb128 0xe
+ 1786 0297 7900     		.ascii	"y\000"
+ 1787 0299 01       		.byte	0x1
+ 1788 029a 6C01     		.2byte	0x16c
+ 1789 029c 85000000 		.4byte	0x85
+ 1790 02a0 02       		.byte	0x2
+ 1791 02a1 91       		.byte	0x91
+ 1792 02a2 64       		.sleb128 -28
+ 1793 02a3 00       		.byte	0
+ 1794 02a4 0A       		.uleb128 0xa
+ 1795 02a5 01       		.byte	0x1
+ 1796 02a6 89000000 		.4byte	.LASF31
+ 1797 02aa 01       		.byte	0x1
+ 1798 02ab 9B01     		.2byte	0x19b
+ 1799 02ad 01       		.byte	0x1
+ 1800 02ae 00000000 		.4byte	.LFB9
+ 1801 02b2 8C010000 		.4byte	.LFE9
+ 1802 02b6 E0010000 		.4byte	.LLST9
+ 1803 02ba 01       		.byte	0x1
+ 1804 02bb A8030000 		.4byte	0x3a8
+ 1805 02bf 0D       		.uleb128 0xd
+ 1806 02c0 6300     		.ascii	"c\000"
+ 1807 02c2 01       		.byte	0x1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 46
+
+
+ 1808 02c3 9B01     		.2byte	0x19b
+ 1809 02c5 6F000000 		.4byte	0x6f
+ 1810 02c9 02       		.byte	0x2
+ 1811 02ca 91       		.byte	0x91
+ 1812 02cb 47       		.sleb128 -57
+ 1813 02cc 0D       		.uleb128 0xd
+ 1814 02cd 7800     		.ascii	"x\000"
+ 1815 02cf 01       		.byte	0x1
+ 1816 02d0 9B01     		.2byte	0x19b
+ 1817 02d2 85000000 		.4byte	0x85
+ 1818 02d6 02       		.byte	0x2
+ 1819 02d7 91       		.byte	0x91
+ 1820 02d8 40       		.sleb128 -64
+ 1821 02d9 0D       		.uleb128 0xd
+ 1822 02da 7900     		.ascii	"y\000"
+ 1823 02dc 01       		.byte	0x1
+ 1824 02dd 9B01     		.2byte	0x19b
+ 1825 02df 85000000 		.4byte	0x85
+ 1826 02e3 03       		.byte	0x3
+ 1827 02e4 91       		.byte	0x91
+ 1828 02e5 BC7F     		.sleb128 -68
+ 1829 02e7 0B       		.uleb128 0xb
+ 1830 02e8 1F010000 		.4byte	.LASF32
+ 1831 02ec 01       		.byte	0x1
+ 1832 02ed 9B01     		.2byte	0x19b
+ 1833 02ef 85000000 		.4byte	0x85
+ 1834 02f3 03       		.byte	0x3
+ 1835 02f4 91       		.byte	0x91
+ 1836 02f5 B87F     		.sleb128 -72
+ 1837 02f7 0B       		.uleb128 0xb
+ 1838 02f8 10020000 		.4byte	.LASF33
+ 1839 02fc 01       		.byte	0x1
+ 1840 02fd 9B01     		.2byte	0x19b
+ 1841 02ff 85000000 		.4byte	0x85
+ 1842 0303 02       		.byte	0x2
+ 1843 0304 91       		.byte	0x91
+ 1844 0305 00       		.sleb128 0
+ 1845 0306 0E       		.uleb128 0xe
+ 1846 0307 6900     		.ascii	"i\000"
+ 1847 0309 01       		.byte	0x1
+ 1848 030a A001     		.2byte	0x1a0
+ 1849 030c 85000000 		.4byte	0x85
+ 1850 0310 02       		.byte	0x2
+ 1851 0311 91       		.byte	0x91
+ 1852 0312 74       		.sleb128 -12
+ 1853 0313 0E       		.uleb128 0xe
+ 1854 0314 6A00     		.ascii	"j\000"
+ 1855 0316 01       		.byte	0x1
+ 1856 0317 A001     		.2byte	0x1a0
+ 1857 0319 85000000 		.4byte	0x85
+ 1858 031d 02       		.byte	0x2
+ 1859 031e 91       		.byte	0x91
+ 1860 031f 70       		.sleb128 -16
+ 1861 0320 0F       		.uleb128 0xf
+ 1862 0321 E9010000 		.4byte	.LASF34
+ 1863 0325 01       		.byte	0x1
+ 1864 0326 A101     		.2byte	0x1a1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 47
+
+
+ 1865 0328 85000000 		.4byte	0x85
+ 1866 032c 02       		.byte	0x2
+ 1867 032d 91       		.byte	0x91
+ 1868 032e 58       		.sleb128 -40
+ 1869 032f 0F       		.uleb128 0xf
+ 1870 0330 FB000000 		.4byte	.LASF35
+ 1871 0334 01       		.byte	0x1
+ 1872 0335 A201     		.2byte	0x1a2
+ 1873 0337 85000000 		.4byte	0x85
+ 1874 033b 02       		.byte	0x2
+ 1875 033c 91       		.byte	0x91
+ 1876 033d 54       		.sleb128 -44
+ 1877 033e 0F       		.uleb128 0xf
+ 1878 033f B1010000 		.4byte	.LASF36
+ 1879 0343 01       		.byte	0x1
+ 1880 0344 A301     		.2byte	0x1a3
+ 1881 0346 85000000 		.4byte	0x85
+ 1882 034a 02       		.byte	0x2
+ 1883 034b 91       		.byte	0x91
+ 1884 034c 50       		.sleb128 -48
+ 1885 034d 0F       		.uleb128 0xf
+ 1886 034e 41000000 		.4byte	.LASF37
+ 1887 0352 01       		.byte	0x1
+ 1888 0353 A401     		.2byte	0x1a4
+ 1889 0355 6F000000 		.4byte	0x6f
+ 1890 0359 02       		.byte	0x2
+ 1891 035a 91       		.byte	0x91
+ 1892 035b 4F       		.sleb128 -49
+ 1893 035c 0F       		.uleb128 0xf
+ 1894 035d A5020000 		.4byte	.LASF38
+ 1895 0361 01       		.byte	0x1
+ 1896 0362 A501     		.2byte	0x1a5
+ 1897 0364 6F000000 		.4byte	0x6f
+ 1898 0368 02       		.byte	0x2
+ 1899 0369 91       		.byte	0x91
+ 1900 036a 6F       		.sleb128 -17
+ 1901 036b 0F       		.uleb128 0xf
+ 1902 036c DD010000 		.4byte	.LASF39
+ 1903 0370 01       		.byte	0x1
+ 1904 0371 A601     		.2byte	0x1a6
+ 1905 0373 85000000 		.4byte	0x85
+ 1906 0377 02       		.byte	0x2
+ 1907 0378 91       		.byte	0x91
+ 1908 0379 68       		.sleb128 -24
+ 1909 037a 0F       		.uleb128 0xf
+ 1910 037b E3010000 		.4byte	.LASF40
+ 1911 037f 01       		.byte	0x1
+ 1912 0380 A701     		.2byte	0x1a7
+ 1913 0382 85000000 		.4byte	0x85
+ 1914 0386 02       		.byte	0x2
+ 1915 0387 91       		.byte	0x91
+ 1916 0388 64       		.sleb128 -28
+ 1917 0389 0F       		.uleb128 0xf
+ 1918 038a 9F020000 		.4byte	.LASF41
+ 1919 038e 01       		.byte	0x1
+ 1920 038f A801     		.2byte	0x1a8
+ 1921 0391 B2000000 		.4byte	0xb2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 48
+
+
+ 1922 0395 02       		.byte	0x2
+ 1923 0396 91       		.byte	0x91
+ 1924 0397 5C       		.sleb128 -36
+ 1925 0398 0F       		.uleb128 0xf
+ 1926 0399 76020000 		.4byte	.LASF42
+ 1927 039d 01       		.byte	0x1
+ 1928 039e A901     		.2byte	0x1a9
+ 1929 03a0 B2000000 		.4byte	0xb2
+ 1930 03a4 02       		.byte	0x2
+ 1931 03a5 91       		.byte	0x91
+ 1932 03a6 60       		.sleb128 -32
+ 1933 03a7 00       		.byte	0
+ 1934 03a8 0A       		.uleb128 0xa
+ 1935 03a9 01       		.byte	0x1
+ 1936 03aa 5F000000 		.4byte	.LASF43
+ 1937 03ae 01       		.byte	0x1
+ 1938 03af 2502     		.2byte	0x225
+ 1939 03b1 01       		.byte	0x1
+ 1940 03b2 00000000 		.4byte	.LFB10
+ 1941 03b6 66000000 		.4byte	.LFE10
+ 1942 03ba 1A020000 		.4byte	.LLST10
+ 1943 03be 01       		.byte	0x1
+ 1944 03bf 1A040000 		.4byte	0x41a
+ 1945 03c3 0B       		.uleb128 0xb
+ 1946 03c4 17020000 		.4byte	.LASF44
+ 1947 03c8 01       		.byte	0x1
+ 1948 03c9 2502     		.2byte	0x225
+ 1949 03cb AC000000 		.4byte	0xac
+ 1950 03cf 02       		.byte	0x2
+ 1951 03d0 91       		.byte	0x91
+ 1952 03d1 64       		.sleb128 -28
+ 1953 03d2 0D       		.uleb128 0xd
+ 1954 03d3 7800     		.ascii	"x\000"
+ 1955 03d5 01       		.byte	0x1
+ 1956 03d6 2502     		.2byte	0x225
+ 1957 03d8 85000000 		.4byte	0x85
+ 1958 03dc 02       		.byte	0x2
+ 1959 03dd 91       		.byte	0x91
+ 1960 03de 60       		.sleb128 -32
+ 1961 03df 0D       		.uleb128 0xd
+ 1962 03e0 7900     		.ascii	"y\000"
+ 1963 03e2 01       		.byte	0x1
+ 1964 03e3 2502     		.2byte	0x225
+ 1965 03e5 85000000 		.4byte	0x85
+ 1966 03e9 02       		.byte	0x2
+ 1967 03ea 91       		.byte	0x91
+ 1968 03eb 5C       		.sleb128 -36
+ 1969 03ec 0B       		.uleb128 0xb
+ 1970 03ed 1F010000 		.4byte	.LASF32
+ 1971 03f1 01       		.byte	0x1
+ 1972 03f2 2502     		.2byte	0x225
+ 1973 03f4 85000000 		.4byte	0x85
+ 1974 03f8 02       		.byte	0x2
+ 1975 03f9 91       		.byte	0x91
+ 1976 03fa 58       		.sleb128 -40
+ 1977 03fb 0B       		.uleb128 0xb
+ 1978 03fc 10020000 		.4byte	.LASF33
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 49
+
+
+ 1979 0400 01       		.byte	0x1
+ 1980 0401 2502     		.2byte	0x225
+ 1981 0403 85000000 		.4byte	0x85
+ 1982 0407 02       		.byte	0x2
+ 1983 0408 91       		.byte	0x91
+ 1984 0409 00       		.sleb128 0
+ 1985 040a 0F       		.uleb128 0xf
+ 1986 040b D3000000 		.4byte	.LASF45
+ 1987 040f 01       		.byte	0x1
+ 1988 0410 2902     		.2byte	0x229
+ 1989 0412 85000000 		.4byte	0x85
+ 1990 0416 02       		.byte	0x2
+ 1991 0417 91       		.byte	0x91
+ 1992 0418 6C       		.sleb128 -20
+ 1993 0419 00       		.byte	0
+ 1994 041a 0A       		.uleb128 0xa
+ 1995 041b 01       		.byte	0x1
+ 1996 041c C4020000 		.4byte	.LASF46
+ 1997 0420 01       		.byte	0x1
+ 1998 0421 4C02     		.2byte	0x24c
+ 1999 0423 01       		.byte	0x1
+ 2000 0424 00000000 		.4byte	.LFB11
+ 2001 0428 0E010000 		.4byte	.LFE11
+ 2002 042c 52020000 		.4byte	.LLST11
+ 2003 0430 01       		.byte	0x1
+ 2004 0431 ED040000 		.4byte	0x4ed
+ 2005 0435 0D       		.uleb128 0xd
+ 2006 0436 783000   		.ascii	"x0\000"
+ 2007 0439 01       		.byte	0x1
+ 2008 043a 4C02     		.2byte	0x24c
+ 2009 043c 85000000 		.4byte	0x85
+ 2010 0440 02       		.byte	0x2
+ 2011 0441 91       		.byte	0x91
+ 2012 0442 5C       		.sleb128 -36
+ 2013 0443 0D       		.uleb128 0xd
+ 2014 0444 793000   		.ascii	"y0\000"
+ 2015 0447 01       		.byte	0x1
+ 2016 0448 4C02     		.2byte	0x24c
+ 2017 044a 85000000 		.4byte	0x85
+ 2018 044e 02       		.byte	0x2
+ 2019 044f 91       		.byte	0x91
+ 2020 0450 58       		.sleb128 -40
+ 2021 0451 0D       		.uleb128 0xd
+ 2022 0452 783100   		.ascii	"x1\000"
+ 2023 0455 01       		.byte	0x1
+ 2024 0456 4C02     		.2byte	0x24c
+ 2025 0458 85000000 		.4byte	0x85
+ 2026 045c 02       		.byte	0x2
+ 2027 045d 91       		.byte	0x91
+ 2028 045e 54       		.sleb128 -44
+ 2029 045f 0D       		.uleb128 0xd
+ 2030 0460 793100   		.ascii	"y1\000"
+ 2031 0463 01       		.byte	0x1
+ 2032 0464 4C02     		.2byte	0x24c
+ 2033 0466 85000000 		.4byte	0x85
+ 2034 046a 02       		.byte	0x2
+ 2035 046b 91       		.byte	0x91
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 50
+
+
+ 2036 046c 50       		.sleb128 -48
+ 2037 046d 0B       		.uleb128 0xb
+ 2038 046e 8B020000 		.4byte	.LASF23
+ 2039 0472 01       		.byte	0x1
+ 2040 0473 4C02     		.2byte	0x24c
+ 2041 0475 85000000 		.4byte	0x85
+ 2042 0479 02       		.byte	0x2
+ 2043 047a 91       		.byte	0x91
+ 2044 047b 00       		.sleb128 0
+ 2045 047c 0E       		.uleb128 0xe
+ 2046 047d 647900   		.ascii	"dy\000"
+ 2047 0480 01       		.byte	0x1
+ 2048 0481 4E02     		.2byte	0x24e
+ 2049 0483 85000000 		.4byte	0x85
+ 2050 0487 02       		.byte	0x2
+ 2051 0488 91       		.byte	0x91
+ 2052 0489 74       		.sleb128 -12
+ 2053 048a 0E       		.uleb128 0xe
+ 2054 048b 647800   		.ascii	"dx\000"
+ 2055 048e 01       		.byte	0x1
+ 2056 048f 4F02     		.2byte	0x24f
+ 2057 0491 85000000 		.4byte	0x85
+ 2058 0495 02       		.byte	0x2
+ 2059 0496 91       		.byte	0x91
+ 2060 0497 70       		.sleb128 -16
+ 2061 0498 0F       		.uleb128 0xf
+ 2062 0499 BE020000 		.4byte	.LASF47
+ 2063 049d 01       		.byte	0x1
+ 2064 049e 5002     		.2byte	0x250
+ 2065 04a0 85000000 		.4byte	0x85
+ 2066 04a4 02       		.byte	0x2
+ 2067 04a5 91       		.byte	0x91
+ 2068 04a6 6C       		.sleb128 -20
+ 2069 04a7 0F       		.uleb128 0xf
+ 2070 04a8 08030000 		.4byte	.LASF48
+ 2071 04ac 01       		.byte	0x1
+ 2072 04ad 5002     		.2byte	0x250
+ 2073 04af 85000000 		.4byte	0x85
+ 2074 04b3 02       		.byte	0x2
+ 2075 04b4 91       		.byte	0x91
+ 2076 04b5 68       		.sleb128 -24
+ 2077 04b6 10       		.uleb128 0x10
+ 2078 04b7 72000000 		.4byte	.LBB2
+ 2079 04bb BE000000 		.4byte	.LBE2
+ 2080 04bf D3040000 		.4byte	0x4d3
+ 2081 04c3 0F       		.uleb128 0xf
+ 2082 04c4 AA020000 		.4byte	.LASF49
+ 2083 04c8 01       		.byte	0x1
+ 2084 04c9 6C02     		.2byte	0x26c
+ 2085 04cb 61000000 		.4byte	0x61
+ 2086 04cf 02       		.byte	0x2
+ 2087 04d0 91       		.byte	0x91
+ 2088 04d1 64       		.sleb128 -28
+ 2089 04d2 00       		.byte	0
+ 2090 04d3 11       		.uleb128 0x11
+ 2091 04d4 BE000000 		.4byte	.LBB3
+ 2092 04d8 08010000 		.4byte	.LBE3
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 51
+
+
+ 2093 04dc 0F       		.uleb128 0xf
+ 2094 04dd AA020000 		.4byte	.LASF49
+ 2095 04e1 01       		.byte	0x1
+ 2096 04e2 7B02     		.2byte	0x27b
+ 2097 04e4 61000000 		.4byte	0x61
+ 2098 04e8 02       		.byte	0x2
+ 2099 04e9 91       		.byte	0x91
+ 2100 04ea 60       		.sleb128 -32
+ 2101 04eb 00       		.byte	0
+ 2102 04ec 00       		.byte	0
+ 2103 04ed 0A       		.uleb128 0xa
+ 2104 04ee 01       		.byte	0x1
+ 2105 04ef CF010000 		.4byte	.LASF50
+ 2106 04f3 01       		.byte	0x1
+ 2107 04f4 9B02     		.2byte	0x29b
+ 2108 04f6 01       		.byte	0x1
+ 2109 04f7 00000000 		.4byte	.LFB12
+ 2110 04fb AA000000 		.4byte	.LFE12
+ 2111 04ff 8A020000 		.4byte	.LLST12
+ 2112 0503 01       		.byte	0x1
+ 2113 0504 6E050000 		.4byte	0x56e
+ 2114 0508 0D       		.uleb128 0xd
+ 2115 0509 783000   		.ascii	"x0\000"
+ 2116 050c 01       		.byte	0x1
+ 2117 050d 9B02     		.2byte	0x29b
+ 2118 050f 85000000 		.4byte	0x85
+ 2119 0513 02       		.byte	0x2
+ 2120 0514 91       		.byte	0x91
+ 2121 0515 64       		.sleb128 -28
+ 2122 0516 0D       		.uleb128 0xd
+ 2123 0517 793000   		.ascii	"y0\000"
+ 2124 051a 01       		.byte	0x1
+ 2125 051b 9B02     		.2byte	0x29b
+ 2126 051d 85000000 		.4byte	0x85
+ 2127 0521 02       		.byte	0x2
+ 2128 0522 91       		.byte	0x91
+ 2129 0523 60       		.sleb128 -32
+ 2130 0524 0D       		.uleb128 0xd
+ 2131 0525 783100   		.ascii	"x1\000"
+ 2132 0528 01       		.byte	0x1
+ 2133 0529 9B02     		.2byte	0x29b
+ 2134 052b 85000000 		.4byte	0x85
+ 2135 052f 02       		.byte	0x2
+ 2136 0530 91       		.byte	0x91
+ 2137 0531 5C       		.sleb128 -36
+ 2138 0532 0D       		.uleb128 0xd
+ 2139 0533 793100   		.ascii	"y1\000"
+ 2140 0536 01       		.byte	0x1
+ 2141 0537 9B02     		.2byte	0x29b
+ 2142 0539 85000000 		.4byte	0x85
+ 2143 053d 02       		.byte	0x2
+ 2144 053e 91       		.byte	0x91
+ 2145 053f 58       		.sleb128 -40
+ 2146 0540 0B       		.uleb128 0xb
+ 2147 0541 86020000 		.4byte	.LASF51
+ 2148 0545 01       		.byte	0x1
+ 2149 0546 9B02     		.2byte	0x29b
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 52
+
+
+ 2150 0548 85000000 		.4byte	0x85
+ 2151 054c 02       		.byte	0x2
+ 2152 054d 91       		.byte	0x91
+ 2153 054e 00       		.sleb128 0
+ 2154 054f 0B       		.uleb128 0xb
+ 2155 0550 8B020000 		.4byte	.LASF23
+ 2156 0554 01       		.byte	0x1
+ 2157 0555 9B02     		.2byte	0x29b
+ 2158 0557 85000000 		.4byte	0x85
+ 2159 055b 02       		.byte	0x2
+ 2160 055c 91       		.byte	0x91
+ 2161 055d 04       		.sleb128 4
+ 2162 055e 0F       		.uleb128 0xf
+ 2163 055f CD000000 		.4byte	.LASF52
+ 2164 0563 01       		.byte	0x1
+ 2165 0564 9D02     		.2byte	0x29d
+ 2166 0566 61000000 		.4byte	0x61
+ 2167 056a 02       		.byte	0x2
+ 2168 056b 91       		.byte	0x91
+ 2169 056c 6C       		.sleb128 -20
+ 2170 056d 00       		.byte	0
+ 2171 056e 12       		.uleb128 0x12
+ 2172 056f 01       		.byte	0x1
+ 2173 0570 96020000 		.4byte	.LASF53
+ 2174 0574 01       		.byte	0x1
+ 2175 0575 D202     		.2byte	0x2d2
+ 2176 0577 01       		.byte	0x1
+ 2177 0578 00000000 		.4byte	.LFB13
+ 2178 057c 0E000000 		.4byte	.LFE13
+ 2179 0580 C2020000 		.4byte	.LLST13
+ 2180 0584 01       		.byte	0x1
+ 2181 0585 12       		.uleb128 0x12
+ 2182 0586 01       		.byte	0x1
+ 2183 0587 1F000000 		.4byte	.LASF54
+ 2184 058b 01       		.byte	0x1
+ 2185 058c E502     		.2byte	0x2e5
+ 2186 058e 01       		.byte	0x1
+ 2187 058f 00000000 		.4byte	.LFB14
+ 2188 0593 0E000000 		.4byte	.LFE14
+ 2189 0597 EE020000 		.4byte	.LLST14
+ 2190 059b 01       		.byte	0x1
+ 2191 059c 13       		.uleb128 0x13
+ 2192 059d 02020000 		.4byte	.LASF55
+ 2193 05a1 01       		.byte	0x1
+ 2194 05a2 29       		.byte	0x29
+ 2195 05a3 85000000 		.4byte	0x85
+ 2196 05a7 05       		.byte	0x5
+ 2197 05a8 03       		.byte	0x3
+ 2198 05a9 00000000 		.4byte	GLCD_x_offset
+ 2199 05ad 13       		.uleb128 0x13
+ 2200 05ae A2000000 		.4byte	.LASF56
+ 2201 05b2 01       		.byte	0x1
+ 2202 05b3 2A       		.byte	0x2a
+ 2203 05b4 85000000 		.4byte	0x85
+ 2204 05b8 05       		.byte	0x5
+ 2205 05b9 03       		.byte	0x3
+ 2206 05ba 04000000 		.4byte	GLCD_y_offset
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 53
+
+
+ 2207 05be 14       		.uleb128 0x14
+ 2208 05bf 6F000000 		.4byte	0x6f
+ 2209 05c3 D4050000 		.4byte	0x5d4
+ 2210 05c7 15       		.uleb128 0x15
+ 2211 05c8 A5000000 		.4byte	0xa5
+ 2212 05cc 60       		.byte	0x60
+ 2213 05cd 15       		.uleb128 0x15
+ 2214 05ce A5000000 		.4byte	0xa5
+ 2215 05d2 0F       		.byte	0xf
+ 2216 05d3 00       		.byte	0
+ 2217 05d4 16       		.uleb128 0x16
+ 2218 05d5 D2020000 		.4byte	.LASF57
+ 2219 05d9 03       		.byte	0x3
+ 2220 05da 42       		.byte	0x42
+ 2221 05db E6050000 		.4byte	0x5e6
+ 2222 05df 01       		.byte	0x1
+ 2223 05e0 05       		.byte	0x5
+ 2224 05e1 03       		.byte	0x3
+ 2225 05e2 00000000 		.4byte	GLCD_FONT8x16
+ 2226 05e6 17       		.uleb128 0x17
+ 2227 05e7 BE050000 		.4byte	0x5be
+ 2228 05eb 16       		.uleb128 0x16
+ 2229 05ec 9E010000 		.4byte	.LASF58
+ 2230 05f0 01       		.byte	0x1
+ 2231 05f1 27       		.byte	0x27
+ 2232 05f2 6F000000 		.4byte	0x6f
+ 2233 05f6 01       		.byte	0x1
+ 2234 05f7 05       		.byte	0x5
+ 2235 05f8 03       		.byte	0x3
+ 2236 05f9 00000000 		.4byte	GLCD_driver
+ 2237 05fd 00       		.byte	0
+ 2238              		.section	.debug_abbrev,"",%progbits
+ 2239              	.Ldebug_abbrev0:
+ 2240 0000 01       		.uleb128 0x1
+ 2241 0001 11       		.uleb128 0x11
+ 2242 0002 01       		.byte	0x1
+ 2243 0003 25       		.uleb128 0x25
+ 2244 0004 0E       		.uleb128 0xe
+ 2245 0005 13       		.uleb128 0x13
+ 2246 0006 0B       		.uleb128 0xb
+ 2247 0007 03       		.uleb128 0x3
+ 2248 0008 0E       		.uleb128 0xe
+ 2249 0009 1B       		.uleb128 0x1b
+ 2250 000a 0E       		.uleb128 0xe
+ 2251 000b 55       		.uleb128 0x55
+ 2252 000c 06       		.uleb128 0x6
+ 2253 000d 11       		.uleb128 0x11
+ 2254 000e 01       		.uleb128 0x1
+ 2255 000f 52       		.uleb128 0x52
+ 2256 0010 01       		.uleb128 0x1
+ 2257 0011 10       		.uleb128 0x10
+ 2258 0012 06       		.uleb128 0x6
+ 2259 0013 00       		.byte	0
+ 2260 0014 00       		.byte	0
+ 2261 0015 02       		.uleb128 0x2
+ 2262 0016 24       		.uleb128 0x24
+ 2263 0017 00       		.byte	0
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 54
+
+
+ 2264 0018 0B       		.uleb128 0xb
+ 2265 0019 0B       		.uleb128 0xb
+ 2266 001a 3E       		.uleb128 0x3e
+ 2267 001b 0B       		.uleb128 0xb
+ 2268 001c 03       		.uleb128 0x3
+ 2269 001d 0E       		.uleb128 0xe
+ 2270 001e 00       		.byte	0
+ 2271 001f 00       		.byte	0
+ 2272 0020 03       		.uleb128 0x3
+ 2273 0021 24       		.uleb128 0x24
+ 2274 0022 00       		.byte	0
+ 2275 0023 0B       		.uleb128 0xb
+ 2276 0024 0B       		.uleb128 0xb
+ 2277 0025 3E       		.uleb128 0x3e
+ 2278 0026 0B       		.uleb128 0xb
+ 2279 0027 03       		.uleb128 0x3
+ 2280 0028 08       		.uleb128 0x8
+ 2281 0029 00       		.byte	0
+ 2282 002a 00       		.byte	0
+ 2283 002b 04       		.uleb128 0x4
+ 2284 002c 16       		.uleb128 0x16
+ 2285 002d 00       		.byte	0
+ 2286 002e 03       		.uleb128 0x3
+ 2287 002f 0E       		.uleb128 0xe
+ 2288 0030 3A       		.uleb128 0x3a
+ 2289 0031 0B       		.uleb128 0xb
+ 2290 0032 3B       		.uleb128 0x3b
+ 2291 0033 0B       		.uleb128 0xb
+ 2292 0034 49       		.uleb128 0x49
+ 2293 0035 13       		.uleb128 0x13
+ 2294 0036 00       		.byte	0
+ 2295 0037 00       		.byte	0
+ 2296 0038 05       		.uleb128 0x5
+ 2297 0039 0F       		.uleb128 0xf
+ 2298 003a 00       		.byte	0
+ 2299 003b 0B       		.uleb128 0xb
+ 2300 003c 0B       		.uleb128 0xb
+ 2301 003d 49       		.uleb128 0x49
+ 2302 003e 13       		.uleb128 0x13
+ 2303 003f 00       		.byte	0
+ 2304 0040 00       		.byte	0
+ 2305 0041 06       		.uleb128 0x6
+ 2306 0042 2E       		.uleb128 0x2e
+ 2307 0043 01       		.byte	0x1
+ 2308 0044 3F       		.uleb128 0x3f
+ 2309 0045 0C       		.uleb128 0xc
+ 2310 0046 03       		.uleb128 0x3
+ 2311 0047 0E       		.uleb128 0xe
+ 2312 0048 3A       		.uleb128 0x3a
+ 2313 0049 0B       		.uleb128 0xb
+ 2314 004a 3B       		.uleb128 0x3b
+ 2315 004b 0B       		.uleb128 0xb
+ 2316 004c 27       		.uleb128 0x27
+ 2317 004d 0C       		.uleb128 0xc
+ 2318 004e 11       		.uleb128 0x11
+ 2319 004f 01       		.uleb128 0x1
+ 2320 0050 12       		.uleb128 0x12
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 55
+
+
+ 2321 0051 01       		.uleb128 0x1
+ 2322 0052 40       		.uleb128 0x40
+ 2323 0053 06       		.uleb128 0x6
+ 2324 0054 9642     		.uleb128 0x2116
+ 2325 0056 0C       		.uleb128 0xc
+ 2326 0057 01       		.uleb128 0x1
+ 2327 0058 13       		.uleb128 0x13
+ 2328 0059 00       		.byte	0
+ 2329 005a 00       		.byte	0
+ 2330 005b 07       		.uleb128 0x7
+ 2331 005c 05       		.uleb128 0x5
+ 2332 005d 00       		.byte	0
+ 2333 005e 03       		.uleb128 0x3
+ 2334 005f 0E       		.uleb128 0xe
+ 2335 0060 3A       		.uleb128 0x3a
+ 2336 0061 0B       		.uleb128 0xb
+ 2337 0062 3B       		.uleb128 0x3b
+ 2338 0063 0B       		.uleb128 0xb
+ 2339 0064 49       		.uleb128 0x49
+ 2340 0065 13       		.uleb128 0x13
+ 2341 0066 02       		.uleb128 0x2
+ 2342 0067 0A       		.uleb128 0xa
+ 2343 0068 00       		.byte	0
+ 2344 0069 00       		.byte	0
+ 2345 006a 08       		.uleb128 0x8
+ 2346 006b 2E       		.uleb128 0x2e
+ 2347 006c 00       		.byte	0
+ 2348 006d 3F       		.uleb128 0x3f
+ 2349 006e 0C       		.uleb128 0xc
+ 2350 006f 03       		.uleb128 0x3
+ 2351 0070 0E       		.uleb128 0xe
+ 2352 0071 3A       		.uleb128 0x3a
+ 2353 0072 0B       		.uleb128 0xb
+ 2354 0073 3B       		.uleb128 0x3b
+ 2355 0074 0B       		.uleb128 0xb
+ 2356 0075 27       		.uleb128 0x27
+ 2357 0076 0C       		.uleb128 0xc
+ 2358 0077 11       		.uleb128 0x11
+ 2359 0078 01       		.uleb128 0x1
+ 2360 0079 12       		.uleb128 0x12
+ 2361 007a 01       		.uleb128 0x1
+ 2362 007b 40       		.uleb128 0x40
+ 2363 007c 06       		.uleb128 0x6
+ 2364 007d 9642     		.uleb128 0x2116
+ 2365 007f 0C       		.uleb128 0xc
+ 2366 0080 00       		.byte	0
+ 2367 0081 00       		.byte	0
+ 2368 0082 09       		.uleb128 0x9
+ 2369 0083 34       		.uleb128 0x34
+ 2370 0084 00       		.byte	0
+ 2371 0085 03       		.uleb128 0x3
+ 2372 0086 08       		.uleb128 0x8
+ 2373 0087 3A       		.uleb128 0x3a
+ 2374 0088 0B       		.uleb128 0xb
+ 2375 0089 3B       		.uleb128 0x3b
+ 2376 008a 0B       		.uleb128 0xb
+ 2377 008b 49       		.uleb128 0x49
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 56
+
+
+ 2378 008c 13       		.uleb128 0x13
+ 2379 008d 02       		.uleb128 0x2
+ 2380 008e 0A       		.uleb128 0xa
+ 2381 008f 00       		.byte	0
+ 2382 0090 00       		.byte	0
+ 2383 0091 0A       		.uleb128 0xa
+ 2384 0092 2E       		.uleb128 0x2e
+ 2385 0093 01       		.byte	0x1
+ 2386 0094 3F       		.uleb128 0x3f
+ 2387 0095 0C       		.uleb128 0xc
+ 2388 0096 03       		.uleb128 0x3
+ 2389 0097 0E       		.uleb128 0xe
+ 2390 0098 3A       		.uleb128 0x3a
+ 2391 0099 0B       		.uleb128 0xb
+ 2392 009a 3B       		.uleb128 0x3b
+ 2393 009b 05       		.uleb128 0x5
+ 2394 009c 27       		.uleb128 0x27
+ 2395 009d 0C       		.uleb128 0xc
+ 2396 009e 11       		.uleb128 0x11
+ 2397 009f 01       		.uleb128 0x1
+ 2398 00a0 12       		.uleb128 0x12
+ 2399 00a1 01       		.uleb128 0x1
+ 2400 00a2 40       		.uleb128 0x40
+ 2401 00a3 06       		.uleb128 0x6
+ 2402 00a4 9642     		.uleb128 0x2116
+ 2403 00a6 0C       		.uleb128 0xc
+ 2404 00a7 01       		.uleb128 0x1
+ 2405 00a8 13       		.uleb128 0x13
+ 2406 00a9 00       		.byte	0
+ 2407 00aa 00       		.byte	0
+ 2408 00ab 0B       		.uleb128 0xb
+ 2409 00ac 05       		.uleb128 0x5
+ 2410 00ad 00       		.byte	0
+ 2411 00ae 03       		.uleb128 0x3
+ 2412 00af 0E       		.uleb128 0xe
+ 2413 00b0 3A       		.uleb128 0x3a
+ 2414 00b1 0B       		.uleb128 0xb
+ 2415 00b2 3B       		.uleb128 0x3b
+ 2416 00b3 05       		.uleb128 0x5
+ 2417 00b4 49       		.uleb128 0x49
+ 2418 00b5 13       		.uleb128 0x13
+ 2419 00b6 02       		.uleb128 0x2
+ 2420 00b7 0A       		.uleb128 0xa
+ 2421 00b8 00       		.byte	0
+ 2422 00b9 00       		.byte	0
+ 2423 00ba 0C       		.uleb128 0xc
+ 2424 00bb 2E       		.uleb128 0x2e
+ 2425 00bc 01       		.byte	0x1
+ 2426 00bd 3F       		.uleb128 0x3f
+ 2427 00be 0C       		.uleb128 0xc
+ 2428 00bf 03       		.uleb128 0x3
+ 2429 00c0 0E       		.uleb128 0xe
+ 2430 00c1 3A       		.uleb128 0x3a
+ 2431 00c2 0B       		.uleb128 0xb
+ 2432 00c3 3B       		.uleb128 0x3b
+ 2433 00c4 05       		.uleb128 0x5
+ 2434 00c5 27       		.uleb128 0x27
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 57
+
+
+ 2435 00c6 0C       		.uleb128 0xc
+ 2436 00c7 49       		.uleb128 0x49
+ 2437 00c8 13       		.uleb128 0x13
+ 2438 00c9 11       		.uleb128 0x11
+ 2439 00ca 01       		.uleb128 0x1
+ 2440 00cb 12       		.uleb128 0x12
+ 2441 00cc 01       		.uleb128 0x1
+ 2442 00cd 40       		.uleb128 0x40
+ 2443 00ce 06       		.uleb128 0x6
+ 2444 00cf 9742     		.uleb128 0x2117
+ 2445 00d1 0C       		.uleb128 0xc
+ 2446 00d2 01       		.uleb128 0x1
+ 2447 00d3 13       		.uleb128 0x13
+ 2448 00d4 00       		.byte	0
+ 2449 00d5 00       		.byte	0
+ 2450 00d6 0D       		.uleb128 0xd
+ 2451 00d7 05       		.uleb128 0x5
+ 2452 00d8 00       		.byte	0
+ 2453 00d9 03       		.uleb128 0x3
+ 2454 00da 08       		.uleb128 0x8
+ 2455 00db 3A       		.uleb128 0x3a
+ 2456 00dc 0B       		.uleb128 0xb
+ 2457 00dd 3B       		.uleb128 0x3b
+ 2458 00de 05       		.uleb128 0x5
+ 2459 00df 49       		.uleb128 0x49
+ 2460 00e0 13       		.uleb128 0x13
+ 2461 00e1 02       		.uleb128 0x2
+ 2462 00e2 0A       		.uleb128 0xa
+ 2463 00e3 00       		.byte	0
+ 2464 00e4 00       		.byte	0
+ 2465 00e5 0E       		.uleb128 0xe
+ 2466 00e6 34       		.uleb128 0x34
+ 2467 00e7 00       		.byte	0
+ 2468 00e8 03       		.uleb128 0x3
+ 2469 00e9 08       		.uleb128 0x8
+ 2470 00ea 3A       		.uleb128 0x3a
+ 2471 00eb 0B       		.uleb128 0xb
+ 2472 00ec 3B       		.uleb128 0x3b
+ 2473 00ed 05       		.uleb128 0x5
+ 2474 00ee 49       		.uleb128 0x49
+ 2475 00ef 13       		.uleb128 0x13
+ 2476 00f0 02       		.uleb128 0x2
+ 2477 00f1 0A       		.uleb128 0xa
+ 2478 00f2 00       		.byte	0
+ 2479 00f3 00       		.byte	0
+ 2480 00f4 0F       		.uleb128 0xf
+ 2481 00f5 34       		.uleb128 0x34
+ 2482 00f6 00       		.byte	0
+ 2483 00f7 03       		.uleb128 0x3
+ 2484 00f8 0E       		.uleb128 0xe
+ 2485 00f9 3A       		.uleb128 0x3a
+ 2486 00fa 0B       		.uleb128 0xb
+ 2487 00fb 3B       		.uleb128 0x3b
+ 2488 00fc 05       		.uleb128 0x5
+ 2489 00fd 49       		.uleb128 0x49
+ 2490 00fe 13       		.uleb128 0x13
+ 2491 00ff 02       		.uleb128 0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 58
+
+
+ 2492 0100 0A       		.uleb128 0xa
+ 2493 0101 00       		.byte	0
+ 2494 0102 00       		.byte	0
+ 2495 0103 10       		.uleb128 0x10
+ 2496 0104 0B       		.uleb128 0xb
+ 2497 0105 01       		.byte	0x1
+ 2498 0106 11       		.uleb128 0x11
+ 2499 0107 01       		.uleb128 0x1
+ 2500 0108 12       		.uleb128 0x12
+ 2501 0109 01       		.uleb128 0x1
+ 2502 010a 01       		.uleb128 0x1
+ 2503 010b 13       		.uleb128 0x13
+ 2504 010c 00       		.byte	0
+ 2505 010d 00       		.byte	0
+ 2506 010e 11       		.uleb128 0x11
+ 2507 010f 0B       		.uleb128 0xb
+ 2508 0110 01       		.byte	0x1
+ 2509 0111 11       		.uleb128 0x11
+ 2510 0112 01       		.uleb128 0x1
+ 2511 0113 12       		.uleb128 0x12
+ 2512 0114 01       		.uleb128 0x1
+ 2513 0115 00       		.byte	0
+ 2514 0116 00       		.byte	0
+ 2515 0117 12       		.uleb128 0x12
+ 2516 0118 2E       		.uleb128 0x2e
+ 2517 0119 00       		.byte	0
+ 2518 011a 3F       		.uleb128 0x3f
+ 2519 011b 0C       		.uleb128 0xc
+ 2520 011c 03       		.uleb128 0x3
+ 2521 011d 0E       		.uleb128 0xe
+ 2522 011e 3A       		.uleb128 0x3a
+ 2523 011f 0B       		.uleb128 0xb
+ 2524 0120 3B       		.uleb128 0x3b
+ 2525 0121 05       		.uleb128 0x5
+ 2526 0122 27       		.uleb128 0x27
+ 2527 0123 0C       		.uleb128 0xc
+ 2528 0124 11       		.uleb128 0x11
+ 2529 0125 01       		.uleb128 0x1
+ 2530 0126 12       		.uleb128 0x12
+ 2531 0127 01       		.uleb128 0x1
+ 2532 0128 40       		.uleb128 0x40
+ 2533 0129 06       		.uleb128 0x6
+ 2534 012a 9642     		.uleb128 0x2116
+ 2535 012c 0C       		.uleb128 0xc
+ 2536 012d 00       		.byte	0
+ 2537 012e 00       		.byte	0
+ 2538 012f 13       		.uleb128 0x13
+ 2539 0130 34       		.uleb128 0x34
+ 2540 0131 00       		.byte	0
+ 2541 0132 03       		.uleb128 0x3
+ 2542 0133 0E       		.uleb128 0xe
+ 2543 0134 3A       		.uleb128 0x3a
+ 2544 0135 0B       		.uleb128 0xb
+ 2545 0136 3B       		.uleb128 0x3b
+ 2546 0137 0B       		.uleb128 0xb
+ 2547 0138 49       		.uleb128 0x49
+ 2548 0139 13       		.uleb128 0x13
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 59
+
+
+ 2549 013a 02       		.uleb128 0x2
+ 2550 013b 0A       		.uleb128 0xa
+ 2551 013c 00       		.byte	0
+ 2552 013d 00       		.byte	0
+ 2553 013e 14       		.uleb128 0x14
+ 2554 013f 01       		.uleb128 0x1
+ 2555 0140 01       		.byte	0x1
+ 2556 0141 49       		.uleb128 0x49
+ 2557 0142 13       		.uleb128 0x13
+ 2558 0143 01       		.uleb128 0x1
+ 2559 0144 13       		.uleb128 0x13
+ 2560 0145 00       		.byte	0
+ 2561 0146 00       		.byte	0
+ 2562 0147 15       		.uleb128 0x15
+ 2563 0148 21       		.uleb128 0x21
+ 2564 0149 00       		.byte	0
+ 2565 014a 49       		.uleb128 0x49
+ 2566 014b 13       		.uleb128 0x13
+ 2567 014c 2F       		.uleb128 0x2f
+ 2568 014d 0B       		.uleb128 0xb
+ 2569 014e 00       		.byte	0
+ 2570 014f 00       		.byte	0
+ 2571 0150 16       		.uleb128 0x16
+ 2572 0151 34       		.uleb128 0x34
+ 2573 0152 00       		.byte	0
+ 2574 0153 03       		.uleb128 0x3
+ 2575 0154 0E       		.uleb128 0xe
+ 2576 0155 3A       		.uleb128 0x3a
+ 2577 0156 0B       		.uleb128 0xb
+ 2578 0157 3B       		.uleb128 0x3b
+ 2579 0158 0B       		.uleb128 0xb
+ 2580 0159 49       		.uleb128 0x49
+ 2581 015a 13       		.uleb128 0x13
+ 2582 015b 3F       		.uleb128 0x3f
+ 2583 015c 0C       		.uleb128 0xc
+ 2584 015d 02       		.uleb128 0x2
+ 2585 015e 0A       		.uleb128 0xa
+ 2586 015f 00       		.byte	0
+ 2587 0160 00       		.byte	0
+ 2588 0161 17       		.uleb128 0x17
+ 2589 0162 26       		.uleb128 0x26
+ 2590 0163 00       		.byte	0
+ 2591 0164 49       		.uleb128 0x49
+ 2592 0165 13       		.uleb128 0x13
+ 2593 0166 00       		.byte	0
+ 2594 0167 00       		.byte	0
+ 2595 0168 00       		.byte	0
+ 2596              		.section	.debug_loc,"",%progbits
+ 2597              	.Ldebug_loc0:
+ 2598              	.LLST0:
+ 2599 0000 00000000 		.4byte	.LFB0
+ 2600 0004 02000000 		.4byte	.LCFI0
+ 2601 0008 0200     		.2byte	0x2
+ 2602 000a 7D       		.byte	0x7d
+ 2603 000b 00       		.sleb128 0
+ 2604 000c 02000000 		.4byte	.LCFI0
+ 2605 0010 04000000 		.4byte	.LCFI1
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 60
+
+
+ 2606 0014 0200     		.2byte	0x2
+ 2607 0016 7D       		.byte	0x7d
+ 2608 0017 08       		.sleb128 8
+ 2609 0018 04000000 		.4byte	.LCFI1
+ 2610 001c 06000000 		.4byte	.LCFI2
+ 2611 0020 0200     		.2byte	0x2
+ 2612 0022 7D       		.byte	0x7d
+ 2613 0023 10       		.sleb128 16
+ 2614 0024 06000000 		.4byte	.LCFI2
+ 2615 0028 16000000 		.4byte	.LFE0
+ 2616 002c 0200     		.2byte	0x2
+ 2617 002e 77       		.byte	0x77
+ 2618 002f 10       		.sleb128 16
+ 2619 0030 00000000 		.4byte	0
+ 2620 0034 00000000 		.4byte	0
+ 2621              	.LLST1:
+ 2622 0038 00000000 		.4byte	.LFB1
+ 2623 003c 02000000 		.4byte	.LCFI3
+ 2624 0040 0200     		.2byte	0x2
+ 2625 0042 7D       		.byte	0x7d
+ 2626 0043 00       		.sleb128 0
+ 2627 0044 02000000 		.4byte	.LCFI3
+ 2628 0048 04000000 		.4byte	.LCFI4
+ 2629 004c 0200     		.2byte	0x2
+ 2630 004e 7D       		.byte	0x7d
+ 2631 004f 08       		.sleb128 8
+ 2632 0050 04000000 		.4byte	.LCFI4
+ 2633 0054 06000000 		.4byte	.LCFI5
+ 2634 0058 0200     		.2byte	0x2
+ 2635 005a 7D       		.byte	0x7d
+ 2636 005b 10       		.sleb128 16
+ 2637 005c 06000000 		.4byte	.LCFI5
+ 2638 0060 20000000 		.4byte	.LFE1
+ 2639 0064 0200     		.2byte	0x2
+ 2640 0066 77       		.byte	0x77
+ 2641 0067 10       		.sleb128 16
+ 2642 0068 00000000 		.4byte	0
+ 2643 006c 00000000 		.4byte	0
+ 2644              	.LLST2:
+ 2645 0070 00000000 		.4byte	.LFB2
+ 2646 0074 02000000 		.4byte	.LCFI6
+ 2647 0078 0200     		.2byte	0x2
+ 2648 007a 7D       		.byte	0x7d
+ 2649 007b 00       		.sleb128 0
+ 2650 007c 02000000 		.4byte	.LCFI6
+ 2651 0080 04000000 		.4byte	.LCFI7
+ 2652 0084 0200     		.2byte	0x2
+ 2653 0086 7D       		.byte	0x7d
+ 2654 0087 08       		.sleb128 8
+ 2655 0088 04000000 		.4byte	.LCFI7
+ 2656 008c 72000000 		.4byte	.LFE2
+ 2657 0090 0200     		.2byte	0x2
+ 2658 0092 77       		.byte	0x77
+ 2659 0093 08       		.sleb128 8
+ 2660 0094 00000000 		.4byte	0
+ 2661 0098 00000000 		.4byte	0
+ 2662              	.LLST3:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 61
+
+
+ 2663 009c 00000000 		.4byte	.LFB3
+ 2664 00a0 02000000 		.4byte	.LCFI8
+ 2665 00a4 0200     		.2byte	0x2
+ 2666 00a6 7D       		.byte	0x7d
+ 2667 00a7 00       		.sleb128 0
+ 2668 00a8 02000000 		.4byte	.LCFI8
+ 2669 00ac 04000000 		.4byte	.LCFI9
+ 2670 00b0 0200     		.2byte	0x2
+ 2671 00b2 7D       		.byte	0x7d
+ 2672 00b3 08       		.sleb128 8
+ 2673 00b4 04000000 		.4byte	.LCFI9
+ 2674 00b8 14000000 		.4byte	.LFE3
+ 2675 00bc 0200     		.2byte	0x2
+ 2676 00be 77       		.byte	0x77
+ 2677 00bf 08       		.sleb128 8
+ 2678 00c0 00000000 		.4byte	0
+ 2679 00c4 00000000 		.4byte	0
+ 2680              	.LLST4:
+ 2681 00c8 00000000 		.4byte	.LFB4
+ 2682 00cc 02000000 		.4byte	.LCFI10
+ 2683 00d0 0200     		.2byte	0x2
+ 2684 00d2 7D       		.byte	0x7d
+ 2685 00d3 00       		.sleb128 0
+ 2686 00d4 02000000 		.4byte	.LCFI10
+ 2687 00d8 04000000 		.4byte	.LCFI11
+ 2688 00dc 0200     		.2byte	0x2
+ 2689 00de 7D       		.byte	0x7d
+ 2690 00df 08       		.sleb128 8
+ 2691 00e0 04000000 		.4byte	.LCFI11
+ 2692 00e4 06000000 		.4byte	.LCFI12
+ 2693 00e8 0200     		.2byte	0x2
+ 2694 00ea 7D       		.byte	0x7d
+ 2695 00eb 18       		.sleb128 24
+ 2696 00ec 06000000 		.4byte	.LCFI12
+ 2697 00f0 94000000 		.4byte	.LFE4
+ 2698 00f4 0200     		.2byte	0x2
+ 2699 00f6 77       		.byte	0x77
+ 2700 00f7 18       		.sleb128 24
+ 2701 00f8 00000000 		.4byte	0
+ 2702 00fc 00000000 		.4byte	0
+ 2703              	.LLST5:
+ 2704 0100 00000000 		.4byte	.LFB5
+ 2705 0104 02000000 		.4byte	.LCFI13
+ 2706 0108 0200     		.2byte	0x2
+ 2707 010a 7D       		.byte	0x7d
+ 2708 010b 00       		.sleb128 0
+ 2709 010c 02000000 		.4byte	.LCFI13
+ 2710 0110 04000000 		.4byte	.LCFI14
+ 2711 0114 0200     		.2byte	0x2
+ 2712 0116 7D       		.byte	0x7d
+ 2713 0117 08       		.sleb128 8
+ 2714 0118 04000000 		.4byte	.LCFI14
+ 2715 011c 06000000 		.4byte	.LCFI15
+ 2716 0120 0200     		.2byte	0x2
+ 2717 0122 7D       		.byte	0x7d
+ 2718 0123 10       		.sleb128 16
+ 2719 0124 06000000 		.4byte	.LCFI15
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 62
+
+
+ 2720 0128 24000000 		.4byte	.LFE5
+ 2721 012c 0200     		.2byte	0x2
+ 2722 012e 77       		.byte	0x77
+ 2723 012f 10       		.sleb128 16
+ 2724 0130 00000000 		.4byte	0
+ 2725 0134 00000000 		.4byte	0
+ 2726              	.LLST6:
+ 2727 0138 00000000 		.4byte	.LFB6
+ 2728 013c 02000000 		.4byte	.LCFI16
+ 2729 0140 0200     		.2byte	0x2
+ 2730 0142 7D       		.byte	0x7d
+ 2731 0143 00       		.sleb128 0
+ 2732 0144 02000000 		.4byte	.LCFI16
+ 2733 0148 04000000 		.4byte	.LCFI17
+ 2734 014c 0200     		.2byte	0x2
+ 2735 014e 7D       		.byte	0x7d
+ 2736 014f 08       		.sleb128 8
+ 2737 0150 04000000 		.4byte	.LCFI17
+ 2738 0154 06000000 		.4byte	.LCFI18
+ 2739 0158 0200     		.2byte	0x2
+ 2740 015a 7D       		.byte	0x7d
+ 2741 015b 10       		.sleb128 16
+ 2742 015c 06000000 		.4byte	.LCFI18
+ 2743 0160 2C000000 		.4byte	.LFE6
+ 2744 0164 0200     		.2byte	0x2
+ 2745 0166 77       		.byte	0x77
+ 2746 0167 10       		.sleb128 16
+ 2747 0168 00000000 		.4byte	0
+ 2748 016c 00000000 		.4byte	0
+ 2749              	.LLST7:
+ 2750 0170 00000000 		.4byte	.LFB7
+ 2751 0174 02000000 		.4byte	.LCFI19
+ 2752 0178 0200     		.2byte	0x2
+ 2753 017a 7D       		.byte	0x7d
+ 2754 017b 00       		.sleb128 0
+ 2755 017c 02000000 		.4byte	.LCFI19
+ 2756 0180 04000000 		.4byte	.LCFI20
+ 2757 0184 0200     		.2byte	0x2
+ 2758 0186 7D       		.byte	0x7d
+ 2759 0187 08       		.sleb128 8
+ 2760 0188 04000000 		.4byte	.LCFI20
+ 2761 018c 06000000 		.4byte	.LCFI21
+ 2762 0190 0200     		.2byte	0x2
+ 2763 0192 7D       		.byte	0x7d
+ 2764 0193 18       		.sleb128 24
+ 2765 0194 06000000 		.4byte	.LCFI21
+ 2766 0198 74000000 		.4byte	.LFE7
+ 2767 019c 0200     		.2byte	0x2
+ 2768 019e 77       		.byte	0x77
+ 2769 019f 18       		.sleb128 24
+ 2770 01a0 00000000 		.4byte	0
+ 2771 01a4 00000000 		.4byte	0
+ 2772              	.LLST8:
+ 2773 01a8 00000000 		.4byte	.LFB8
+ 2774 01ac 02000000 		.4byte	.LCFI22
+ 2775 01b0 0200     		.2byte	0x2
+ 2776 01b2 7D       		.byte	0x7d
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 63
+
+
+ 2777 01b3 00       		.sleb128 0
+ 2778 01b4 02000000 		.4byte	.LCFI22
+ 2779 01b8 04000000 		.4byte	.LCFI23
+ 2780 01bc 0200     		.2byte	0x2
+ 2781 01be 7D       		.byte	0x7d
+ 2782 01bf 08       		.sleb128 8
+ 2783 01c0 04000000 		.4byte	.LCFI23
+ 2784 01c4 06000000 		.4byte	.LCFI24
+ 2785 01c8 0200     		.2byte	0x2
+ 2786 01ca 7D       		.byte	0x7d
+ 2787 01cb 30       		.sleb128 48
+ 2788 01cc 06000000 		.4byte	.LCFI24
+ 2789 01d0 7E010000 		.4byte	.LFE8
+ 2790 01d4 0200     		.2byte	0x2
+ 2791 01d6 77       		.byte	0x77
+ 2792 01d7 30       		.sleb128 48
+ 2793 01d8 00000000 		.4byte	0
+ 2794 01dc 00000000 		.4byte	0
+ 2795              	.LLST9:
+ 2796 01e0 00000000 		.4byte	.LFB9
+ 2797 01e4 02000000 		.4byte	.LCFI25
+ 2798 01e8 0200     		.2byte	0x2
+ 2799 01ea 7D       		.byte	0x7d
+ 2800 01eb 00       		.sleb128 0
+ 2801 01ec 02000000 		.4byte	.LCFI25
+ 2802 01f0 04000000 		.4byte	.LCFI26
+ 2803 01f4 0200     		.2byte	0x2
+ 2804 01f6 7D       		.byte	0x7d
+ 2805 01f7 08       		.sleb128 8
+ 2806 01f8 04000000 		.4byte	.LCFI26
+ 2807 01fc 06000000 		.4byte	.LCFI27
+ 2808 0200 0300     		.2byte	0x3
+ 2809 0202 7D       		.byte	0x7d
+ 2810 0203 C800     		.sleb128 72
+ 2811 0205 06000000 		.4byte	.LCFI27
+ 2812 0209 8C010000 		.4byte	.LFE9
+ 2813 020d 0300     		.2byte	0x3
+ 2814 020f 77       		.byte	0x77
+ 2815 0210 C800     		.sleb128 72
+ 2816 0212 00000000 		.4byte	0
+ 2817 0216 00000000 		.4byte	0
+ 2818              	.LLST10:
+ 2819 021a 00000000 		.4byte	.LFB10
+ 2820 021e 02000000 		.4byte	.LCFI28
+ 2821 0222 0200     		.2byte	0x2
+ 2822 0224 7D       		.byte	0x7d
+ 2823 0225 00       		.sleb128 0
+ 2824 0226 02000000 		.4byte	.LCFI28
+ 2825 022a 04000000 		.4byte	.LCFI29
+ 2826 022e 0200     		.2byte	0x2
+ 2827 0230 7D       		.byte	0x7d
+ 2828 0231 0C       		.sleb128 12
+ 2829 0232 04000000 		.4byte	.LCFI29
+ 2830 0236 06000000 		.4byte	.LCFI30
+ 2831 023a 0200     		.2byte	0x2
+ 2832 023c 7D       		.byte	0x7d
+ 2833 023d 30       		.sleb128 48
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 64
+
+
+ 2834 023e 06000000 		.4byte	.LCFI30
+ 2835 0242 66000000 		.4byte	.LFE10
+ 2836 0246 0200     		.2byte	0x2
+ 2837 0248 77       		.byte	0x77
+ 2838 0249 28       		.sleb128 40
+ 2839 024a 00000000 		.4byte	0
+ 2840 024e 00000000 		.4byte	0
+ 2841              	.LLST11:
+ 2842 0252 00000000 		.4byte	.LFB11
+ 2843 0256 02000000 		.4byte	.LCFI31
+ 2844 025a 0200     		.2byte	0x2
+ 2845 025c 7D       		.byte	0x7d
+ 2846 025d 00       		.sleb128 0
+ 2847 025e 02000000 		.4byte	.LCFI31
+ 2848 0262 04000000 		.4byte	.LCFI32
+ 2849 0266 0200     		.2byte	0x2
+ 2850 0268 7D       		.byte	0x7d
+ 2851 0269 08       		.sleb128 8
+ 2852 026a 04000000 		.4byte	.LCFI32
+ 2853 026e 06000000 		.4byte	.LCFI33
+ 2854 0272 0200     		.2byte	0x2
+ 2855 0274 7D       		.byte	0x7d
+ 2856 0275 30       		.sleb128 48
+ 2857 0276 06000000 		.4byte	.LCFI33
+ 2858 027a 0E010000 		.4byte	.LFE11
+ 2859 027e 0200     		.2byte	0x2
+ 2860 0280 77       		.byte	0x77
+ 2861 0281 30       		.sleb128 48
+ 2862 0282 00000000 		.4byte	0
+ 2863 0286 00000000 		.4byte	0
+ 2864              	.LLST12:
+ 2865 028a 00000000 		.4byte	.LFB12
+ 2866 028e 02000000 		.4byte	.LCFI34
+ 2867 0292 0200     		.2byte	0x2
+ 2868 0294 7D       		.byte	0x7d
+ 2869 0295 00       		.sleb128 0
+ 2870 0296 02000000 		.4byte	.LCFI34
+ 2871 029a 04000000 		.4byte	.LCFI35
+ 2872 029e 0200     		.2byte	0x2
+ 2873 02a0 7D       		.byte	0x7d
+ 2874 02a1 0C       		.sleb128 12
+ 2875 02a2 04000000 		.4byte	.LCFI35
+ 2876 02a6 06000000 		.4byte	.LCFI36
+ 2877 02aa 0200     		.2byte	0x2
+ 2878 02ac 7D       		.byte	0x7d
+ 2879 02ad 30       		.sleb128 48
+ 2880 02ae 06000000 		.4byte	.LCFI36
+ 2881 02b2 AA000000 		.4byte	.LFE12
+ 2882 02b6 0200     		.2byte	0x2
+ 2883 02b8 77       		.byte	0x77
+ 2884 02b9 28       		.sleb128 40
+ 2885 02ba 00000000 		.4byte	0
+ 2886 02be 00000000 		.4byte	0
+ 2887              	.LLST13:
+ 2888 02c2 00000000 		.4byte	.LFB13
+ 2889 02c6 02000000 		.4byte	.LCFI37
+ 2890 02ca 0200     		.2byte	0x2
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 65
+
+
+ 2891 02cc 7D       		.byte	0x7d
+ 2892 02cd 00       		.sleb128 0
+ 2893 02ce 02000000 		.4byte	.LCFI37
+ 2894 02d2 04000000 		.4byte	.LCFI38
+ 2895 02d6 0200     		.2byte	0x2
+ 2896 02d8 7D       		.byte	0x7d
+ 2897 02d9 08       		.sleb128 8
+ 2898 02da 04000000 		.4byte	.LCFI38
+ 2899 02de 0E000000 		.4byte	.LFE13
+ 2900 02e2 0200     		.2byte	0x2
+ 2901 02e4 77       		.byte	0x77
+ 2902 02e5 08       		.sleb128 8
+ 2903 02e6 00000000 		.4byte	0
+ 2904 02ea 00000000 		.4byte	0
+ 2905              	.LLST14:
+ 2906 02ee 00000000 		.4byte	.LFB14
+ 2907 02f2 02000000 		.4byte	.LCFI39
+ 2908 02f6 0200     		.2byte	0x2
+ 2909 02f8 7D       		.byte	0x7d
+ 2910 02f9 00       		.sleb128 0
+ 2911 02fa 02000000 		.4byte	.LCFI39
+ 2912 02fe 04000000 		.4byte	.LCFI40
+ 2913 0302 0200     		.2byte	0x2
+ 2914 0304 7D       		.byte	0x7d
+ 2915 0305 08       		.sleb128 8
+ 2916 0306 04000000 		.4byte	.LCFI40
+ 2917 030a 0E000000 		.4byte	.LFE14
+ 2918 030e 0200     		.2byte	0x2
+ 2919 0310 77       		.byte	0x77
+ 2920 0311 08       		.sleb128 8
+ 2921 0312 00000000 		.4byte	0
+ 2922 0316 00000000 		.4byte	0
+ 2923              		.section	.debug_aranges,"",%progbits
+ 2924 0000 8C000000 		.4byte	0x8c
+ 2925 0004 0200     		.2byte	0x2
+ 2926 0006 00000000 		.4byte	.Ldebug_info0
+ 2927 000a 04       		.byte	0x4
+ 2928 000b 00       		.byte	0
+ 2929 000c 0000     		.2byte	0
+ 2930 000e 0000     		.2byte	0
+ 2931 0010 00000000 		.4byte	.LFB0
+ 2932 0014 16000000 		.4byte	.LFE0-.LFB0
+ 2933 0018 00000000 		.4byte	.LFB1
+ 2934 001c 20000000 		.4byte	.LFE1-.LFB1
+ 2935 0020 00000000 		.4byte	.LFB2
+ 2936 0024 72000000 		.4byte	.LFE2-.LFB2
+ 2937 0028 00000000 		.4byte	.LFB3
+ 2938 002c 14000000 		.4byte	.LFE3-.LFB3
+ 2939 0030 00000000 		.4byte	.LFB4
+ 2940 0034 94000000 		.4byte	.LFE4-.LFB4
+ 2941 0038 00000000 		.4byte	.LFB5
+ 2942 003c 24000000 		.4byte	.LFE5-.LFB5
+ 2943 0040 00000000 		.4byte	.LFB6
+ 2944 0044 2C000000 		.4byte	.LFE6-.LFB6
+ 2945 0048 00000000 		.4byte	.LFB7
+ 2946 004c 74000000 		.4byte	.LFE7-.LFB7
+ 2947 0050 00000000 		.4byte	.LFB8
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 66
+
+
+ 2948 0054 7E010000 		.4byte	.LFE8-.LFB8
+ 2949 0058 00000000 		.4byte	.LFB9
+ 2950 005c 8C010000 		.4byte	.LFE9-.LFB9
+ 2951 0060 00000000 		.4byte	.LFB10
+ 2952 0064 66000000 		.4byte	.LFE10-.LFB10
+ 2953 0068 00000000 		.4byte	.LFB11
+ 2954 006c 0E010000 		.4byte	.LFE11-.LFB11
+ 2955 0070 00000000 		.4byte	.LFB12
+ 2956 0074 AA000000 		.4byte	.LFE12-.LFB12
+ 2957 0078 00000000 		.4byte	.LFB13
+ 2958 007c 0E000000 		.4byte	.LFE13-.LFB13
+ 2959 0080 00000000 		.4byte	.LFB14
+ 2960 0084 0E000000 		.4byte	.LFE14-.LFB14
+ 2961 0088 00000000 		.4byte	0
+ 2962 008c 00000000 		.4byte	0
+ 2963              		.section	.debug_ranges,"",%progbits
+ 2964              	.Ldebug_ranges0:
+ 2965 0000 00000000 		.4byte	.LFB0
+ 2966 0004 16000000 		.4byte	.LFE0
+ 2967 0008 00000000 		.4byte	.LFB1
+ 2968 000c 20000000 		.4byte	.LFE1
+ 2969 0010 00000000 		.4byte	.LFB2
+ 2970 0014 72000000 		.4byte	.LFE2
+ 2971 0018 00000000 		.4byte	.LFB3
+ 2972 001c 14000000 		.4byte	.LFE3
+ 2973 0020 00000000 		.4byte	.LFB4
+ 2974 0024 94000000 		.4byte	.LFE4
+ 2975 0028 00000000 		.4byte	.LFB5
+ 2976 002c 24000000 		.4byte	.LFE5
+ 2977 0030 00000000 		.4byte	.LFB6
+ 2978 0034 2C000000 		.4byte	.LFE6
+ 2979 0038 00000000 		.4byte	.LFB7
+ 2980 003c 74000000 		.4byte	.LFE7
+ 2981 0040 00000000 		.4byte	.LFB8
+ 2982 0044 7E010000 		.4byte	.LFE8
+ 2983 0048 00000000 		.4byte	.LFB9
+ 2984 004c 8C010000 		.4byte	.LFE9
+ 2985 0050 00000000 		.4byte	.LFB10
+ 2986 0054 66000000 		.4byte	.LFE10
+ 2987 0058 00000000 		.4byte	.LFB11
+ 2988 005c 0E010000 		.4byte	.LFE11
+ 2989 0060 00000000 		.4byte	.LFB12
+ 2990 0064 AA000000 		.4byte	.LFE12
+ 2991 0068 00000000 		.4byte	.LFB13
+ 2992 006c 0E000000 		.4byte	.LFE13
+ 2993 0070 00000000 		.4byte	.LFB14
+ 2994 0074 0E000000 		.4byte	.LFE14
+ 2995 0078 00000000 		.4byte	0
+ 2996 007c 00000000 		.4byte	0
+ 2997              		.section	.debug_line,"",%progbits
+ 2998              	.Ldebug_line0:
+ 2999 0000 60020000 		.section	.debug_str,"MS",%progbits,1
+ 2999      02004D00 
+ 2999      00000201 
+ 2999      FB0E0D00 
+ 2999      01010101 
+ 3000              	.LASF19:
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 67
+
+
+ 3001 0000 72617744 		.ascii	"rawData\000"
+ 3001      61746100 
+ 3002              	.LASF7:
+ 3003 0008 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3003      206C6F6E 
+ 3003      6720756E 
+ 3003      7369676E 
+ 3003      65642069 
+ 3004              	.LASF54:
+ 3005 001f 474C4344 		.ascii	"GLCD_On\000"
+ 3005      5F4F6E00 
+ 3006              	.LASF6:
+ 3007 0027 6C6F6E67 		.ascii	"long long int\000"
+ 3007      206C6F6E 
+ 3007      6720696E 
+ 3007      7400
+ 3008              	.LASF0:
+ 3009 0035 7369676E 		.ascii	"signed char\000"
+ 3009      65642063 
+ 3009      68617200 
+ 3010              	.LASF37:
+ 3011 0041 50697865 		.ascii	"PixelRow\000"
+ 3011      6C526F77 
+ 3011      00
+ 3012              	.LASF11:
+ 3013 004a 696E7433 		.ascii	"int32\000"
+ 3013      3200
+ 3014              	.LASF4:
+ 3015 0050 6C6F6E67 		.ascii	"long int\000"
+ 3015      20696E74 
+ 3015      00
+ 3016              	.LASF9:
+ 3017 0059 75696E74 		.ascii	"uint8\000"
+ 3017      3800
+ 3018              	.LASF43:
+ 3019 005f 474C4344 		.ascii	"GLCD_PrintString\000"
+ 3019      5F507269 
+ 3019      6E745374 
+ 3019      72696E67 
+ 3019      00
+ 3020              	.LASF13:
+ 3021 0070 646F7562 		.ascii	"double\000"
+ 3021      6C6500
+ 3022              	.LASF22:
+ 3023 0077 474C4344 		.ascii	"GLCD_Clear\000"
+ 3023      5F436C65 
+ 3023      617200
+ 3024              	.LASF10:
+ 3025 0082 75696E74 		.ascii	"uint32\000"
+ 3025      333200
+ 3026              	.LASF31:
+ 3027 0089 474C4344 		.ascii	"GLCD_PrintChar\000"
+ 3027      5F507269 
+ 3027      6E744368 
+ 3027      617200
+ 3028              	.LASF21:
+ 3029 0098 474C4344 		.ascii	"GLCD_Stop\000"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 68
+
+
+ 3029      5F53746F 
+ 3029      7000
+ 3030              	.LASF56:
+ 3031 00a2 474C4344 		.ascii	"GLCD_y_offset\000"
+ 3031      5F795F6F 
+ 3031      66667365 
+ 3031      7400
+ 3032              	.LASF27:
+ 3033 00b0 474C4344 		.ascii	"GLCD_DrawCircle\000"
+ 3033      5F447261 
+ 3033      77436972 
+ 3033      636C6500 
+ 3034              	.LASF8:
+ 3035 00c0 756E7369 		.ascii	"unsigned int\000"
+ 3035      676E6564 
+ 3035      20696E74 
+ 3035      00
+ 3036              	.LASF52:
+ 3037 00cd 78446966 		.ascii	"xDiff\000"
+ 3037      6600
+ 3038              	.LASF45:
+ 3039 00d3 6F726967 		.ascii	"originalY\000"
+ 3039      696E616C 
+ 3039      5900
+ 3040              	.LASF5:
+ 3041 00dd 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3041      20756E73 
+ 3041      69676E65 
+ 3041      6420696E 
+ 3041      7400
+ 3042              	.LASF29:
+ 3043 00ef 6464465F 		.ascii	"ddF_x\000"
+ 3043      7800
+ 3044              	.LASF30:
+ 3045 00f5 6464465F 		.ascii	"ddF_y\000"
+ 3045      7900
+ 3046              	.LASF35:
+ 3047 00fb 6E526F77 		.ascii	"nRows\000"
+ 3047      7300
+ 3048              	.LASF20:
+ 3049 0101 474C4344 		.ascii	"GLCD_Start\000"
+ 3049      5F537461 
+ 3049      727400
+ 3050              	.LASF3:
+ 3051 010c 73686F72 		.ascii	"short unsigned int\000"
+ 3051      7420756E 
+ 3051      7369676E 
+ 3051      65642069 
+ 3051      6E7400
+ 3052              	.LASF32:
+ 3053 011f 66436F6C 		.ascii	"fColor\000"
+ 3053      6F7200
+ 3054              	.LASF18:
+ 3055 0126 636D6444 		.ascii	"cmdData\000"
+ 3055      61746100 
+ 3056              	.LASF61:
+ 3057 012e 433A5C55 		.ascii	"C:\\Users\\Trenton\\Desktop\\School Stuff\\Junior Y"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 69
+
+
+ 3057      73657273 
+ 3057      5C547265 
+ 3057      6E746F6E 
+ 3057      5C446573 
+ 3058 015c 65617220 		.ascii	"ear (2013-2014)\\Spring 2014\\Microcontrollers\\Dua"
+ 3058      28323031 
+ 3058      332D3230 
+ 3058      3134295C 
+ 3058      53707269 
+ 3059 018c 6C5F5374 		.ascii	"l_Starblast.cydsn\000"
+ 3059      6172626C 
+ 3059      6173742E 
+ 3059      63796473 
+ 3059      6E00
+ 3060              	.LASF58:
+ 3061 019e 474C4344 		.ascii	"GLCD_driver\000"
+ 3061      5F647269 
+ 3061      76657200 
+ 3062              	.LASF28:
+ 3063 01aa 72616469 		.ascii	"radius\000"
+ 3063      757300
+ 3064              	.LASF36:
+ 3065 01b1 6E427974 		.ascii	"nBytes\000"
+ 3065      657300
+ 3066              	.LASF15:
+ 3067 01b8 73697A65 		.ascii	"sizetype\000"
+ 3067      74797065 
+ 3067      00
+ 3068              	.LASF24:
+ 3069 01c1 474C4344 		.ascii	"GLCD_Contrast\000"
+ 3069      5F436F6E 
+ 3069      74726173 
+ 3069      7400
+ 3070              	.LASF50:
+ 3071 01cf 474C4344 		.ascii	"GLCD_DrawRect\000"
+ 3071      5F447261 
+ 3071      77526563 
+ 3071      7400
+ 3072              	.LASF39:
+ 3073 01dd 576F7264 		.ascii	"Word0\000"
+ 3073      3000
+ 3074              	.LASF40:
+ 3075 01e3 576F7264 		.ascii	"Word1\000"
+ 3075      3100
+ 3076              	.LASF34:
+ 3077 01e9 6E436F6C 		.ascii	"nCols\000"
+ 3077      7300
+ 3078              	.LASF16:
+ 3079 01ef 474C4344 		.ascii	"GLCD_Command\000"
+ 3079      5F436F6D 
+ 3079      6D616E64 
+ 3079      00
+ 3080              	.LASF12:
+ 3081 01fc 666C6F61 		.ascii	"float\000"
+ 3081      7400
+ 3082              	.LASF55:
+ 3083 0202 474C4344 		.ascii	"GLCD_x_offset\000"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 70
+
+
+ 3083      5F785F6F 
+ 3083      66667365 
+ 3083      7400
+ 3084              	.LASF33:
+ 3085 0210 62436F6C 		.ascii	"bColor\000"
+ 3085      6F7200
+ 3086              	.LASF44:
+ 3087 0217 70537472 		.ascii	"pString\000"
+ 3087      696E6700 
+ 3088              	.LASF59:
+ 3089 021f 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 3089      4320342E 
+ 3089      372E3320 
+ 3089      32303133 
+ 3089      30333132 
+ 3090 0252 616E6368 		.ascii	"anch revision 196615]\000"
+ 3090      20726576 
+ 3090      6973696F 
+ 3090      6E203139 
+ 3090      36363135 
+ 3091              	.LASF1:
+ 3092 0268 756E7369 		.ascii	"unsigned char\000"
+ 3092      676E6564 
+ 3092      20636861 
+ 3092      7200
+ 3093              	.LASF42:
+ 3094 0276 70436861 		.ascii	"pChar\000"
+ 3094      7200
+ 3095              	.LASF2:
+ 3096 027c 73686F72 		.ascii	"short int\000"
+ 3096      7420696E 
+ 3096      7400
+ 3097              	.LASF51:
+ 3098 0286 66696C6C 		.ascii	"fill\000"
+ 3098      00
+ 3099              	.LASF23:
+ 3100 028b 636F6C6F 		.ascii	"color\000"
+ 3100      7200
+ 3101              	.LASF14:
+ 3102 0291 63686172 		.ascii	"char\000"
+ 3102      00
+ 3103              	.LASF53:
+ 3104 0296 474C4344 		.ascii	"GLCD_Off\000"
+ 3104      5F4F6666 
+ 3104      00
+ 3105              	.LASF41:
+ 3106 029f 70466F6E 		.ascii	"pFont\000"
+ 3106      7400
+ 3107              	.LASF38:
+ 3108 02a5 4D61736B 		.ascii	"Mask\000"
+ 3108      00
+ 3109              	.LASF49:
+ 3110 02aa 66726163 		.ascii	"fraction\000"
+ 3110      74696F6E 
+ 3110      00
+ 3111              	.LASF26:
+ 3112 02b3 474C4344 		.ascii	"GLCD_Pixel\000"
+ARM GAS  C:\Users\Trenton\AppData\Local\Temp\ccr1joLL.s 			page 71
+
+
+ 3112      5F506978 
+ 3112      656C00
+ 3113              	.LASF47:
+ 3114 02be 73746570 		.ascii	"stepx\000"
+ 3114      7800
+ 3115              	.LASF46:
+ 3116 02c4 474C4344 		.ascii	"GLCD_DrawLine\000"
+ 3116      5F447261 
+ 3116      774C696E 
+ 3116      6500
+ 3117              	.LASF57:
+ 3118 02d2 474C4344 		.ascii	"GLCD_FONT8x16\000"
+ 3118      5F464F4E 
+ 3118      54387831 
+ 3118      3600
+ 3119              	.LASF25:
+ 3120 02e0 73657474 		.ascii	"setting\000"
+ 3120      696E6700 
+ 3121              	.LASF60:
+ 3122 02e8 2E5C4765 		.ascii	".\\Generated_Source\\PSoC4\\GLCD.c\000"
+ 3122      6E657261 
+ 3122      7465645F 
+ 3122      536F7572 
+ 3122      63655C50 
+ 3123              	.LASF48:
+ 3124 0308 73746570 		.ascii	"stepy\000"
+ 3124      7900
+ 3125              	.LASF62:
+ 3126 030e 474C4344 		.ascii	"GLCD_SwapColors\000"
+ 3126      5F537761 
+ 3126      70436F6C 
+ 3126      6F727300 
+ 3127              	.LASF17:
+ 3128 031e 474C4344 		.ascii	"GLCD_Data\000"
+ 3128      5F446174 
+ 3128      6100
+ 3129              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br

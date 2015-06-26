@@ -1,0 +1,2917 @@
+Loading plugins phase: Elapsed time ==> 0s.296ms
+Initializing data phase: Elapsed time ==> 2s.244ms
+<CYPRESSTAG name="CyDsfit arguments...">
+cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -d CY8C4245AXI-483 -s C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Generated_Source\PSoC4 -- -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE</CYPRESSTAG>
+<CYPRESSTAG name="Design elaboration results...">
+</CYPRESSTAG>
+Elaboration phase: Elapsed time ==> 9s.126ms
+<CYPRESSTAG name="HDL generation results...">
+</CYPRESSTAG>
+HDL generation phase: Elapsed time ==> 0s.134ms
+<CYPRESSTAG name="Synthesis results...">
+
+     | | | | | | |
+   _________________
+  -|               |-
+  -|               |-
+  -|               |-
+  -|    CYPRESS    |-
+  -|               |-
+  -|               |-   Warp Verilog Synthesis Compiler: Version 6.3 IR 41
+  -|               |-   Copyright (C) 1991-2001 Cypress Semiconductor
+   |_______________|
+     | | | | | | |
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
+Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -dcpsoc3 GLCD_Test1.v -verilog
+======================================================================
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
+Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -dcpsoc3 GLCD_Test1.v -verilog
+======================================================================
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   vlogfe
+Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -dcpsoc3 -verilog GLCD_Test1.v
+======================================================================
+
+vlogfe V6.3 IR 41:  Verilog parser
+Tue May 13 16:31:24 2014
+
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   vpp
+Options  :    -yv2 -q10 GLCD_Test1.v
+======================================================================
+
+vpp V6.3 IR 41:  Verilog Pre-Processor
+Tue May 13 16:31:24 2014
+
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\or_v1_0\or_v1_0.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\B_SPI_Slave_v2_60\B_SPI_Slave_v2_60.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'
+Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'
+
+vpp:  No errors.
+
+Library 'work' => directory 'lcpsoc3'
+General_symbol_table
+General_symbol_table
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\std.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\work\cypress.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\ieee\work\stdlogic.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\lpmpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
+Using control file 'GLCD_Test1.ctl'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3pkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
+
+vlogfe:  No errors.
+
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   tovif
+Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -dcpsoc3 -verilog GLCD_Test1.v
+======================================================================
+
+tovif V6.3 IR 41:  High-level synthesis
+Tue May 13 16:31:24 2014
+
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\std.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\work\cypress.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\ieee\work\stdlogic.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\lpmpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
+Linking 'C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\codegentemp\GLCD_Test1.ctl'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
+Linking 'C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\codegentemp\GLCD_Test1.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\or_v1_0\or_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\B_SPI_Slave_v2_60\B_SPI_Slave_v2_60.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3pkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
+
+tovif:  No errors.
+
+
+======================================================================
+Compiling:  GLCD_Test1.v
+Program  :   topld
+Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -dcpsoc3 -verilog GLCD_Test1.v
+======================================================================
+
+topld V6.3 IR 41:  Synthesis and optimization
+Tue May 13 16:31:25 2014
+
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\std.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.vhd'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\work\cypress.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\ieee\work\stdlogic.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\lpmpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
+Linking 'C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\codegentemp\GLCD_Test1.ctl'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
+Linking 'C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\codegentemp\GLCD_Test1.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\or_v1_0\or_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\B_SPI_Slave_v2_60\B_SPI_Slave_v2_60.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\not_v1_0\not_v1_0.v'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3pkg.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
+Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\lcpsoc3\stdlogic\cpsoc3.vif'.
+
+----------------------------------------------------------
+Detecting unused logic.
+----------------------------------------------------------
+    User names
+	\GLCD:Net_54\
+	\GLCD:Net_53\
+	\GLCD:Net_90\
+	\GLCD:SPIM_SCB:Net_427\
+	\GLCD:SPIM_SCB:Net_373\
+	\GLCD:SPIM_SCB:Net_436\
+	\Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_not_empty\
+	\Com_Block:BSPIS:es3:SPISlave:control_7\
+	\Com_Block:BSPIS:es3:SPISlave:control_6\
+	\Com_Block:BSPIS:es3:SPISlave:control_5\
+	\Com_Block:BSPIS:es3:SPISlave:control_4\
+	\Com_Block:BSPIS:es3:SPISlave:control_3\
+	\Com_Block:BSPIS:es3:SPISlave:control_2\
+	\Com_Block:BSPIS:es3:SPISlave:control_1\
+	\Com_Block:BSPIS:es3:SPISlave:control_0\
+	\Com_Block:Net_146\
+	\Com_Block:BSPIS:es3:SPISlave:dpcounter_zero\
+	Net_101
+
+
+Deleted 18 User equations/components.
+Deleted 0 Synthesized equations/components.
+
+------------------------------------------------------
+Alias Detection
+------------------------------------------------------
+Aliasing one to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__ss0_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__mosi_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__miso_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__sclk_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__ss1_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__ss2_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:tmpOE__ss3_m_net_0\ to \GLCD:tmpOE__Reset_net_0\
+Aliasing \GLCD:SPIM_SCB:Net_449\ to zero
+Aliasing \GLCD:SPIM_SCB:Net_433\ to zero
+Aliasing \GLCD:SPIM_SCB:Net_452\ to zero
+Aliasing \GLCD:SPIM_SCB:Net_459\ to zero
+Aliasing tmpOE__Move_Right_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Move_Left_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Move_Up_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Move_Down_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Blast_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Blast_Red_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Blast_Blue_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__Blast_Green_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__MISO_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__SS_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing tmpOE__SCLK_net_0 to \GLCD:tmpOE__Reset_net_0\
+Aliasing \Com_Block:BSPIS:es3:SPISlave:tx_status_5\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:tx_status_4\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:tx_status_3\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:rx_status_2\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:rx_status_1\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:rx_status_0\ to zero
+Aliasing \Com_Block:BSPIS:reset\ to zero
+Aliasing \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:cs_addr_1\ to zero
+Aliasing tmpOE__MOSI_net_0 to \GLCD:tmpOE__Reset_net_0\
+Removing Rhs of wire one[6] = \GLCD:tmpOE__Reset_net_0\[1]
+Removing Rhs of wire \GLCD:SPIM_SCB:Net_237\[11] = \GLCD:SPIM_SCB:Net_284\[71]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_244\[13] = zero[2]
+Removing Rhs of wire \GLCD:SPIM_SCB:Net_410\[16] = \GLCD:SPIM_SCB:Net_243\[42]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_89\[22] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_430\[24] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_413\[25] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__ss0_m_net_0\[29] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__mosi_m_net_0\[35] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__miso_m_net_0\[41] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__sclk_m_net_0\[47] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__ss1_m_net_0\[53] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__ss2_m_net_0\[59] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:tmpOE__ss3_m_net_0\[65] = one[6]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_449\[74] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_433\[75] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_452\[78] = zero[2]
+Removing Lhs of wire \GLCD:SPIM_SCB:Net_459\[80] = zero[2]
+Removing Lhs of wire tmpOE__Move_Right_net_0[82] = one[6]
+Removing Lhs of wire tmpOE__Move_Left_net_0[88] = one[6]
+Removing Lhs of wire tmpOE__Move_Up_net_0[94] = one[6]
+Removing Lhs of wire tmpOE__Move_Down_net_0[100] = one[6]
+Removing Lhs of wire tmpOE__Blast_net_0[106] = one[6]
+Removing Lhs of wire tmpOE__Blast_Red_net_0[112] = one[6]
+Removing Lhs of wire tmpOE__Blast_Blue_net_0[118] = one[6]
+Removing Lhs of wire tmpOE__Blast_Green_net_0[124] = one[6]
+Removing Lhs of wire tmpOE__MISO_net_0[130] = one[6]
+Removing Rhs of wire Net_96[131] = \Com_Block:miso_wire\[177]
+Removing Lhs of wire tmpOE__SS_net_0[137] = one[6]
+Removing Lhs of wire tmpOE__SCLK_net_0[143] = one[6]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:cnt_reset\[148] = Net_95[138]
+Removing Rhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_load\[150] = \Com_Block:BSPIS:es3:SPISlave:load\[151]
+Removing Rhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_load\[150] = \Com_Block:BSPIS:es3:SPISlave:dpcounter_one\[168]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:prc_clk_src\[158] = Net_94[144]
+Removing Rhs of wire \Com_Block:Net_81\[161] = \Com_Block:Net_89\[302]
+Removing Rhs of wire \Com_Block:BSPIS:es3:SPISlave:miso_from_dp\[178] = \Com_Block:BSPIS:es3:SPISlave:mosi_from_dpL\[284]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_2\[181] = \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\[171]
+Removing Rhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_1\[182] = \Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_not_full\[183]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_6\[184] = \Com_Block:BSPIS:es3:SPISlave:byte_complete\[152]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_3\[187] = \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\[186]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_5\[188] = \Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\[155]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_6\[189] = \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full_reg\[176]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_5\[190] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_4\[191] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:tx_status_3\[192] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_2\[193] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_1\[194] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:rx_status_0\[195] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:mosi_fin\[196] = \Com_Block:Net_75\[197]
+Removing Lhs of wire \Com_Block:Net_75\[197] = Net_93[301]
+Removing Lhs of wire \Com_Block:BSPIS:reset\[223] = zero[2]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:cs_addr_1\[224] = zero[2]
+Removing Lhs of wire tmpOE__MOSI_net_0[306] = one[6]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\\D\[310] = \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\[153]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\\D\[311] = \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\[156]
+Removing Lhs of wire \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\\D\[312] = Net_93[301]
+
+------------------------------------------------------
+Aliased 0 equations, 56 wires.
+------------------------------------------------------
+
+----------------------------------------------------------
+Circuit simplification
+----------------------------------------------------------
+
+Substituting virtuals - pass 1:
+
+Note:  Expanding virtual equation for '\Com_Block:BSPIS:es3:SPISlave:tx_load\' (cost = 6):
+\Com_Block:BSPIS:es3:SPISlave:tx_load\ <= ((not \Com_Block:BSPIS:es3:SPISlave:count_3\ and not \Com_Block:BSPIS:es3:SPISlave:count_2\ and not \Com_Block:BSPIS:es3:SPISlave:count_1\ and \Com_Block:BSPIS:es3:SPISlave:count_0\));
+
+Note:  Expanding virtual equation for '\Com_Block:BSPIS:es3:SPISlave:byte_complete\' (cost = 1):
+\Com_Block:BSPIS:es3:SPISlave:byte_complete\ <= ((not \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\ and \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\));
+
+
+Substituting virtuals - pass 2:
+
+
+----------------------------------------------------------
+Circuit simplification results:
+
+	Expanded 2 signals.
+	Turned 0 signals into soft nodes.
+	Maximum default expansion cost was set at 3.
+----------------------------------------------------------
+
+------------------------------------------------------
+Alias Detection
+------------------------------------------------------
+
+------------------------------------------------------
+Aliased 0 equations, 0 wires.
+------------------------------------------------------
+
+Last attempt to remove unused logic - pass 1:
+
+
+Last attempt to remove unused logic - pass 2:
+
+
+topld:  No errors.
+
+CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp
+Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
+Warp Arguments : -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya "-.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj" -dcpsoc3 GLCD_Test1.v -verilog
+</CYPRESSTAG>
+Warp synthesis phase: Elapsed time ==> 1s.817ms
+<CYPRESSTAG name="Fitter results...">
+<CYPRESSTAG name="Fitter startup details...">
+cyp3fit: V3.0.0.1539, Family: PSoC3, Started at: Tuesday, 13 May 2014 16:31:25
+Options: -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\Dual_Starblast.cyprj -d CY8C4245AXI-483 GLCD_Test1.v -verilog
+</CYPRESSTAG>
+<CYPRESSTAG name="Design parsing">
+Design parsing phase: Elapsed time ==> 0s.024ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Tech mapping">
+<CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
+
+Removing unused cells resulting from optimization
+    Removed unused cell/equation '\Com_Block:BSPIS:es3:SPISlave:dp_clk_src\:macrocell'
+Done removing unused cells.
+<CYPRESSTAG name="Global Clock Selection" icon="FILE_RPT_TECHM">
+    Fixed Function Clock 2: Automatic-assigning  clock 'GLCD_SPIM_SCB_SCBCLK'. Signal=\GLCD:SPIM_SCB:Net_237_ff2\
+    Digital Clock 0: Automatic-assigning  clock 'Com_Block_IntClock'. Fanout=1, Signal=\Com_Block:Net_81_digital\
+<CYPRESSTAG name="UDB Clock/Enable Remapping Results">
+    UDB Clk/Enable \Com_Block:BSPIS:es3:SPISlave:ClkEn\: with output requested to be synchronous
+        ClockIn: ClockGenBlock:m0s8clockgenblockcell.gen_clk_out_0 was determined to be a global clock that is synchronous to HFCLK
+        EnableIn: Constant 1 was determined to be synchronous to ClockIn
+        ClockOut: ClockGenBlock:m0s8clockgenblockcell.gen_clk_out_0, EnableOut: Constant 1
+    UDB Clk/Enable \Com_Block:BSPIS:es3:SPISlave:DpClkEn\: with output requested to be asynchronous
+        ClockIn: SCLK(0):iocell.fb was determined to be a routed clock that is synchronous to HFCLK
+        EnableIn: Constant 1 was determined to be synchronous to ClockIn
+        ClockOut: SCLK(0):iocell.fb, EnableOut: Constant 1
+    UDB Clk/Enable \Com_Block:BSPIS:es3:SPISlave:PrcClkEn\: with output requested to be asynchronous
+        ClockIn: SCLK(0):iocell.fb was determined to be a routed clock that is synchronous to HFCLK
+        EnableIn: Constant 1 was determined to be synchronous to ClockIn
+        ClockOut: SCLK(0):iocell.fb, EnableOut: Constant 1
+</CYPRESSTAG>
+</CYPRESSTAG>
+
+Removing unused cells resulting from optimization
+    Removed unused cell/equation '__ZERO__:macrocell'
+Done removing unused cells.
+<CYPRESSTAG name="Duplicate Macrocell detection">
+</CYPRESSTAG>
+</CYPRESSTAG>
+<CYPRESSTAG name="Duplicate Macrocell detection">
+</CYPRESSTAG>
+<CYPRESSTAG name="Design Equations" icon="FILE_RPT_EQUATION">
+
+------------------------------------------------------------
+Design Equations
+------------------------------------------------------------
+    <CYPRESSTAG name="Pin listing">
+
+    ------------------------------------------------------------
+    Pin listing
+    ------------------------------------------------------------
+
+    Pin : Name = Blast(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: RES_PULL_UP
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Blast(0)__PA ,
+            pad => Blast(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Blast_Blue(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Blast_Blue(0)__PA ,
+            pad => Blast_Blue(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Blast_Green(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Blast_Green(0)__PA ,
+            pad => Blast_Green(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Blast_Red(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Blast_Red(0)__PA ,
+            pad => Blast_Red(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = MISO(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, ROUTABLE
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => MISO(0)__PA ,
+            input => Net_96 ,
+            pad => MISO(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = MOSI(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: HI_Z_DIGITAL
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, ROUTABLE
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => MOSI(0)__PA ,
+            fb => Net_93 ,
+            pad => MOSI(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Move_Down(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: RES_PULL_UP
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Move_Down(0)__PA ,
+            pad => Move_Down(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Move_Left(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: RES_PULL_UP
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Move_Left(0)__PA ,
+            pad => Move_Left(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Move_Right(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: RES_PULL_UP
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Move_Right(0)__PA ,
+            pad => Move_Right(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = Move_Up(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: RES_PULL_UP
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => Move_Up(0)__PA ,
+            pad => Move_Up(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = SCLK(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: HI_Z_DIGITAL
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, ROUTABLE
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => SCLK(0)__PA ,
+            fb => Net_94 ,
+            pad => SCLK(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = SS(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: SYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: HI_Z_DIGITAL
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: True
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, ROUTABLE
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => SS(0)__PA ,
+            fb => Net_95 ,
+            pad => SS(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:Reset(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:Reset(0)\__PA ,
+            pad => \GLCD:Reset(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:miso_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: NOSYNC
+            Out Sync Option: AUTO
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: HI_Z_DIGITAL
+            VTrip: CMOS
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_MISO
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:miso_m(0)\__PA ,
+            fb => \GLCD:SPIM_SCB:Net_410\ ,
+            pad => \GLCD:SPIM_SCB:miso_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:mosi_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_MOSI
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:mosi_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:Net_84\ ,
+            pad => \GLCD:SPIM_SCB:mosi_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:sclk_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_SCLK
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:sclk_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:Net_88\ ,
+            pad => \GLCD:SPIM_SCB:sclk_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:ss0_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_SS
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:ss0_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:ss_0\ ,
+            pad => \GLCD:SPIM_SCB:ss0_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:ss1_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_SS
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:ss1_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:ss_1\ ,
+            pad => \GLCD:SPIM_SCB:ss1_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:ss2_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_SS
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:ss2_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:ss_2\ ,
+            pad => \GLCD:SPIM_SCB:ss2_m(0)_PAD\ );
+        Properties:
+        {
+        }
+
+    Pin : Name = \GLCD:SPIM_SCB:ss3_m(0)\
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO RefSel: VCC_IO
+            Required Capabilitites: DIGITAL, SPI_SS
+            Initial Value: 1
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => \GLCD:SPIM_SCB:ss3_m(0)\__PA ,
+            input => \GLCD:SPIM_SCB:ss_3\ ,
+            pad => \GLCD:SPIM_SCB:ss3_m(0)_PAD\ );
+        Properties:
+        {
+        }
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Macrocell listing" icon="FILE_RPT_EQUATION">
+
+    ------------------------------------------------------------
+    Macrocell listing
+    ------------------------------------------------------------
+
+    MacroCell: Name=Net_96, Mode=(Combinatorial)
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !Net_95 * \Com_Block:BSPIS:es3:SPISlave:miso_from_dp\
+        );
+        Output = Net_96 (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:byte_complete\, Mode=(Combinatorial)
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:byte_complete\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\, Mode=(D-Register)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (\Com_Block:Net_81_digital\) => Global
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\ (fanout=2)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:inv_ss\, Mode=(Combinatorial)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !Net_95
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:inv_ss\ (fanout=3)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\, Mode=(Combinatorial)
+        Total # of inputs        : 5
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\, Mode=(D-Register)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (\Com_Block:Net_81_digital\) => Global
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_tmp\, Mode=(D-Register)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_94)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              Net_93
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\, Mode=(Combinatorial)
+        Total # of inputs        : 6
+        Total # of product terms : 5
+            Clock Enable: True
+        Main Equation            : 5 pterms
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\ * Net_93
+            + \Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + \Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + \Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + !\Com_Block:BSPIS:es3:SPISlave:count_0\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ (fanout=2)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\, Mode=(Combinatorial)
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:rx_status_4\, Mode=(Combinatorial)
+        Total # of inputs        : 1
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:rx_status_4\ (fanout=1)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:tx_load\, Mode=(Combinatorial)
+        Total # of inputs        : 4
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:tx_load\ (fanout=5)
+
+    MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:tx_status_0\, Mode=(Combinatorial)
+        Total # of inputs        : 3
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\ * 
+              \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:tx_status_0\ (fanout=1)
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Datapath listing">
+
+    ------------------------------------------------------------
+    Datapath listing
+    ------------------------------------------------------------
+
+    datapathcell: Name =\Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u0\
+        PORT MAP (
+            clock => Net_94 ,
+            cs_addr_2 => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+            cs_addr_0 => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+            route_si => \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ ,
+            f1_load => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+            chain_out => \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:carry\ );
+        Properties:
+        {
+            a0_init = "00000000"
+            a1_init = "00000000"
+            ce0_sync = 1
+            ce1_sync = 1
+            cl0_sync = 1
+            cl1_sync = 1
+            cmsb_sync = 1
+            co_msb_sync = 1
+            cy_dpconfig = "0000000000000000000000000000000000000000000000000000000000000000000000010100000000000001110000000000000000000000000000000000000011111111000000001111111111111111000000000000001000001100011100000001000010001100"
+            d0_init = "00000000"
+            d1_init = "00000000"
+            f0_blk_sync = 1
+            f0_bus_sync = 1
+            f1_blk_sync = 1
+            f1_bus_sync = 1
+            ff0_sync = 1
+            ff1_sync = 1
+            ov_msb_sync = 1
+            so_sync = 1
+            z0_sync = 1
+            z1_sync = 1
+        }
+        Clock Polarity: Active Low
+        Clock Enable: True
+        Next in chain : \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u1\
+
+    datapathcell: Name =\Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u1\
+        PORT MAP (
+            clock => Net_94 ,
+            cs_addr_2 => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+            cs_addr_0 => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+            route_si => \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ ,
+            f1_load => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+            so_comb => \Com_Block:BSPIS:es3:SPISlave:miso_from_dp\ ,
+            f0_bus_stat_comb => \Com_Block:BSPIS:es3:SPISlave:tx_status_1\ ,
+            f0_blk_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_empty\ ,
+            f1_bus_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\ ,
+            f1_blk_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ ,
+            chain_in => \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:carry\ );
+        Properties:
+        {
+            a0_init = "00000000"
+            a1_init = "00000000"
+            ce0_sync = 1
+            ce1_sync = 1
+            cl0_sync = 1
+            cl1_sync = 1
+            cmsb_sync = 1
+            co_msb_sync = 1
+            cy_dpconfig = "0000000000000000000000000000000000000000000000000000000000000000000000010100000000000001110000000000000000000000000000000000000011111111000000001111111111111111000000000010001100001100111100000001000010001100"
+            d0_init = "00000000"
+            d1_init = "00000000"
+            f0_blk_sync = 1
+            f0_bus_sync = 1
+            f1_blk_sync = 1
+            f1_bus_sync = 1
+            ff0_sync = 1
+            ff1_sync = 1
+            ov_msb_sync = 1
+            so_sync = 1
+            z0_sync = 1
+            z1_sync = 1
+        }
+        Clock Polarity: Active Low
+        Clock Enable: True
+        Previous in chain : \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u0\
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Status register listing">
+    </CYPRESSTAG>
+    <CYPRESSTAG name="StatusI register listing">
+
+    ------------------------------------------------------------
+    StatusI register listing
+    ------------------------------------------------------------
+
+    statusicell: Name =\Com_Block:BSPIS:es3:SPISlave:RxStsReg\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            status_6 => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full_reg\ ,
+            status_5 => \Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\ ,
+            status_4 => \Com_Block:BSPIS:es3:SPISlave:rx_status_4\ ,
+            status_3 => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\ );
+        Properties:
+        {
+            cy_force_order = 1
+            cy_int_mask = "1111111"
+            cy_md_select = "0100000"
+        }
+        Clock Polarity: Active High
+        Clock Enable: True
+
+    statusicell: Name =\Com_Block:BSPIS:es3:SPISlave:TxStsReg\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            status_6 => \Com_Block:BSPIS:es3:SPISlave:byte_complete\ ,
+            status_2 => \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\ ,
+            status_1 => \Com_Block:BSPIS:es3:SPISlave:tx_status_1\ ,
+            status_0 => \Com_Block:BSPIS:es3:SPISlave:tx_status_0\ );
+        Properties:
+        {
+            cy_force_order = 1
+            cy_int_mask = "1111111"
+            cy_md_select = "1000001"
+        }
+        Clock Polarity: Active High
+        Clock Enable: True
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Sync listing">
+
+    ------------------------------------------------------------
+    Sync listing
+    ------------------------------------------------------------
+
+    synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_1\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            in => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+            out => \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ );
+        Clock Polarity: Active High
+        Clock Enable: True
+
+    synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_2\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            in => \Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_empty\ ,
+            out => \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\ );
+        Clock Polarity: Active High
+        Clock Enable: True
+
+    synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_3\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            in => \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\ ,
+            out => \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\ );
+        Clock Polarity: Active High
+        Clock Enable: True
+
+    synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_4\
+        PORT MAP (
+            clock => \Com_Block:Net_81_digital\ ,
+            in => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ ,
+            out => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full_reg\ );
+        Clock Polarity: Active High
+        Clock Enable: True
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Control register listing">
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Count7 listing">
+
+    ------------------------------------------------------------
+    Count7 listing
+    ------------------------------------------------------------
+
+    count7cell: Name =\Com_Block:BSPIS:es3:SPISlave:BitCounter\
+        PORT MAP (
+            clock => Net_94 ,
+            reset => Net_95 ,
+            enable => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+            count_6 => \Com_Block:BSPIS:es3:SPISlave:count_6\ ,
+            count_5 => \Com_Block:BSPIS:es3:SPISlave:count_5\ ,
+            count_4 => \Com_Block:BSPIS:es3:SPISlave:count_4\ ,
+            count_3 => \Com_Block:BSPIS:es3:SPISlave:count_3\ ,
+            count_2 => \Com_Block:BSPIS:es3:SPISlave:count_2\ ,
+            count_1 => \Com_Block:BSPIS:es3:SPISlave:count_1\ ,
+            count_0 => \Com_Block:BSPIS:es3:SPISlave:count_0\ );
+        Properties:
+        {
+            cy_alt_mode = 0
+            cy_init_value = "0000000"
+            cy_period = "0001111"
+            cy_route_en = 1
+            cy_route_ld = 0
+        }
+        Clock Polarity: Active Low
+        Clock Enable: True
+    </CYPRESSTAG>
+    <CYPRESSTAG name="DRQ listing">
+    </CYPRESSTAG>
+    <CYPRESSTAG name="Interrupt listing">
+    </CYPRESSTAG>
+</CYPRESSTAG>
+<CYPRESSTAG name="Technology mapping summary" expanded>
+
+------------------------------------------------------------
+Technology mapping summary
+------------------------------------------------------------
+
+Resource Type                 : Used : Free :  Max :  % Used
+============================================================
+Digital clock dividers        :    1 :    3 :    4 :  25.00%
+Pins                          :   22 :   14 :   36 :  61.11%
+UDB Macrocells                :   12 :   20 :   32 :  37.50%
+UDB Unique Pterms             :   16 :   48 :   64 :  25.00%
+UDB Total Pterms              :   16 :      :      : 
+UDB Datapath Cells            :    2 :    2 :    4 :  50.00%
+UDB Status Cells              :    3 :    1 :    4 :  75.00%
+            StatusI Registers :    2 
+                   Sync Cells :    4 (in 1 status cell)
+UDB Control Cells             :    1 :    3 :    4 :  25.00%
+                 Count7 Cells :    1 
+Interrupts                    :    0 :   32 :   32 :   0.00%
+Comparator/Opamp Fixed Blocks :    0 :    2 :    2 :   0.00%
+SAR Fixed Blocks              :    0 :    1 :    1 :   0.00%
+CSD Fixed Blocks              :    0 :    1 :    1 :   0.00%
+8-bit CapSense IDACs          :    0 :    1 :    1 :   0.00%
+7-bit CapSense IDACs          :    0 :    1 :    1 :   0.00%
+Temperature Sensor            :    0 :    1 :    1 :   0.00%
+Low Power Comparator          :    0 :    2 :    2 :   0.00%
+TCPWM Blocks                  :    0 :    4 :    4 :   0.00%
+Serial Communication Blocks   :    1 :    1 :    2 :  50.00%
+Segment LCD Blocks            :    0 :    1 :    1 :   0.00%
+</CYPRESSTAG>
+Technology Mapping: Elapsed time ==> 0s.038ms
+Info: mpr.M0037: Unused pieces of the design have been optimized out. See the Tech mapping section of the report file for details. (App=cydsfit)
+Tech mapping phase: Elapsed time ==> 0s.074ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Analog Placement">
+<CYPRESSTAG name="Analog Placement">
+Elapsed time ==> 0.0066532s
+</CYPRESSTAG>
+Analog Placement phase: Elapsed time ==> 0s.040ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Analog Routing">
+<CYPRESSTAG name="Analog Routing">
+Route success=True, Iterations=1 Elapsed=0.0003690 secs
+</CYPRESSTAG>
+Analog Routing phase: Elapsed time ==> 0s.002ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Analog Code Generation">
+============ Analog Final Answer Routes ============
+Dump of CyAnalogRoutingResultsDB
+Map of net to items {
+}
+Map of item to net {
+}
+Mux Info {
+}
+Analog Code Generation phase: Elapsed time ==> 0s.142ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Digital Placement">
+<CYPRESSTAG name="Detailed placement messages">
+I2076: Total run-time: 0.6 sec.
+
+</CYPRESSTAG>
+<CYPRESSTAG name="PLD Packing">
+<CYPRESSTAG name="PLD Packing Summary" expanded>
+
+------------------------------------------------------------
+PLD Packing Summary
+------------------------------------------------------------
+            Resource Type : Used : Free :  Max :  % Used
+    ====================================================
+                     PLDs :    5 :    3 :    8 :  62.50%
+
+<CYPRESSTAG name="PLD Statistics">
+
+        PLD Resource Type :     Average/LAB
+    =======================================
+                   Inputs :            3.20
+                   Pterms :            3.20
+               Macrocells :            2.40
+</CYPRESSTAG>
+<CYPRESSTAG name="Packed PLD Contents">
+Packed PLD Contents not displayed at this verbose level.</CYPRESSTAG>
+</CYPRESSTAG>
+PLD Packing: Elapsed time ==> 0s.001ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Partitioning">
+<CYPRESSTAG name="Initial Partitioning Summary">
+Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
+<CYPRESSTAG name="Final Partitioning Summary">
+Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
+Partitioning: Elapsed time ==> 0s.024ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Simulated Annealing">
+Annealing: Elapsed time ==> 0s.002ms
+<CYPRESSTAG name="Simulated Annealing Results">
+The seed used for moves was 114161200.
+Inital cost was 119, final cost is 119 (0.00% improvement).</CYPRESSTAG>
+</CYPRESSTAG>
+<CYPRESSTAG name="Final Placement Summary">
+
+------------------------------------------------------------
+Final Placement Summary
+------------------------------------------------------------
+
+       Resource Type :      Count : Avg Inputs : Avg Outputs
+    ========================================================
+                 UDB :          4 :       3.75 :       3.00
+<CYPRESSTAG name="Final Placement Details">
+<CYPRESSTAG name="Component Details">
+
+------------------------------------------------------------
+Component Placement Details
+------------------------------------------------------------
+UDB [UDB=(0,0)] contents:
+datapathcell: Name =\Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u1\
+    PORT MAP (
+        clock => Net_94 ,
+        cs_addr_2 => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+        cs_addr_0 => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+        route_si => \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ ,
+        f1_load => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+        so_comb => \Com_Block:BSPIS:es3:SPISlave:miso_from_dp\ ,
+        f0_bus_stat_comb => \Com_Block:BSPIS:es3:SPISlave:tx_status_1\ ,
+        f0_blk_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_empty\ ,
+        f1_bus_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\ ,
+        f1_blk_stat_comb => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ ,
+        chain_in => \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:carry\ );
+    Properties:
+    {
+        a0_init = "00000000"
+        a1_init = "00000000"
+        ce0_sync = 1
+        ce1_sync = 1
+        cl0_sync = 1
+        cl1_sync = 1
+        cmsb_sync = 1
+        co_msb_sync = 1
+        cy_dpconfig = "0000000000000000000000000000000000000000000000000000000000000000000000010100000000000001110000000000000000000000000000000000000011111111000000001111111111111111000000000010001100001100111100000001000010001100"
+        d0_init = "00000000"
+        d1_init = "00000000"
+        f0_blk_sync = 1
+        f0_bus_sync = 1
+        f1_blk_sync = 1
+        f1_bus_sync = 1
+        ff0_sync = 1
+        ff1_sync = 1
+        ov_msb_sync = 1
+        so_sync = 1
+        z0_sync = 1
+        z1_sync = 1
+    }
+    Clock Polarity: Active Low
+    Clock Enable: True
+    Previous in chain : \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u0\
+
+statusicell: Name =\Com_Block:BSPIS:es3:SPISlave:TxStsReg\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        status_6 => \Com_Block:BSPIS:es3:SPISlave:byte_complete\ ,
+        status_2 => \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\ ,
+        status_1 => \Com_Block:BSPIS:es3:SPISlave:tx_status_1\ ,
+        status_0 => \Com_Block:BSPIS:es3:SPISlave:tx_status_0\ );
+    Properties:
+    {
+        cy_force_order = 1
+        cy_int_mask = "1111111"
+        cy_md_select = "1000001"
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+UDB [UDB=(0,1)] contents:
+LAB@[UDB=(0,1)][LB=0] #macrocells=4, #inputs=5, #pterms=4
+{
+    [McSlotId=0]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:tx_status_0\, Mode=(Combinatorial) @ [UDB=(0,1)][LB=0][MC=0]
+        Total # of inputs        : 3
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\ * 
+              \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:tx_status_0\ (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=1]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\, Mode=(D-Register) @ [UDB=(0,1)][LB=0][MC=1]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (\Com_Block:Net_81_digital\) => Global
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\ (fanout=2)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=2]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:byte_complete\, Mode=(Combinatorial) @ [UDB=(0,1)][LB=0][MC=2]
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:dpcounter_one_reg\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:byte_complete\ (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=3]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\, Mode=(Combinatorial) @ [UDB=(0,1)][LB=0][MC=3]
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\ (fanout=1)
+        Properties               : 
+        {
+        }
+}
+
+LAB@[UDB=(0,1)][LB=1] #macrocells=1, #inputs=1, #pterms=1
+{
+    [McSlotId=0]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\, Mode=(D-Register) @ [UDB=(0,1)][LB=1][MC=0]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (\Com_Block:Net_81_digital\) => Global
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_fin\ (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=1]: (empty)
+    [McSlotId=2]: (empty)
+    [McSlotId=3]: (empty)
+}
+
+synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_2\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        in => \Com_Block:BSPIS:es3:SPISlave:dpMISO_fifo_empty\ ,
+        out => \Com_Block:BSPIS:es3:SPISlave:miso_tx_empty_reg_fin\ );
+    Properties:
+    {
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_3\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        in => \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\ ,
+        out => \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun_reg\ );
+    Properties:
+    {
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_4\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        in => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ ,
+        out => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full_reg\ );
+    Properties:
+    {
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+synccell: Name =\Com_Block:BSPIS:es3:SPISlave:sync_1\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        in => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+        out => \Com_Block:BSPIS:es3:SPISlave:dpcounter_one_fin\ );
+    Properties:
+    {
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+UDB [UDB=(1,0)] contents:
+LAB@[UDB=(1,0)][LB=0] #macrocells=4, #inputs=7, #pterms=8
+{
+    [McSlotId=0]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\, Mode=(Combinatorial) @ [UDB=(1,0)][LB=0][MC=0]
+        Total # of inputs        : 6
+        Total # of product terms : 5
+            Clock Enable: True
+        Main Equation            : 5 pterms
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\ * Net_93
+            + \Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + \Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + \Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+            + !\Com_Block:BSPIS:es3:SPISlave:count_0\ * 
+              \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ (fanout=2)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=1]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_tmp\, Mode=(D-Register) @ [UDB=(1,0)][LB=0][MC=1]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+        List of special equations: 
+            Clock  = (Net_94)
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              Net_93
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_tmp\ (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=2]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:tx_load\, Mode=(Combinatorial) @ [UDB=(1,0)][LB=0][MC=2]
+        Total # of inputs        : 4
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:tx_load\ (fanout=5)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=3]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\, Mode=(Combinatorial) @ [UDB=(1,0)][LB=0][MC=3]
+        Total # of inputs        : 5
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_3\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_2\ * 
+              !\Com_Block:BSPIS:es3:SPISlave:count_1\ * 
+              \Com_Block:BSPIS:es3:SPISlave:count_0\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:mosi_buf_overrun\ (fanout=1)
+        Properties               : 
+        {
+        }
+}
+
+LAB@[UDB=(1,0)][LB=1] #macrocells=2, #inputs=2, #pterms=2
+{
+    [McSlotId=0]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:inv_ss\, Mode=(Combinatorial) @ [UDB=(1,0)][LB=1][MC=0]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !Net_95
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:inv_ss\ (fanout=4)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=1]: (empty)
+    [McSlotId=2]:     MacroCell: Name=Net_96, Mode=(Combinatorial) @ [UDB=(1,0)][LB=1][MC=2]
+        Total # of inputs        : 2
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !Net_95 * \Com_Block:BSPIS:es3:SPISlave:miso_from_dp\
+        );
+        Output = Net_96 (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=3]: (empty)
+}
+
+datapathcell: Name =\Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u0\
+    PORT MAP (
+        clock => Net_94 ,
+        cs_addr_2 => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+        cs_addr_0 => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+        route_si => \Com_Block:BSPIS:es3:SPISlave:mosi_to_dp\ ,
+        f1_load => \Com_Block:BSPIS:es3:SPISlave:tx_load\ ,
+        chain_out => \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:carry\ );
+    Properties:
+    {
+        a0_init = "00000000"
+        a1_init = "00000000"
+        ce0_sync = 1
+        ce1_sync = 1
+        cl0_sync = 1
+        cl1_sync = 1
+        cmsb_sync = 1
+        co_msb_sync = 1
+        cy_dpconfig = "0000000000000000000000000000000000000000000000000000000000000000000000010100000000000001110000000000000000000000000000000000000011111111000000001111111111111111000000000000001000001100011100000001000010001100"
+        d0_init = "00000000"
+        d1_init = "00000000"
+        f0_blk_sync = 1
+        f0_bus_sync = 1
+        f1_blk_sync = 1
+        f1_bus_sync = 1
+        ff0_sync = 1
+        ff1_sync = 1
+        ov_msb_sync = 1
+        so_sync = 1
+        z0_sync = 1
+        z1_sync = 1
+    }
+    Clock Polarity: Active Low
+    Clock Enable: True
+    Next in chain : \Com_Block:BSPIS:es3:SPISlave:sR16:Dp:u1\
+
+count7cell: Name =\Com_Block:BSPIS:es3:SPISlave:BitCounter\
+    PORT MAP (
+        clock => Net_94 ,
+        reset => Net_95 ,
+        enable => \Com_Block:BSPIS:es3:SPISlave:inv_ss\ ,
+        count_6 => \Com_Block:BSPIS:es3:SPISlave:count_6\ ,
+        count_5 => \Com_Block:BSPIS:es3:SPISlave:count_5\ ,
+        count_4 => \Com_Block:BSPIS:es3:SPISlave:count_4\ ,
+        count_3 => \Com_Block:BSPIS:es3:SPISlave:count_3\ ,
+        count_2 => \Com_Block:BSPIS:es3:SPISlave:count_2\ ,
+        count_1 => \Com_Block:BSPIS:es3:SPISlave:count_1\ ,
+        count_0 => \Com_Block:BSPIS:es3:SPISlave:count_0\ );
+    Properties:
+    {
+        cy_alt_mode = 0
+        cy_init_value = "0000000"
+        cy_period = "0001111"
+        cy_route_en = 1
+        cy_route_ld = 0
+    }
+    Clock Polarity: Active Low
+    Clock Enable: True
+
+UDB [UDB=(1,1)] contents:
+LAB@[UDB=(1,1)][LB=0] #macrocells=1, #inputs=1, #pterms=1
+{
+    [McSlotId=0]: (empty)
+    [McSlotId=1]:     MacroCell: Name=\Com_Block:BSPIS:es3:SPISlave:rx_status_4\, Mode=(Combinatorial) @ [UDB=(1,1)][LB=0][MC=1]
+        Total # of inputs        : 1
+        Total # of product terms : 1
+            Clock Enable: True
+        Main Equation            : 1 pterm
+        (
+              !\Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\
+        );
+        Output = \Com_Block:BSPIS:es3:SPISlave:rx_status_4\ (fanout=1)
+        Properties               : 
+        {
+        }
+
+    [McSlotId=2]: (empty)
+    [McSlotId=3]: (empty)
+}
+
+statusicell: Name =\Com_Block:BSPIS:es3:SPISlave:RxStsReg\
+    PORT MAP (
+        clock => \Com_Block:Net_81_digital\ ,
+        status_6 => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_full_reg\ ,
+        status_5 => \Com_Block:BSPIS:es3:SPISlave:rx_buf_overrun\ ,
+        status_4 => \Com_Block:BSPIS:es3:SPISlave:rx_status_4\ ,
+        status_3 => \Com_Block:BSPIS:es3:SPISlave:dpMOSI_fifo_not_empty\ );
+    Properties:
+    {
+        cy_force_order = 1
+        cy_int_mask = "1111111"
+        cy_md_select = "0100000"
+    }
+    Clock Polarity: Active High
+    Clock Enable: True
+
+Intr hod @ [IntrHod=(0)]: empty
+Port 0 contains the following IO cells:
+[IoId=1]: 
+Pin : Name = MOSI(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: HI_Z_DIGITAL
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, ROUTABLE
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => MOSI(0)__PA ,
+        fb => Net_93 ,
+        pad => MOSI(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=2]: 
+Pin : Name = Blast_Green(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Blast_Green(0)__PA ,
+        pad => Blast_Green(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=3]: 
+Pin : Name = Blast_Blue(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Blast_Blue(0)__PA ,
+        pad => Blast_Blue(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=5]: 
+Pin : Name = \GLCD:SPIM_SCB:miso_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: NOSYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: HI_Z_DIGITAL
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_MISO
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:miso_m(0)\__PA ,
+        fb => \GLCD:SPIM_SCB:Net_410\ ,
+        pad => \GLCD:SPIM_SCB:miso_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+[IoId=6]: 
+Pin : Name = \GLCD:SPIM_SCB:sclk_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_SCLK
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:sclk_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:Net_88\ ,
+        pad => \GLCD:SPIM_SCB:sclk_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+[IoId=7]: 
+Pin : Name = \GLCD:SPIM_SCB:ss0_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_SS
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:ss0_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:ss_0\ ,
+        pad => \GLCD:SPIM_SCB:ss0_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+Port 1 contains the following IO cells:
+[IoId=0]: 
+Pin : Name = MISO(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, ROUTABLE
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => MISO(0)__PA ,
+        input => Net_96 ,
+        pad => MISO(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=1]: 
+Pin : Name = SCLK(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: HI_Z_DIGITAL
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, ROUTABLE
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => SCLK(0)__PA ,
+        fb => Net_94 ,
+        pad => SCLK(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=2]: 
+Pin : Name = SS(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: HI_Z_DIGITAL
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, ROUTABLE
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => SS(0)__PA ,
+        fb => Net_95 ,
+        pad => SS(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=6]: 
+Pin : Name = Blast_Red(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Blast_Red(0)__PA ,
+        pad => Blast_Red(0)_PAD );
+    Properties:
+    {
+    }
+
+Port 2 contains the following IO cells:
+[IoId=0]: 
+Pin : Name = Move_Left(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: RES_PULL_UP
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Move_Left(0)__PA ,
+        pad => Move_Left(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=1]: 
+Pin : Name = Move_Up(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: RES_PULL_UP
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Move_Up(0)__PA ,
+        pad => Move_Up(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=2]: 
+Pin : Name = Move_Right(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: RES_PULL_UP
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Move_Right(0)__PA ,
+        pad => Move_Right(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=3]: 
+Pin : Name = Blast(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: RES_PULL_UP
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Blast(0)__PA ,
+        pad => Blast(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=4]: 
+Pin : Name = Move_Down(0)
+    Attributes:
+        In Group/Port: True
+        In Sync Option: SYNC
+        Out Sync Option: AUTO
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: RES_PULL_UP
+        VTrip: CMOS
+        Slew: FAST
+        Input Sync needed: True
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => Move_Down(0)__PA ,
+        pad => Move_Down(0)_PAD );
+    Properties:
+    {
+    }
+
+[IoId=6]: 
+Pin : Name = \GLCD:Reset(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL
+        Initial Value: 0
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:Reset(0)\__PA ,
+        pad => \GLCD:Reset(0)_PAD\ );
+    Properties:
+    {
+    }
+
+Port 3 contains the following IO cells:
+[IoId=0]: 
+Pin : Name = \GLCD:SPIM_SCB:mosi_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_MOSI
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:mosi_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:Net_84\ ,
+        pad => \GLCD:SPIM_SCB:mosi_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+[IoId=4]: 
+Pin : Name = \GLCD:SPIM_SCB:ss1_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_SS
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:ss1_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:ss_1\ ,
+        pad => \GLCD:SPIM_SCB:ss1_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+[IoId=5]: 
+Pin : Name = \GLCD:SPIM_SCB:ss2_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_SS
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:ss2_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:ss_2\ ,
+        pad => \GLCD:SPIM_SCB:ss2_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+[IoId=6]: 
+Pin : Name = \GLCD:SPIM_SCB:ss3_m(0)\
+    Attributes:
+        In Group/Port: True
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
+        Interrupt generated: False
+        Interrupt mode: NONE
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
+        Slew: FAST
+        Input Sync needed: False
+        Output Sync needed: False
+        SC shield enabled: False
+        POR State: ANY
+        LCD Mode: COMMON
+        Register Mode: RegComb
+        CaSense Mode: NEITHER
+        Treat as pin: True
+        Is OE Registered: False
+        Uses Analog: False
+        Can contain Digital: True
+        Is SIO: False
+        SIO Output Buf: NONREGULATED
+        SIO Input Buf: SINGLE_ENDED
+        SIO HiFreq: LOW
+        SIO Hyst: DISABLED
+        SIO Vtrip: MULTIPLIER_0_5
+        SIO RefSel: VCC_IO
+        Required Capabilitites: DIGITAL, SPI_SS
+        Initial Value: 1
+        IO Voltage: 0
+    PORT MAP (
+        pa_out => \GLCD:SPIM_SCB:ss3_m(0)\__PA ,
+        input => \GLCD:SPIM_SCB:ss_3\ ,
+        pad => \GLCD:SPIM_SCB:ss3_m(0)_PAD\ );
+    Properties:
+    {
+    }
+
+Port 4 is empty
+Fixed Function block hod @ [FFB(Clock,0)]: 
+    M0S8 Clock Block @ [FFB(Clock,0)]: 
+    m0s8clockblockcell: Name =ClockBlock
+        PORT MAP (
+            lfclk => ClockBlock_LFCLK ,
+            ilo => ClockBlock_ILO ,
+            sysclk => ClockBlock_SYSCLK ,
+            ext => ClockBlock_EXTCLK ,
+            imo => ClockBlock_IMO ,
+            hfclk => ClockBlock_HFCLK ,
+            ff_div_2 => \GLCD:SPIM_SCB:Net_237_ff2\ ,
+            udb_div_0 => dclk_to_genclk );
+        Properties:
+        {
+        }
+Fixed Function block hod @ [FFB(PM,0)]: empty
+Fixed Function block hod @ [FFB(SPC,0)]: empty
+Fixed Function block hod @ [FFB(WDT,0)]: empty
+Fixed Function block hod @ [FFB(FSS,0)]: empty
+Fixed Function block hod @ [FFB(LPCOMP,0)]: empty
+Fixed Function block hod @ [FFB(SCB,0)]: 
+    Scb Block @ [FFB(SCB,1)]: 
+    m0s8scbcell: Name =\GLCD:SPIM_SCB:SCB\
+        PORT MAP (
+            clock => \GLCD:SPIM_SCB:Net_237_ff2\ ,
+            interrupt => \GLCD:Net_91\ ,
+            tx => \GLCD:SPIM_SCB:Net_151\ ,
+            mosi_m => \GLCD:SPIM_SCB:Net_84\ ,
+            miso_m => \GLCD:SPIM_SCB:Net_410\ ,
+            select_m_3 => \GLCD:SPIM_SCB:ss_3\ ,
+            select_m_2 => \GLCD:SPIM_SCB:ss_2\ ,
+            select_m_1 => \GLCD:SPIM_SCB:ss_1\ ,
+            select_m_0 => \GLCD:SPIM_SCB:ss_0\ ,
+            sclk_m => \GLCD:SPIM_SCB:Net_88\ ,
+            miso_s => \GLCD:SPIM_SCB:Net_152\ );
+        Properties:
+        {
+            cy_registers = ""
+            scb_mode = 1
+        }
+Fixed Function block hod @ [FFB(CSD,0)]: empty
+Fixed Function block hod @ [FFB(CSIDAC8,0)]: empty
+Fixed Function block hod @ [FFB(CSIDAC7,0)]: empty
+Fixed Function block hod @ [FFB(TCPWM,0)]: empty
+Fixed Function block hod @ [FFB(OA,0)]: empty
+Fixed Function block hod @ [FFB(TEMP,0)]: empty
+Fixed Function block hod @ [FFB(SARADC,0)]: empty
+Fixed Function block hod @ [FFB(M0S8LCD,0)]: empty
+Fixed Function block hod @ [FFB(CLK_GEN,0)]: 
+    M0S8 Clock Gen Block @ [FFB(CLK_GEN,0)]: 
+    m0s8clockgenblockcell: Name =ClockGenBlock
+        PORT MAP (
+            gen_clk_out_0 => \Com_Block:Net_81_digital\ ,
+            gen_clk_in_0 => dclk_to_genclk );
+        Properties:
+        {
+        }
+Fixed Function block hod @ [FFB(LPCOMPBLOCK,0)]: empty
+Fixed Function block hod @ [FFB(CTBMBLOCK,0)]: empty
+Fixed Function block hod @ [FFB(ANAPUMP,0)]: empty
+</CYPRESSTAG>
+<CYPRESSTAG name="Port Configuration Details">
+
+------------------------------------------------------------
+Port Configuration report
+------------------------------------------------------------
+     |     |       | Interrupt |                  |                           | 
+Port | Pin | Fixed |      Type |       Drive Mode |                      Name | Connections
+-----+-----+-------+-----------+------------------+---------------------------+----------------------------
+   0 |   1 |     * |      NONE |     HI_Z_DIGITAL |                   MOSI(0) | FB(Net_93)
+     |   2 |     * |      NONE |         CMOS_OUT |            Blast_Green(0) | 
+     |   3 |     * |      NONE |         CMOS_OUT |             Blast_Blue(0) | 
+     |   5 |     * |      NONE |     HI_Z_DIGITAL | \GLCD:SPIM_SCB:miso_m(0)\ | FB(\GLCD:SPIM_SCB:Net_410\)
+     |   6 |     * |      NONE |         CMOS_OUT | \GLCD:SPIM_SCB:sclk_m(0)\ | In(\GLCD:SPIM_SCB:Net_88\)
+     |   7 |     * |      NONE |         CMOS_OUT |  \GLCD:SPIM_SCB:ss0_m(0)\ | In(\GLCD:SPIM_SCB:ss_0\)
+-----+-----+-------+-----------+------------------+---------------------------+----------------------------
+   1 |   0 |     * |      NONE |         CMOS_OUT |                   MISO(0) | In(Net_96)
+     |   1 |     * |      NONE |     HI_Z_DIGITAL |                   SCLK(0) | FB(Net_94)
+     |   2 |     * |      NONE |     HI_Z_DIGITAL |                     SS(0) | FB(Net_95)
+     |   6 |     * |      NONE |         CMOS_OUT |              Blast_Red(0) | 
+-----+-----+-------+-----------+------------------+---------------------------+----------------------------
+   2 |   0 |     * |      NONE |      RES_PULL_UP |              Move_Left(0) | 
+     |   1 |     * |      NONE |      RES_PULL_UP |                Move_Up(0) | 
+     |   2 |     * |      NONE |      RES_PULL_UP |             Move_Right(0) | 
+     |   3 |     * |      NONE |      RES_PULL_UP |                  Blast(0) | 
+     |   4 |     * |      NONE |      RES_PULL_UP |              Move_Down(0) | 
+     |   6 |     * |      NONE |         CMOS_OUT |           \GLCD:Reset(0)\ | 
+-----+-----+-------+-----------+------------------+---------------------------+----------------------------
+   3 |   0 |     * |      NONE |         CMOS_OUT | \GLCD:SPIM_SCB:mosi_m(0)\ | In(\GLCD:SPIM_SCB:Net_84\)
+     |   4 |     * |      NONE |         CMOS_OUT |  \GLCD:SPIM_SCB:ss1_m(0)\ | In(\GLCD:SPIM_SCB:ss_1\)
+     |   5 |     * |      NONE |         CMOS_OUT |  \GLCD:SPIM_SCB:ss2_m(0)\ | In(\GLCD:SPIM_SCB:ss_2\)
+     |   6 |     * |      NONE |         CMOS_OUT |  \GLCD:SPIM_SCB:ss3_m(0)\ | In(\GLCD:SPIM_SCB:ss_3\)
+-----------------------------------------------------------------------------------------------------------
+</CYPRESSTAG>
+</CYPRESSTAG>
+</CYPRESSTAG>
+Digital component placer commit/Report: Elapsed time ==> 0s.005ms
+Digital Placement phase: Elapsed time ==> 0s.827ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Digital Routing">
+Routing successful.
+Digital Routing phase: Elapsed time ==> 0s.705ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Bitstream and API generation">
+Bitstream and API generation phase: Elapsed time ==> 0s.142ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Bitstream verification">
+Bitstream verification phase: Elapsed time ==> 0s.061ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Static timing analysis">
+Warning: sta.M0019: GLCD_Test1_timing.html: Warning-1367: Hold time violation found in a path from clock ( CyHFCLK ) to clock ( SCLK(0)/fb ). (File=C:\Users\Trenton\Desktop\School Stuff\Junior Year (2013-2014)\Spring 2014\Microcontrollers\Dual_Starblast.cydsn\GLCD_Test1_timing.html)
+Timing report is in GLCD_Test1_timing.html.
+Static timing analysis phase: Elapsed time ==> 0s.381ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Data reporting">
+Data reporting phase: Elapsed time ==> 0s.000ms
+</CYPRESSTAG>
+<CYPRESSTAG name="Database update...">
+Design database save phase: Elapsed time ==> 0s.241ms
+</CYPRESSTAG>
+cydsfit: Elapsed time ==> 2s.664ms
+</CYPRESSTAG>
+Fitter phase: Elapsed time ==> 2s.709ms
+API generation phase: Elapsed time ==> 1s.589ms
+Dependency generation phase: Elapsed time ==> 0s.013ms
+Cleanup phase: Elapsed time ==> 0s.001ms

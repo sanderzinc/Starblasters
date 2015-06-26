@@ -1,0 +1,28 @@
+# GLCD_Test1
+# 2014-05-13 23:31:26Z
+
+# IO_2@[IOP=(3)][IoId=(2)] is reserved: SWDDebugEnabled
+dont_use_io iocell 3 2
+# IO_3@[IOP=(3)][IoId=(3)] is reserved: SWDDebugEnabled
+dont_use_io iocell 3 3
+set_io "Blast(0)" iocell 2 3
+set_io "Blast_Blue(0)" iocell 0 3
+set_io "Blast_Green(0)" iocell 0 2
+set_io "Blast_Red(0)" iocell 1 6
+set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
+set_io "MISO(0)" iocell 1 0
+set_io "MOSI(0)" iocell 0 1
+set_io "Move_Down(0)" iocell 2 4
+set_io "Move_Left(0)" iocell 2 0
+set_io "Move_Right(0)" iocell 2 2
+set_io "Move_Up(0)" iocell 2 1
+set_io "SCLK(0)" iocell 1 1
+set_io "SS(0)" iocell 1 2
+set_io "\GLCD:Reset(0)\" iocell 2 6
+set_io "\GLCD:SPIM_SCB:miso_m(0)\" iocell 0 5
+set_io "\GLCD:SPIM_SCB:mosi_m(0)\" iocell 3 0
+set_io "\GLCD:SPIM_SCB:sclk_m(0)\" iocell 0 6
+set_io "\GLCD:SPIM_SCB:ss0_m(0)\" iocell 0 7
+set_io "\GLCD:SPIM_SCB:ss1_m(0)\" iocell 3 4
+set_io "\GLCD:SPIM_SCB:ss2_m(0)\" iocell 3 5
+set_io "\GLCD:SPIM_SCB:ss3_m(0)\" iocell 3 6
